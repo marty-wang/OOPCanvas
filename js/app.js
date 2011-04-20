@@ -41,6 +41,6 @@ $(document).ready(function() {
         oc.drawRect(100, 100, 100, 100, {
             'rotation': Math.PI/4,
             'fillStyle': 'blue'
-        }); 
+        });
     });
 });

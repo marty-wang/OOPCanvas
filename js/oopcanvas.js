@@ -67,7 +67,7 @@
     function _stylize (oc, config) {
         config = config || {};
         
-        var mergedConfig = OC.merge(oc._globalConfig, config, false);
+        var mergedConfig = OC.merge(oc._globalConfig, config);
         var ctx = oc._ctx;
         
         OC.merge(ctx, mergedConfig, true, _EXCLUDES);
@@ -77,10 +77,25 @@
     // == Static Method ==
     // ===================
 
-    // TODO: refine the arguments logic
-    OC.merge = function _merge (merging, merged, mutable, excludes) {
+    // mutable: wether it will chage the merging object or not
+    // excludes: the array containing the names of properties that should not be
+    // merged
+    OC.merge = function _merge (merging, merged/*, mutable, excludes*/) {
+        var arg2 = arguments[2];
+        var arg3 = arguments[3];
 
-        excludes = excludes || [];
+        // default values
+        var mutable = false;
+        var excludes = [];
+
+        if (typeof arg2 === "boolean") {
+            mutable = arg2;
+            if (typeof arg3 === "object") {
+                excludes = arg3;
+            }
+        } else if (typeof arg2 === "object") {
+            excludes = arg2;
+        }
 
         var orig = {};
         if (!mutable) {
