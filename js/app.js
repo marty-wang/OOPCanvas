@@ -41,13 +41,13 @@ $(document).ready(function() {
             oc.drawLine(x, y, x1, y1);
         }
         
-        oc.drawRect(100, 100, 100, 100, {
+        oc.createRect(100, 100, 100, 100, {
             'rotation': Math.PI/4,
             'fillStyle': 'blue',
             'anchor': 'center'
         });
-
-        oc.drawRect(100, 100, 100, 100, {
+        
+        oc.createRect(100, 100, 100, 100, {
             'fillStyle': 'blue',
             'strokeStyle': 'yellow'
         });

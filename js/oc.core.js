@@ -20,7 +20,21 @@ var OOPCanvas = (function(undefined) {
         this._height = canvas.getAttribute('height');
 
         this._globalConfig = globalConfig || {};
+    
+        this._children = {};        
     }
+
+    // == Protected Methods ==
+    
+    OOPCanvas.prototype._addChild = function(child) {
+        var id = child.getId();
+        var children = this._children;
+        if ( ~~children[id] ) {
+            return;
+        }
+
+        children[id] = child;
+    };
 
     // == Getters and Setters ==
 
@@ -41,6 +55,8 @@ var OOPCanvas = (function(undefined) {
     };
 
     // == Static ==
+    
+    OOPCanvas.childIdCounter = -1;
     
     OOPCanvas.modules = {};
 
