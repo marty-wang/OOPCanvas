@@ -7,10 +7,7 @@
         <style>
             #oopcanvas {
                 background: black;
-            }
-            #draw-button {
-                display: block;
-            }
+            } 
         </style>
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js" type="text/javascript" charset="utf-8"></script>
         <script src="js/oopcanvas.js" type="text/javascript" charset="utf-8"></script>
@@ -20,7 +17,10 @@
         <div id="container">
             <canvas id="oopcanvas" width="800" height="600">
             </canvas>
-            <button id="draw-button" type="button">Draw</button>
+            <div class="buttons">
+                <button id="draw-button" type="button">Draw</button>
+                <button id="clear-button" type="button">Clear</button>
+            </div>
 		</div>
 	</body>
 </html>

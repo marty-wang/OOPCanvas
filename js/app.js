@@ -1,5 +1,7 @@
 $(document).ready(function() {
 
+    OC.installModules();
+
     var canvas = document.getElementById('oopcanvas');
     var oc = new OC(canvas, {
         'lineWidth': 4,
@@ -7,14 +9,18 @@ $(document).ready(function() {
         'fillStyle': 'red'
     });
     
-    var width = canvas.getAttribute('width');
-    var height = canvas.getAttribute('height');
+    var width = oc.getWidth();
+    var height = oc.getHeight();
     var gutter = 20; // px
 
     var num_width = width / gutter;
     var num_height = height / gutter;
     var i;
     var x, y, x1, y1;
+
+    $('#clear-button').click(function(evt) {
+        oc.clearAll(); 
+    });
 
     $('#draw-button').click(function(evt) {
         for (i = 0; i <= num_width; i++) {
@@ -46,7 +52,7 @@ $(document).ready(function() {
             'strokeStyle': 'yellow'
         });
 
-        oc.drawEllipse(200, 200, 60, 60, {
+        oc.drawEllipse(200, 200, 120, 60, {
             'strokeStyle': 'gray',
             'fillStyle': 'red'
         });
