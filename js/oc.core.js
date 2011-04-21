@@ -61,9 +61,12 @@ var OOPCanvas = (function(undefined) {
     };
 
     OOPCanvas.meta = {
-        'version': '0.0.1'
-    }
-    
+        'version': '0.0.1',
+        'author': 'Mo Wang',
+        'repo': 'https://github.com/marty-wang/OOPCanvas',
+        'license': 'MIT'
+    };
+
     return OOPCanvas;
 })();
 
