@@ -3,7 +3,8 @@ $(document).ready(function() {
     var canvas = document.getElementById('oopcanvas');
     var oc = new OC(canvas, {
         'lineWidth': 4,
-        'strokeStyle': 'green'
+        'strokeStyle': 'green',
+        'fillStyle': 'red'
     });
     
     var width = canvas.getAttribute('width');
@@ -35,12 +36,25 @@ $(document).ready(function() {
         }
         
         oc.drawRect(100, 100, 100, 100, {
+            'rotation': Math.PI/4,
+            'fillStyle': 'blue',
+            'anchor': 'center'
+        });
+
+        oc.drawRect(100, 100, 100, 100, {
+            'fillStyle': 'blue',
+            'strokeStyle': 'yellow'
+        });
+
+        oc.drawEllipse(200, 200, 60, 60, {
+            'strokeStyle': 'gray',
             'fillStyle': 'red'
         });
         
-        oc.drawRect(100, 100, 100, 100, {
-            'rotation': Math.PI/4,
-            'fillStyle': 'blue'
+        oc.drawEllipse(340, 340, 60, 60);
+
+        oc.drawArc(300, 300, 100, 0, Math.PI, false, {
+            'strokeStyle': 'blue'
         });
     });
 });
