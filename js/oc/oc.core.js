@@ -14,23 +14,13 @@ var OOPCanvas = (function(undefined) {
 
         this._width = canvas.getAttribute('width');
         this._height = canvas.getAttribute('height');
+    
+        this._children = {};
 
         this._globalConfig = globalConfig || {};
-    
-        this._children = {};        
+
+        _initModules(this);
     }
-
-    // == Protected Methods ==
-    
-    OOPCanvas.prototype._addChild = function(child) {
-        var id = child.getId();
-        var children = this._children;
-        if ( ~~children[id] ) {
-            return;
-        }
-
-        children[id] = child;
-    };
 
     // == Getters and Setters ==
 
@@ -50,26 +40,29 @@ var OOPCanvas = (function(undefined) {
         return this._globalConfig;
     };
 
+    // == Protected Methods ==
+    
+    OOPCanvas.prototype._addChild = function(child) {
+        var id = child.getId();
+        var children = this._children;
+        if ( ~~children[id] ) {
+            return;
+        }
+
+        children[id] = child;
+    };
+
     // == Static ==
     
     OOPCanvas.childIdCounter = -1;
     
     OOPCanvas.modules = {};
 
-    OOPCanvas.hasOwnProperty = function(obj, prop) {
-        return Object.prototype.hasOwnProperty.call(obj, prop);
-    };
-
     OOPCanvas.installModules = function () {
-        var mk, module;
-        var modules = this.modules;
-
-        for (mk in modules) {
-            if (OOPCanvas.hasOwnProperty(modules, mk)) {
-                module = modules[mk];
-                module(this);
-            }
-        }
+        var OC = this;
+        _iterateModules(function(m) {
+            m(OC);
+        });
     };
 
     OOPCanvas.meta = {
@@ -78,6 +71,36 @@ var OOPCanvas = (function(undefined) {
         'repo': 'https://github.com/marty-wang/OOPCanvas',
         'license': 'MIT'
     };
+
+    // == Util ==
+
+    OOPCanvas.Util = OOPCanvas.Util || {};
+
+    OOPCanvas.Util.hasOwnProperty = function(obj, prop) {
+        return Object.prototype.hasOwnProperty.call(obj, prop);
+    };
+
+    // == Private ==
+
+    function _initModules (oc) {
+        _iterateModules(function(m) {
+            if (m.init) {
+                m.init(oc);
+            }
+        });
+    }
+
+    function _iterateModules (callback) {
+        var mk, module;
+        var modules = OOPCanvas.modules;
+
+        for (mk in modules) {
+            if (OOPCanvas.Util.hasOwnProperty(modules, mk)) {
+                module = modules[mk];
+                callback(module);
+            }
+        }
+    }
 
     return OOPCanvas;
 

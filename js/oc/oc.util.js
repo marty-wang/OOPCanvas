@@ -42,7 +42,7 @@ window.OOPCanvas.modules.util = function(OOPCanvas) {
                 if ( excludes.indexOf(prop) > -1 ) {
                     continue;
                 }
-                if (OC.hasOwnProperty(merged, prop)) {
+                if (OC.Util.hasOwnProperty(merged, prop)) {
                     orig[prop] = merged[prop];
                 }
             }

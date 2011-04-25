@@ -1,13 +1,18 @@
 //= require "oc.core"
 
-window.OOPCanvas.modules.runloop = function(OOPCanvas) {
+window.OOPCanvas.modules.runloop = function _runloop(OOPCanvas) {
+
+    console.log("runloop is installed");
     
     var OC = OOPCanvas;
     var fn = OC.prototype;
 
-    // hardcoded fps
-    var fps = 60;
-    var timeout = 1000 / fps;
+    // default config
+    var _config = {
+        'fps': 60
+    };
+
+    var _timeout = null;
 
     var _shouldRun = null;
     var _isLooping = null;
@@ -16,6 +21,20 @@ window.OOPCanvas.modules.runloop = function(OOPCanvas) {
     var _curFPS = null;
 
     var _postHooks = [];
+
+    _runloop.init = function(ocObj) {
+        console.log("runloop is init'ed");
+
+        var gConfig = ocObj.getGlobalConfig();
+        
+        if (gConfig.fps) {
+            _config.fps = gConfig.fps;
+        } else {
+            gConfig.fps = _config.fps;
+        }
+
+        _timeout = 1000 / _config.fps;
+    };
     
     fn.isLooping = function() {
         return _isLooping;
@@ -59,7 +78,7 @@ window.OOPCanvas.modules.runloop = function(OOPCanvas) {
             } else {
                 _isLooping = false;
             }
-        }, timeout);
+        }, _timeout);
     }
 
     function _framing (oc) {
