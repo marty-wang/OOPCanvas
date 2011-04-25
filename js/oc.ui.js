@@ -1,3 +1,6 @@
+// require: oc.core.js
+// require: oc.drawing.js
+
 window.OOPCanvas.modules.ui = function(OOPCanvas) {
     
     var OC = OOPCanvas;

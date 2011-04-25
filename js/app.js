@@ -10,6 +10,7 @@ $(document).ready(function() {
         'textBaseline': 'top',
         'font': '14px sans-serif'
     });
+    oc.enableDebugMode();
 
     //oc.startRunloop();
     

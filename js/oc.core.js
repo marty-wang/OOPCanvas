@@ -1,7 +1,3 @@
-// ==========
-// == Core ==
-// ==========
-
 var OOPCanvas = (function(undefined) {
 
     // == Constructor ==
@@ -77,7 +73,7 @@ var OOPCanvas = (function(undefined) {
     };
 
     OOPCanvas.meta = {
-        'version': '0.0.1',
+        'version': '0.0.0',
         'author': 'Mo Wang',
         'repo': 'https://github.com/marty-wang/OOPCanvas',
         'license': 'MIT'

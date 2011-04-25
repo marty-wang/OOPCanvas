@@ -1,8 +1,11 @@
+// require: oc.core.js
+
 window.OOPCanvas.modules.runloop = function(OOPCanvas) {
     
     var OC = OOPCanvas;
     var fn = OC.prototype;
 
+    // hardcoded fps
     var fps = 60;
     var timeout = 1000 / fps;
 
@@ -12,7 +15,7 @@ window.OOPCanvas.modules.runloop = function(OOPCanvas) {
     var _lastFrame = null;
     var _curFPS = null;
 
-    var _inDebugMode = true;
+    var _postHooks = [];
     
     fn.isLooping = function() {
         return _isLooping;
@@ -20,6 +23,14 @@ window.OOPCanvas.modules.runloop = function(OOPCanvas) {
 
     fn.getCurrentFPS = function() {
         return _curFPS;
+    };
+
+    fn.installPostHook = function(hook) {
+        _postHooks.push(hook);
+    };
+
+    fn.removePostHook = function(hook) {
+        // TODO: implement
     };
     
     fn.startRunloop = function() {
@@ -53,9 +64,16 @@ window.OOPCanvas.modules.runloop = function(OOPCanvas) {
     function _framing (oc) {
         _calcCurFrame();
         _running(oc);
+        _callPostHooks(oc);
+    }
 
-        if (_inDebugMode) {
-            _printDebugInfo(oc);
+    function _callPostHooks (oc) {
+        var i;
+        var count = _postHooks.length;
+
+        for (i = 0; i < count; i++) {
+            var hook = _postHooks[i];
+            hook(oc);
         }
     }
 
@@ -85,21 +103,5 @@ window.OOPCanvas.modules.runloop = function(OOPCanvas) {
         }
         _curFPS = fps;
         _lastFrame = curFrame;
-    }
-
-    function _printDebugInfo (oc) {
-        _printFPS(oc);
-    }
-
-    function _printFPS (oc) {
-        var fps_info = "" + _curFPS;
-        fps_info = fps_info.substr(0, 2);
-        var color = "green";
-        if (_curFPS < 30) {
-            color = "red";
-        }
-        oc.drawText(0, 0, fps_info, {
-            'fillStyle': color
-        });
     }
 };

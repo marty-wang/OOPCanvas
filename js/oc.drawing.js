@@ -1,6 +1,4 @@
-// ====================
-// == Module Drawing ==
-// ====================
+// require: oc.drawing.js
 
 window.OOPCanvas.modules.drawing = function(OOPCanvas) {
 
