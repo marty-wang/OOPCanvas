@@ -37,7 +37,8 @@ window.OOPCanvas.modules.runloop = function(OOPCanvas) {
         if (_isLooping) {
             return;
         }
-
+        
+        _lastFrame = new Date().getTime();
         _shouldRun = true;
         _loop(this);
     };
@@ -97,11 +98,8 @@ window.OOPCanvas.modules.runloop = function(OOPCanvas) {
     function _calcCurFrame () {
         var dt, fps;
         var curFrame = new Date().getTime();
-        if (~~_lastFrame) {
-            dt = curFrame - _lastFrame;
-            fps = 1000 / dt;
-        }
-        _curFPS = fps;
+        dt = curFrame - _lastFrame;
+        _curFPS = ~~ (1000 / dt);
         _lastFrame = curFrame;
     }
 };

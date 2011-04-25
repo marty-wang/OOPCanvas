@@ -18,7 +18,6 @@ window.OOPCanvas.modules.debug = function(OOPCanvas) {
     function _printFPS (oc) {
         var fps = oc.getCurrentFPS();
         var fps_info = "" + fps;
-        fps_info = fps_info.substr(0, 2);
         var color = "green";
         if (fps < 30) {
             color = "red";
