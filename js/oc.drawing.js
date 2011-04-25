@@ -1,4 +1,4 @@
-// require: oc.drawing.js
+//= require "oc.core"
 
 window.OOPCanvas.modules.drawing = function(OOPCanvas) {
 

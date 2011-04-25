@@ -1,5 +1,5 @@
-// require: oc.core.js
-// require: oc.drawing.js
+//= require "oc.core"
+//= require "oc.drawing"
 
 window.OOPCanvas.modules.ui = function(OOPCanvas) {
     

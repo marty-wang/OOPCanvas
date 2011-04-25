@@ -1,6 +1,6 @@
 // TODO: refactor merge function into oc.lib.js
 
-// require: oc.core.js
+//= require "oc.core"
 
 window.OOPCanvas.modules.util = function(OOPCanvas) {
 

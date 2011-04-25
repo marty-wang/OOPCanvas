@@ -1,4 +1,4 @@
-// require: oc.core.js
+//= require "oc.core"
 
 window.OOPCanvas.modules.runloop = function(OOPCanvas) {
     
@@ -85,7 +85,11 @@ window.OOPCanvas.modules.runloop = function(OOPCanvas) {
     }
 
     function _clear (oc) {
-        oc.clearAll();
+        var ctx = oc.getContext();
+        var w = oc.getWidth();
+        var h = oc.getHeight();
+
+        ctx.clearRect(0, 0, w, h);
     }
 
     function _update (oc) {

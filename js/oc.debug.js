@@ -1,6 +1,6 @@
-// require: oc.core.js
-// require: oc.drawing.js
-// require: oc.runloop.js
+//= require "oc.core"
+//= require "oc.drawing"
+//= require "oc.runloop"
 
 window.OOPCanvas.modules.debug = function(OOPCanvas) {
 
