@@ -1,5 +1,5 @@
 var OOPCanvas = (function(undefined) {
-
+    
     // == Constructor ==
 
     function OOPCanvas (canvas, globalConfig) {
@@ -80,6 +80,7 @@ var OOPCanvas = (function(undefined) {
     };
 
     return OOPCanvas;
+
 })();
 
 'OC' in window || (window.OC = OOPCanvas);

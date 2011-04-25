@@ -27,4 +27,5 @@ window.OOPCanvas.modules.ui = function(OOPCanvas) {
 
         return new Rect(x, y, width, height, config);
     };
+
 };

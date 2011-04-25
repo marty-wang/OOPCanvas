@@ -103,7 +103,8 @@ window.OOPCanvas.modules.runloop = function(OOPCanvas) {
         var dt, fps;
         var curFrame = new Date().getTime();
         dt = curFrame - _lastFrame;
-        _curFPS = ~~ (1000 / dt);
+        _curFPS = ~~(1000 / dt);
         _lastFrame = curFrame;
     }
+
 };

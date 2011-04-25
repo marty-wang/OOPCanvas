@@ -26,4 +26,5 @@ window.OOPCanvas.modules.debug = function(OOPCanvas) {
             'fillStyle': color
         });
     }
+
 };

@@ -1,4 +1,5 @@
 //= require "oc.core"
+//= require "oc.util"
 
 window.OOPCanvas.modules.drawing = function(OOPCanvas) {
 
@@ -14,7 +15,7 @@ window.OOPCanvas.modules.drawing = function(OOPCanvas) {
             ctx.lineTo(x1, y1);
             ctx.stroke();
         }, config);
-    }
+    };
 
     fn.drawRect = function(x, y, width, height, config) {
         config = config || {};
@@ -113,8 +114,9 @@ window.OOPCanvas.modules.drawing = function(OOPCanvas) {
     }
 
     function _stylize (oc, config) {
-        var mergedConfig = OC.merge(oc.getGlobalConfig(), config);
+        var mergedConfig = OC.Util.merge(oc.getGlobalConfig(), config);
         var ctx = oc.getContext();
-        OC.merge(ctx, mergedConfig, true, _EXCLUDES);
+        OC.Util.merge(ctx, mergedConfig, true, _EXCLUDES);
     }
+
 };
