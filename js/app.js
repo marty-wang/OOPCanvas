@@ -6,8 +6,12 @@ $(document).ready(function() {
     var oc = new OC(canvas, {
         'lineWidth': 4,
         'strokeStyle': 'green',
-        'fillStyle': 'red'
+        'fillStyle': 'red',
+        'textBaseline': 'top',
+        'font': '14px sans-serif'
     });
+
+    //oc.startRunloop();
     
     var width = oc.getWidth();
     var height = oc.getHeight();
@@ -18,8 +22,16 @@ $(document).ready(function() {
     var i;
     var x, y, x1, y1;
 
+    $('#start-button').click(function(evt) {
+        oc.startRunloop();
+    });
+
+    $('#stop-button').click(function(evt) {
+        oc.stopRunloop();
+    });
+
     $('#clear-button').click(function(evt) {
-        oc.clearAll(); 
+        oc.clearAll();
     });
 
     $('#draw-button').click(function(evt) {

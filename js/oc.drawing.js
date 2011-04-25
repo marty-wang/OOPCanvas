@@ -88,6 +88,12 @@ window.OOPCanvas.modules.drawing = function(OOPCanvas) {
         this.drawArc(centerX, centerY, radius, 0, Math.PI * 2, false, config);
     };
 
+    fn.drawText = function(x, y, text, config) {
+        _setup(this, function(ctx) {
+            ctx.fillText(text, x, y);
+        }, config);
+    };
+
     fn.clear = function(x, y, width, height) {
         var ctx = this.getContext();
         ctx.clearRect(x, y, width, height);
