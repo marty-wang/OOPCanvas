@@ -1,4 +1,5 @@
 //= require "oc.core"
+//= require "oc.util"
 
 window.OOPCanvas.modules.runloop = function _runloop(OOPCanvas) {
 
@@ -7,12 +8,13 @@ window.OOPCanvas.modules.runloop = function _runloop(OOPCanvas) {
     var OC = OOPCanvas;
     var fn = OC.prototype;
 
+    var DEFAULT_FPS = 60;
+
     // default config
     var _config = {
-        'fps': 60
+        'fps': DEFAULT_FPS,
+        'useOptimizedRunloop': false // overwrite fps to 0
     };
-
-    var _timeout = null;
 
     var _shouldRun = null;
     var _isLooping = null;
@@ -25,15 +27,11 @@ window.OOPCanvas.modules.runloop = function _runloop(OOPCanvas) {
     _runloop.init = function(ocObj) {
         console.log("runloop is init'ed");
 
-        var gConfig = ocObj.getGlobalConfig();
-        
-        if (gConfig.fps) {
-            _config.fps = gConfig.fps;
-        } else {
-            gConfig.fps = _config.fps;
+        var gConfig = ocObj.getGlobalConfig();        
+        OC.Util.sync(_config, gConfig);
+        if (_config.useOptimizedRunloop) {
+            _config.fps = 0;
         }
-
-        _timeout = 1000 / _config.fps;
     };
     
     fn.isLooping = function() {
@@ -57,7 +55,6 @@ window.OOPCanvas.modules.runloop = function _runloop(OOPCanvas) {
             return;
         }
         
-        _lastFrame = new Date().getTime();
         _shouldRun = true;
         _loop(this);
     };
@@ -69,22 +66,47 @@ window.OOPCanvas.modules.runloop = function _runloop(OOPCanvas) {
     };
 
     function _loop (oc) {
-        setTimeout(function() {
-            _framing(oc);
 
+        (function run() {
+            _framing(oc);
+        
             if (_shouldRun) {
-                _loop(oc);
+                 _requestLoopFrame(run, _config.fps);
                 _isLooping = true;
             } else {
                 _isLooping = false;
             }
-        }, _timeout);
+        })();
+    
+    }
+
+    // fps: if omitted, let browser optimize
+    function _requestLoopFrame (callback, fps) {
+        var st = window.setTimeout;
+        
+        var reqAnimFrame =  window.requestAnimationFrame       ||
+                            window.webkitRequestAnimationFrame || 
+                            window.mozRequestAnimationFrame    || 
+                            window.oRequestAnimationFrame      || 
+                            window.msRequestAnimationFrame     ||
+                            st;
+
+        var func;
+
+        if (~~fps) {
+            func = st;
+        } else {
+            func = reqAnimFrame;
+            fps = DEFAULT_FPS;
+        }
+
+        func(callback, 1000 / fps);
     }
 
     function _framing (oc) {
-        _calcCurFrame();
         _running(oc);
         _callPostHooks(oc);
+        _calcCurFrame();
     }
 
     function _callPostHooks (oc) {
@@ -122,7 +144,9 @@ window.OOPCanvas.modules.runloop = function _runloop(OOPCanvas) {
         var dt, fps;
         var curFrame = new Date().getTime();
         dt = curFrame - _lastFrame;
-        _curFPS = ~~(1000 / dt);
+        if (~~dt) {
+            _curFPS = ~~(1000 / dt);
+        }
         _lastFrame = curFrame;
     }
 

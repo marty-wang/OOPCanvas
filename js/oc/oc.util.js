@@ -50,6 +50,21 @@ window.OOPCanvas.modules.util = function(OOPCanvas) {
             return orig;
         };
 
+        // sync two objects to have the same values of obj1's properties
+        // obj2's value weighs higher
+        this.Util.sync = function (obj1, obj2) {
+            var k;
+            for ( k in obj1 ) {
+                if (OOPCanvas.Util.hasOwnProperty(obj1, k)) {
+                    if (obj2[k]) {
+                        obj1[k] = obj2[k];
+                    } else {
+                        obj2[k] = obj1[k];
+                    }
+                }
+            }
+        };
+
         // == Array ==
         
         this.Array.indexOf = function(array, obj) {

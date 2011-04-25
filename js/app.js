@@ -8,7 +8,8 @@ $(document).ready(function() {
         'strokeStyle': 'green',
         'fillStyle': 'red',
         'textBaseline': 'top',
-        'font': '14px sans-serif'
+        'font': '14px sans-serif',
+        'useOptimizedRunloop' : false
     });
     oc.enableDebugMode();
 
