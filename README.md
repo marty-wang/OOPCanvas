@@ -1,4 +1,3 @@
-OOP style Canvas API.
+OOP style Canvas API.   
 
-Version: 0.0.0  
-Status: Very early phase.
+Status: Developing offline
