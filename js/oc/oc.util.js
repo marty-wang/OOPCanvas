@@ -1,4 +1,5 @@
 //= require "oc.core"
+//= require "oc.logger"
 
 window.OOPCanvas.modules.util = function(OOPCanvas) {
     
@@ -6,8 +7,10 @@ window.OOPCanvas.modules.util = function(OOPCanvas) {
 
         this.Util = this.Util || {};
         this.Array = this.Array || {};
-
+        
+        // ==========
         // == Util ==
+        // ==========
 
         this.Util.hasOwnProperty = function(obj, prop) {
             return Object.prototype.hasOwnProperty.call(obj, prop);
@@ -69,7 +72,9 @@ window.OOPCanvas.modules.util = function(OOPCanvas) {
             }
         };
 
+        // ===========
         // == Array ==
+        // ===========
         
         this.Array.indexOf = function(array, obj) {
             var idx = -1;
@@ -108,4 +113,5 @@ window.OOPCanvas.modules.util = function(OOPCanvas) {
                 
     }).call(OOPCanvas);
 
+    OOPCanvas.info("util module is installed.");
 };

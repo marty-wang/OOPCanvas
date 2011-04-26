@@ -1,6 +1,7 @@
 //= require "oc.core"
 //= require "oc.drawing"
 //= require "oc.runloop"
+//= require "oc.logger"
 
 window.OOPCanvas.modules.debug = function(OOPCanvas) {
 
@@ -26,5 +27,7 @@ window.OOPCanvas.modules.debug = function(OOPCanvas) {
             'fillStyle': color
         });
     }
+
+    OC.info("debug module is installed.");
 
 };

@@ -15,7 +15,6 @@ window.OOPCanvas.modules.runloop = function _runloop (OOPCanvas) {
         'useOptimizedRunloop': false // overwrite fps to 0
     };
 
-    // cache request frame function
     var _requestFrameFunc = null;
 
     var _shouldRun = null;
