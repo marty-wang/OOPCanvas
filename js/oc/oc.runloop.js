@@ -1,9 +1,8 @@
 //= require "oc.core"
 //= require "oc.util"
+//= require "oc.logger"
 
-window.OOPCanvas.modules.runloop = function _runloop(OOPCanvas) {
-
-    console.log("runloop is installed");
+window.OOPCanvas.modules.runloop = function _runloop (OOPCanvas) {
     
     var OC = OOPCanvas;
     var fn = OC.prototype;
@@ -24,14 +23,14 @@ window.OOPCanvas.modules.runloop = function _runloop(OOPCanvas) {
 
     var _postHooks = [];
 
-    _runloop.init = function(ocObj) {
-        console.log("runloop is init'ed");
-
-        var gConfig = ocObj.getGlobalConfig();        
+    _runloop.init = function(oc) {
+        var gConfig = oc.getGlobalConfig();        
         OC.Util.sync(_config, gConfig);
         if (_config.useOptimizedRunloop) {
             _config.fps = 0;
         }
+
+        OC.info("runloop module is init'ed.");
     };
     
     fn.isLooping = function() {
@@ -150,4 +149,5 @@ window.OOPCanvas.modules.runloop = function _runloop(OOPCanvas) {
         _lastFrame = curFrame;
     }
 
+    OC.info("runloop module is installed.");
 };

@@ -9,6 +9,10 @@ window.OOPCanvas.modules.util = function(OOPCanvas) {
 
         // == Util ==
 
+        this.Util.hasOwnProperty = function(obj, prop) {
+            return Object.prototype.hasOwnProperty.call(obj, prop);
+        };
+
         // mutable: wether it will chage the merging object or not
         // excludes: the array containing the names of properties that should not be
         // merged
@@ -101,7 +105,7 @@ window.OOPCanvas.modules.util = function(OOPCanvas) {
 
             Array.remove(idx);
         };
-        
+                
     }).call(OOPCanvas);
 
 };

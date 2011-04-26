@@ -1,5 +1,12 @@
 var OOPCanvas = (function(undefined) {
     
+    OOPCanvas.meta = {
+        'version': '0.0.0',
+        'author': 'Mo Wang',
+        'repo': 'https://github.com/marty-wang/OOPCanvas',
+        'license': 'MIT'
+    };
+
     // == Constructor ==
 
     function OOPCanvas (canvas, globalConfig) {
@@ -42,6 +49,10 @@ var OOPCanvas = (function(undefined) {
 
     // == Protected Methods ==
     
+    // TODO: move children management into module
+    
+    OOPCanvas.childIdCounter = -1;
+
     OOPCanvas.prototype._addChild = function(child) {
         var id = child.getId();
         var children = this._children;
@@ -54,30 +65,13 @@ var OOPCanvas = (function(undefined) {
 
     // == Static ==
     
-    OOPCanvas.childIdCounter = -1;
-    
     OOPCanvas.modules = {};
 
-    OOPCanvas.installModules = function () {
-        var OC = this;
-        _iterateModules(function(m) {
-            m(OC);
+    OOPCanvas.installModules = function (moduleSettings) {
+        moduleSettings = moduleSettings || {};
+        _iterateModules(function(m, mk) {
+            m(OOPCanvas, moduleSettings[mk]);
         });
-    };
-
-    OOPCanvas.meta = {
-        'version': '0.0.0',
-        'author': 'Mo Wang',
-        'repo': 'https://github.com/marty-wang/OOPCanvas',
-        'license': 'MIT'
-    };
-
-    // == Util ==
-
-    OOPCanvas.Util = OOPCanvas.Util || {};
-
-    OOPCanvas.Util.hasOwnProperty = function(obj, prop) {
-        return Object.prototype.hasOwnProperty.call(obj, prop);
     };
 
     // == Private ==
@@ -95,9 +89,9 @@ var OOPCanvas = (function(undefined) {
         var modules = OOPCanvas.modules;
 
         for (mk in modules) {
-            if (OOPCanvas.Util.hasOwnProperty(modules, mk)) {
+            if (Object.prototype.hasOwnProperty.call(modules, mk)) {
                 module = modules[mk];
-                callback(module);
+                callback(module, mk);
             }
         }
     }
