@@ -15,6 +15,9 @@ window.OOPCanvas.modules.runloop = function _runloop (OOPCanvas) {
         'useOptimizedRunloop': false // overwrite fps to 0
     };
 
+    // cache request frame function
+    var _requestFrameFunc = null;
+
     var _shouldRun = null;
     var _isLooping = null;
 
@@ -29,6 +32,7 @@ window.OOPCanvas.modules.runloop = function _runloop (OOPCanvas) {
         if (_config.useOptimizedRunloop) {
             _config.fps = 0;
         }
+        _requestFrameFunc = _requestLoopFrame(_config.fps);
 
         OC.info("runloop module is init'ed.");
     };
@@ -68,9 +72,9 @@ window.OOPCanvas.modules.runloop = function _runloop (OOPCanvas) {
 
         (function run() {
             _framing(oc);
-        
+            
             if (_shouldRun) {
-                 _requestLoopFrame(run, _config.fps);
+                 _requestFrameFunc(run);
                 _isLooping = true;
             } else {
                 _isLooping = false;
@@ -80,7 +84,10 @@ window.OOPCanvas.modules.runloop = function _runloop (OOPCanvas) {
     }
 
     // fps: if omitted, let browser optimize
-    function _requestLoopFrame (callback, fps) {
+    function _requestLoopFrame (fps) {
+
+        var frameFunc = null;
+
         var st = window.setTimeout;
         
         var reqAnimFrame =  window.requestAnimationFrame       ||
@@ -99,7 +106,17 @@ window.OOPCanvas.modules.runloop = function _runloop (OOPCanvas) {
             fps = DEFAULT_FPS;
         }
 
-        func(callback, 1000 / fps);
+        if (func === st) {
+            frameFunc = function(callback) {
+                 func(callback, 1000 / fps);
+            };
+        } else {
+            frameFunc = function(callback) {
+                func(callback);
+            };
+        }
+        
+        return frameFunc;
     }
 
     function _framing (oc) {

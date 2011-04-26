@@ -2,7 +2,7 @@ $(document).ready(function() {
 
     OC.installModules({
         'logger': {
-            'level': 'info'
+            'level': 'all'
         }
     });
 
