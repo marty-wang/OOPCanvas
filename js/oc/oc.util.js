@@ -1,5 +1,4 @@
 //= require "oc.core"
-//= require "oc.logger"
 
 window.OOPCanvas.modules.util = function(OOPCanvas) {
     
@@ -113,5 +112,5 @@ window.OOPCanvas.modules.util = function(OOPCanvas) {
                 
     }).call(OOPCanvas);
 
-    OOPCanvas.info("util module is installed.");
+    debug.info("util module is installed.");
 };

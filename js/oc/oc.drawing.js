@@ -1,6 +1,5 @@
 //= require "oc.core"
 //= require "oc.util"
-//= require "oc.logger"
 
 window.OOPCanvas.modules.drawing = function(OOPCanvas) {
 
@@ -120,5 +119,5 @@ window.OOPCanvas.modules.drawing = function(OOPCanvas) {
         OC.Util.merge(ctx, mergedConfig, true, _EXCLUDES);
     }
 
-    OC.info("drawing module is installed.");
+    debug.info("drawing module is installed.");
 };

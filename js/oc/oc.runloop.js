@@ -1,6 +1,5 @@
 //= require "oc.core"
 //= require "oc.util"
-//= require "oc.logger"
 
 window.OOPCanvas.modules.runloop = function _runloop (OOPCanvas) {
     
@@ -33,7 +32,7 @@ window.OOPCanvas.modules.runloop = function _runloop (OOPCanvas) {
         }
         _requestFrameFunc = _requestLoopFrame(_config.fps);
 
-        OC.info("runloop module is init'ed.");
+        debug.info("runloop module is init'ed.");
     };
     
     fn.isLooping = function() {
@@ -165,5 +164,5 @@ window.OOPCanvas.modules.runloop = function _runloop (OOPCanvas) {
         _lastFrame = curFrame;
     }
 
-    OC.info("runloop module is installed.");
+    debug.info("runloop module is installed.");
 };

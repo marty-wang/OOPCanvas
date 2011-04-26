@@ -1,7 +1,6 @@
 //= require "oc.core"
 //= require "oc.drawing"
 //= require "oc.runloop"
-//= require "oc.logger"
 
 window.OOPCanvas.modules.debug = function(OOPCanvas) {
 
@@ -28,6 +27,6 @@ window.OOPCanvas.modules.debug = function(OOPCanvas) {
         });
     }
 
-    OC.info("debug module is installed.");
+    debug.info("debug module is installed.");
 
 };

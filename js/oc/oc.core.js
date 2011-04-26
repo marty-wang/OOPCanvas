@@ -1,4 +1,10 @@
+//= require "../lib/ba-debug.min.js"
+
 var OOPCanvas = (function(undefined) {
+    
+    // log (1) < debug (2) < info (3) < warn (4) < error (5)
+    // If 0, disables logging.
+    debug.setLevel(3);
     
     OOPCanvas.meta = {
         'version': '0.0.0',

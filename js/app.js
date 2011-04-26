@@ -1,10 +1,6 @@
 $(document).ready(function() {
 
-    OC.installModules({
-        'logger': {
-            'level': 'all'
-        }
-    });
+    OC.installModules();
 
     var canvas = document.getElementById('oopcanvas');
     var oc = new OC(canvas, {

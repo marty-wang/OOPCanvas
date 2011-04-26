@@ -1,6 +1,5 @@
 //= require "oc.core"
 //= require "oc.drawing"
-//= require "oc.logger"
 
 window.OOPCanvas.modules.ui = function(OOPCanvas) {
     
@@ -29,5 +28,5 @@ window.OOPCanvas.modules.ui = function(OOPCanvas) {
         return new Rect(x, y, width, height, config);
     };
 
-    OC.info("ui module is installed.");
+    debug.info("ui module is installed.");
 };

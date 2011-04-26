@@ -1,4 +1,26 @@
+/*
+ * JavaScript Debug - v0.4 - 6/22/2010
+ * http://benalman.com/projects/javascript-debug-console-log/
+ *
+ * Copyright (c) 2010 "Cowboy" Ben Alman
+ * Dual licensed under the MIT and GPL licenses.
+ * http://benalman.com/about/license/
+ *
+ * With lots of help from Paul Irish!
+ * http://paulirish.com/
+ */
+window.debug=(function(){var i=this,b=Array.prototype.slice,d=i.console,h={},f,g,m=9,c=["error","warn","info","debug","log"],l="assert clear count dir dirxml exception group groupCollapsed groupEnd profile profileEnd table time timeEnd trace".split(" "),j=l.length,a=[];while(--j>=0){(function(n){h[n]=function(){m!==0&&d&&d[n]&&d[n].apply(d,arguments)}})(l[j])}j=c.length;while(--j>=0){(function(n,o){h[o]=function(){var q=b.call(arguments),p=[o].concat(q);a.push(p);e(p);if(!d||!k(n)){return}d.firebug?d[o].apply(i,q):d[o]?d[o](q):d.log(q)}})(j,c[j])}function e(n){if(f&&(g||!d||!d.log)){f.apply(i,n)}}h.setLevel=function(n){m=typeof n==="number"?n:9};function k(n){return m>0?m>n:c.length+m<=n}h.setCallback=function(){var o=b.call(arguments),n=a.length,p=n;f=o.shift()||null;g=typeof o[0]==="boolean"?o.shift():false;p-=typeof o[0]==="number"?o.shift():n;while(p<n){e(a[p++])}};return h})();
+
 var OOPCanvas = (function(undefined) {
+
+    debug.setLevel(3);
+
+    OOPCanvas.meta = {
+        'version': '0.0.0',
+        'author': 'Mo Wang',
+        'repo': 'https://github.com/marty-wang/OOPCanvas',
+        'license': 'MIT'
+    };
 
 
     function OOPCanvas (canvas, globalConfig) {
@@ -14,21 +36,12 @@ var OOPCanvas = (function(undefined) {
         this._width = canvas.getAttribute('width');
         this._height = canvas.getAttribute('height');
 
+        this._children = {};
+
         this._globalConfig = globalConfig || {};
 
-        this._children = {};
+        _initModules(this);
     }
-
-
-    OOPCanvas.prototype._addChild = function(child) {
-        var id = child.getId();
-        var children = this._children;
-        if ( ~~children[id] ) {
-            return;
-        }
-
-        children[id] = child;
-    };
 
 
     OOPCanvas.prototype.getWidth = function() {
@@ -48,32 +61,49 @@ var OOPCanvas = (function(undefined) {
     };
 
 
+
     OOPCanvas.childIdCounter = -1;
+
+    OOPCanvas.prototype._addChild = function(child) {
+        var id = child.getId();
+        var children = this._children;
+        if ( ~~children[id] ) {
+            return;
+        }
+
+        children[id] = child;
+    };
+
 
     OOPCanvas.modules = {};
 
-    OOPCanvas.hasOwnProperty = function(obj, prop) {
-        return Object.prototype.hasOwnProperty.call(obj, prop);
+    OOPCanvas.installModules = function (moduleSettings) {
+        moduleSettings = moduleSettings || {};
+        _iterateModules(function(m, mk) {
+            m(OOPCanvas, moduleSettings[mk]);
+        });
     };
 
-    OOPCanvas.installModules = function () {
+
+    function _initModules (oc) {
+        _iterateModules(function(m) {
+            if (m.init) {
+                m.init(oc);
+            }
+        });
+    }
+
+    function _iterateModules (callback) {
         var mk, module;
-        var modules = this.modules;
+        var modules = OOPCanvas.modules;
 
         for (mk in modules) {
-            if (OOPCanvas.hasOwnProperty(modules, mk)) {
+            if (Object.prototype.hasOwnProperty.call(modules, mk)) {
                 module = modules[mk];
-                module(this);
+                callback(module, mk);
             }
         }
-    };
-
-    OOPCanvas.meta = {
-        'version': '0.0.0',
-        'author': 'Mo Wang',
-        'repo': 'https://github.com/marty-wang/OOPCanvas',
-        'license': 'MIT'
-    };
+    }
 
     return OOPCanvas;
 
@@ -88,6 +118,10 @@ window.OOPCanvas.modules.util = function(OOPCanvas) {
         this.Util = this.Util || {};
         this.Array = this.Array || {};
 
+
+        this.Util.hasOwnProperty = function(obj, prop) {
+            return Object.prototype.hasOwnProperty.call(obj, prop);
+        };
 
         this.Util.merge = function _merge (merging, merged/*, mutable, excludes*/) {
             var arg2 = arguments[2];
@@ -118,12 +152,25 @@ window.OOPCanvas.modules.util = function(OOPCanvas) {
                 if ( excludes.indexOf(prop) > -1 ) {
                     continue;
                 }
-                if (OC.hasOwnProperty(merged, prop)) {
+                if (OC.Util.hasOwnProperty(merged, prop)) {
                     orig[prop] = merged[prop];
                 }
             }
 
             return orig;
+        };
+
+        this.Util.sync = function (obj1, obj2) {
+            var k;
+            for ( k in obj1 ) {
+                if (OOPCanvas.Util.hasOwnProperty(obj1, k)) {
+                    if (obj2[k]) {
+                        obj1[k] = obj2[k];
+                    } else {
+                        obj2[k] = obj1[k];
+                    }
+                }
+            }
         };
 
 
@@ -162,6 +209,7 @@ window.OOPCanvas.modules.util = function(OOPCanvas) {
 
     }).call(OOPCanvas);
 
+    debug.info("util module is installed.");
 };
 
 window.OOPCanvas.modules.drawing = function(OOPCanvas) {
@@ -281,15 +329,22 @@ window.OOPCanvas.modules.drawing = function(OOPCanvas) {
         OC.Util.merge(ctx, mergedConfig, true, _EXCLUDES);
     }
 
+    debug.info("drawing module is installed.");
 };
 
-window.OOPCanvas.modules.runloop = function(OOPCanvas) {
+window.OOPCanvas.modules.runloop = function _runloop (OOPCanvas) {
 
     var OC = OOPCanvas;
     var fn = OC.prototype;
 
-    var fps = 60;
-    var timeout = 1000 / fps;
+    var DEFAULT_FPS = 60;
+
+    var _config = {
+        'fps': DEFAULT_FPS,
+        'useOptimizedRunloop': false // overwrite fps to 0
+    };
+
+    var _requestFrameFunc = null;
 
     var _shouldRun = null;
     var _isLooping = null;
@@ -298,6 +353,17 @@ window.OOPCanvas.modules.runloop = function(OOPCanvas) {
     var _curFPS = null;
 
     var _postHooks = [];
+
+    _runloop.init = function(oc) {
+        var gConfig = oc.getGlobalConfig();
+        OC.Util.sync(_config, gConfig);
+        if (_config.useOptimizedRunloop) {
+            _config.fps = 0;
+        }
+        _requestFrameFunc = _requestLoopFrame(_config.fps);
+
+        debug.info("runloop module is init'ed.");
+    };
 
     fn.isLooping = function() {
         return _isLooping;
@@ -319,7 +385,6 @@ window.OOPCanvas.modules.runloop = function(OOPCanvas) {
             return;
         }
 
-        _lastFrame = new Date().getTime();
         _shouldRun = true;
         _loop(this);
     };
@@ -331,22 +396,59 @@ window.OOPCanvas.modules.runloop = function(OOPCanvas) {
     };
 
     function _loop (oc) {
-        setTimeout(function() {
+
+        (function run() {
             _framing(oc);
 
             if (_shouldRun) {
-                _loop(oc);
+                 _requestFrameFunc(run);
                 _isLooping = true;
             } else {
                 _isLooping = false;
             }
-        }, timeout);
+        })();
+
+    }
+
+    function _requestLoopFrame (fps) {
+
+        var frameFunc = null;
+
+        var st = window.setTimeout;
+
+        var reqAnimFrame =  window.requestAnimationFrame       ||
+                            window.webkitRequestAnimationFrame ||
+                            window.mozRequestAnimationFrame    ||
+                            window.oRequestAnimationFrame      ||
+                            window.msRequestAnimationFrame     ||
+                            st;
+
+        var func;
+
+        if (~~fps) {
+            func = st;
+        } else {
+            func = reqAnimFrame;
+            fps = DEFAULT_FPS;
+        }
+
+        if (func === st) {
+            frameFunc = function(callback) {
+                 func(callback, 1000 / fps);
+            };
+        } else {
+            frameFunc = function(callback) {
+                func(callback);
+            };
+        }
+
+        return frameFunc;
     }
 
     function _framing (oc) {
-        _calcCurFrame();
         _running(oc);
         _callPostHooks(oc);
+        _calcCurFrame();
     }
 
     function _callPostHooks (oc) {
@@ -384,10 +486,13 @@ window.OOPCanvas.modules.runloop = function(OOPCanvas) {
         var dt, fps;
         var curFrame = new Date().getTime();
         dt = curFrame - _lastFrame;
-        _curFPS = ~~(1000 / dt);
+        if (~~dt) {
+            _curFPS = ~~(1000 / dt);
+        }
         _lastFrame = curFrame;
     }
 
+    debug.info("runloop module is installed.");
 };
 
 window.OOPCanvas.modules.debug = function(OOPCanvas) {
@@ -414,6 +519,8 @@ window.OOPCanvas.modules.debug = function(OOPCanvas) {
             'fillStyle': color
         });
     }
+
+    debug.info("debug module is installed.");
 
 };
 
@@ -444,4 +551,5 @@ window.OOPCanvas.modules.ui = function(OOPCanvas) {
         return new Rect(x, y, width, height, config);
     };
 
+    debug.info("ui module is installed.");
 };
