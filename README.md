@@ -2,7 +2,8 @@ OOP style Canvas API.
 
 License: MIT    
 Version: 0.0.0  
-Status: Very early phase.
+Status: Very early phase. Many of the following info can be obsolete and is subject to
+change.
 
 # Some ideas
 
