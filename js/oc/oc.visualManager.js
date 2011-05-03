@@ -6,6 +6,10 @@
 // interfacts expected from ui child
 // getId(), getZIndex(), update(), draw()
 
+// TODO: instead of re-drawing everything every time a child becomes dirty
+// Only re-draw the children and background overlapping the child in question
+// in z-index
+
 window.OOPCanvas.modules.visualManager = function _visualManager (OOPCanvas) {
 
     var OC = OOPCanvas;
