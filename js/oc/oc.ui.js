@@ -30,6 +30,8 @@
 
         UIElement.prototype.setZIndex = function(index) {
             this._zIndex = index;
+
+            this._isDirty = true;
         };
 
         UIElement.prototype.isDirty = function() {
@@ -70,9 +72,7 @@
         debug.info("ui module UIElement submodule is installed.");
     };
 
-    // Animatable Properties
-    // left, top
-    // width, height
+    // == Rectangle Sub-module
 
     ui.rectangle = function (OOPCanvas) {
 
