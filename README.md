@@ -5,6 +5,10 @@ Version: 0.0.0
 Status: Very early phase. Many of the following info can be obsolete and is subject to
 change.
 
+# Diagrams
+
+![Sequence](docs/sequence.jpg "Sequence")
+
 # Some ideas
 
 1. core and main modules don't have to namespace their contributed public
