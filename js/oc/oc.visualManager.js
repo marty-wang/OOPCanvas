@@ -57,6 +57,8 @@ window.OOPCanvas.modules.visualManager = function _visualManager (OOPCanvas) {
         this._children = new OC.Dict(function(c1, c2) {
             return c1.getZIndex() - c2.getZIndex();
         });
+
+        this._isDirty = true;
     }
 
     VisualManager.prototype.addChild = function (child) {
@@ -66,11 +68,13 @@ window.OOPCanvas.modules.visualManager = function _visualManager (OOPCanvas) {
         }
 
         this._children.add(id, child);
+        this._isDirty = true;
     };
 
     VisualManager.prototype.removeChildById = function (id) {
         if ( this._children.contain(id) ) {
             this._children.remove(id);
+            this._isDirty = true;
         }
     };
 
@@ -80,6 +84,8 @@ window.OOPCanvas.modules.visualManager = function _visualManager (OOPCanvas) {
     };
 
     VisualManager.prototype.removeChildren = function(children) {
+        this._isDirty = true;
+
         if (typeof children === "undefined") {
             this._children.removeAll();
             return;
@@ -101,13 +107,14 @@ window.OOPCanvas.modules.visualManager = function _visualManager (OOPCanvas) {
         if ( _update(this) ) {
             _clear(this);
             _draw(this);
+            this._isDirty = false;
         }
     };
     
     // determine if it should re-render
     // based on if the child is dirty
     function _update (vm) {
-        var isDirty = false;
+        var isDirty = vm._isDirty;
         var curTime = new Date().getTime();
         vm._children.iterate(function(key, child) {
             isDirty |= child.update(curTime);

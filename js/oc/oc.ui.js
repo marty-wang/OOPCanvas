@@ -51,6 +51,8 @@
             return !!this._isDirty;
         };
 
+        // all the sub-classes must call this method, and
+        // this method should be called at the end after sub-classes' logic
         UIElement.prototype.draw = function() {
             this._isDirty = false;
         };
@@ -93,11 +95,7 @@
         }
 
         OC.Util.inherit(Rectangle, OC.UIElement);
-
-        // Rectangle.prototype.update = function(currentTime) {
-        //     OC.UIElement.prototype.update.apply(this, arguments);
-        // };
-        
+                
         Rectangle.prototype.draw = function() {
             var oc = this._oc;
             oc.drawRectangle(this._left, this._top, this._width, this._height, this._config);

@@ -21,10 +21,6 @@
 
     OC.Util.inherit(EasingEquationView, OC.UIElement);
     
-    EasingEquationView.prototype.update = function(currentTime) {
-        
-    };
-
     EasingEquationView.prototype.draw = function() {
         var oc = this._oc;
         oc.drawRectangle(this._left, this._top, this._width, this._height, {
@@ -37,6 +33,8 @@
         });
 
         oc.drawText(this._left + 3, this._top, this._caption);
+
+        OC.UIElement.prototype.draw.apply(this, arguments);
     };
 
     function _generatePoints (eeView) {
