@@ -1,6 +1,10 @@
 //= require "oc.bootstrapper"
-//= require "oc.drawing"
 //= require "oc.util"
+//= require "oc.drawing"
+//= require "oc.animation"
+
+// UIElement is the base class of all visual elements on the canvas.
+// It is responsible for animation, interaction, event, update, render
 
 (function() {
    
@@ -8,7 +12,6 @@
     
     ui.uiElement = function (OOPCanvas) {
         
-        // TODO: not sure if width and height should be defined in UIElement
         function UIElement(oc, left, top) {
             this._oc = oc;
             this._left = left;
@@ -19,6 +22,9 @@
             this._animator = null;
             this._isDirty = true;
         }
+
+        UIElement.Max_ZIndex = Number.MAX_VALUE;
+        UIElement.Min_ZIndex = -UIElement.Max_ZIndex;
 
         UIElement.prototype.getId = function() {
             return this._id;
@@ -45,6 +51,16 @@
             this._isDirty = true;
         };
 
+        UIElement.prototype.animate = function(props, duration, easingFunc) {
+            if ( !this._animator ) {
+                this._animator = this._oc.animator(this); 
+            }
+
+            this._animator.start(props, duration, easingFunc);
+        };
+
+        // == Method to override ==
+
         UIElement.prototype.update = function(currentTime) {
             if (!!this._animator) {
                 this._isDirty |= this._animator.update(currentTime);
@@ -59,51 +75,11 @@
             this._isDirty = false;
         };
 
-        UIElement.prototype.animate = function(props, duration, easingFunc) {
-            if ( !this._animator ) {
-                this._animator = this._oc.animator(this); 
-            }
-
-            this._animator.start(props, duration, easingFunc);
-        };
+        // == End of Methods to override ==
 
         OOPCanvas.UIElement = UIElement;
 
         debug.info("ui module UIElement submodule is installed.");
-    };
-
-    // == Rectangle Sub-module
-
-    ui.rectangle = function (OOPCanvas) {
-
-        var OC = OOPCanvas;
-        var fn = OC.prototype;
-        
-        fn.rectangle = function(left, top, width, height, config) {
-            return new Rectangle(this, left, top, width, height, config);
-        };
-
-        function Rectangle (oc, left, top, width, height, config) {
-            Rectangle.__super__.constructor.apply(this, arguments);
-
-            this._width = width;
-            this._height = height;
-
-            this._config = config;
-            
-            this._id = "Rect-" + OC.Util.rand();
-        }
-
-        OC.Util.inherit(Rectangle, OC.UIElement);
-                
-        Rectangle.prototype.draw = function() {
-            var oc = this._oc;
-            oc.drawRectangle(this._left, this._top, this._width, this._height, this._config);
-            
-            Rectangle.__super__.draw.apply(this, arguments);
-        };
-
-        debug.info("ui module Rectangle submodule is installed.");
     };
 
 })();

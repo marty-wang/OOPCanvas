@@ -8,6 +8,13 @@ $(document).ready(function() {
     });
     oc.startRunloop();
 
+    var bg = oc.background({
+        'strokeStyle': 'transparent',
+        'fillStyle': '#C6C8CA'
+    });
+
+    oc.addChild(bg);
+
     var width = oc.getWidth();
     var height = oc.getHeight();
 
@@ -36,12 +43,8 @@ $(document).ready(function() {
     }
        
     $('#draw').click(function() {
-        var i;
-        var count = views.length;
-
-        for ( i = 0; i < count; i++ ) {
-            oc.addChild(views[i]);
-        }
+        oc.addChildren(views);
+        oc.addChild(bg);
     });
 
     $('#clear').click(function() {
@@ -49,6 +52,6 @@ $(document).ready(function() {
     });
 
     $('#stop').click(function() {
-        oc.stopRunloop();
+        oc.clear(40, 40, 40, 40); 
     });
 });

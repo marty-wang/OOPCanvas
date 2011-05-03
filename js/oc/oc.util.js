@@ -145,20 +145,20 @@ window.OOPCanvas.modules.util = function(OOPCanvas) {
             this.remove(array, idx);
         };
 
-        // ==========
-        // == Dict ==
-        // ==========
+        // ===================
+        // == Sortable Dict ==
+        // ===================
         
         this.Dict = function(sort) {
             this._dict = {};
             this._orders = [];
             this._sort = sort;
             if (!!this._sort) {
-                var d = this._dict;
-                var s = this._sort;
+                var d = this;
+                var s = d._sort;
                 this._sortWrapper = function(k1, k2) {
-                    var v1 = d[k1];
-                    var v2 = d[k2];
+                    var v1 = d._dict[k1];
+                    var v2 = d._dict[k2];
                     return s(v1, v2);
                 };
             }
@@ -184,6 +184,32 @@ window.OOPCanvas.modules.util = function(OOPCanvas) {
             this._dict[key] = value;
             if (!!this._sort) {
                 this._orders.push(key);
+                this._orders.sort(this._sortWrapper);
+            }
+        };
+
+        // kvs: array. kv[0]: key. kv[1]: value
+        this.Dict.prototype.addItems = function(kvs) {
+            var i, kv, key, value;
+            var count = kvs.length;
+            
+            for ( i = 0; i < count; i++ ) {
+                kv = kvs[i];
+                key = kv[0];
+                value = kv[1];
+
+                if ( key in this._dict ) {
+                    continue;
+                }
+
+                this._dict[key] = value;
+
+                if (!!this._sort) {
+                    this._orders.push(key);
+                }
+            }
+
+            if (!!this._sort) {
                 this._orders.sort(this._sortWrapper);
             }
         };

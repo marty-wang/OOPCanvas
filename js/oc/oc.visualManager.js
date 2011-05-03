@@ -32,6 +32,10 @@ window.OOPCanvas.modules.visualManager = function _visualManager (OOPCanvas) {
         this._visualManager.addChild(child);
     };
 
+    fn.addChildren = function (children) {
+        this._visualManager.addChildren(children);
+    };
+
     fn.removeChildById = function (id) {
         this._visualManager.removeChildById(id);
     };
@@ -67,11 +71,22 @@ window.OOPCanvas.modules.visualManager = function _visualManager (OOPCanvas) {
 
     VisualManager.prototype.addChild = function (child) {
         var id = child.getId();
-        if ( this._children.contain(id) ) {
-            throw 'UIElement "' + id + '" already exists';
+        this._children.add(id, child);
+        this._isDirty = true;
+    };
+
+    VisualManager.prototype.addChildren = function(children) {
+        var kvs = [];
+        var i, child, kv;
+        var count = children.length;
+
+        for ( i = 0; i < count; i++ ) {
+            child = children[i];
+            kv = [ child.getId(), child ];
+            kvs.push(kv);
         }
 
-        this._children.add(id, child);
+        this._children.addItems(kvs);
         this._isDirty = true;
     };
 
