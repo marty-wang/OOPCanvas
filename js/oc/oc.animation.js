@@ -108,7 +108,7 @@ window.OOPCanvas.modules.animation = function (OOPCanvas) {
     Animator.prototype.update = function(currentTime) {
 
         if (!this._isAnimating) {
-            return;
+            return false;
         }
 
         var animator = this;
@@ -142,6 +142,8 @@ window.OOPCanvas.modules.animation = function (OOPCanvas) {
         if (animator._isAnimating && !!animating) {
             animating(curVals);
         }
+
+        return true;
     };
 
     function _getVarName(obj, prop) {
@@ -179,7 +181,7 @@ window.OOPCanvas.modules.animation = function (OOPCanvas) {
         'linear': function (t, b, c, d) {
             return c*t/d + b;
         }
-    }
+    };
 
     // 3rd party and plugins should use this method to add easing functions.
     // the easing function should request the arguments of t, b, c, d

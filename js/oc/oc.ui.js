@@ -1,4 +1,4 @@
-//= require "oc.core"
+//= require "oc.bootstrapper"
 //= require "oc.drawing"
 //= require "oc.util"
 
@@ -15,6 +15,9 @@
             this._top = top;
             this._id = OC.Util.rand();
             this._zIndex = 0;
+
+            this._animator = null;
+            this._isDirty = true;
         }
 
         UIElement.prototype.getId = function() {
@@ -29,15 +32,35 @@
             this._zIndex = index;
         };
 
+        UIElement.prototype.isDirty = function() {
+            return this._isDirty;
+        };
+
         UIElement.prototype.setPosition = function(left, top) {
             this._left = left;
             this._top = top;
+
+            this._isDirty = true;
         };
 
         UIElement.prototype.update = function(currentTime) {
+            if (!!this._animator) {
+                this._isDirty |= this._animator.update(currentTime);
+            }
+
+            return !!this._isDirty;
         };
 
         UIElement.prototype.draw = function() {
+            this._isDirty = false;
+        };
+
+        UIElement.prototype.animate = function(props, duration, easingFunc) {
+            if ( !this._animator ) {
+                this._animator = this._oc.animator(this); 
+            }
+
+            this._animator.start(props, duration, easingFunc);
         };
 
         OOPCanvas.UIElement = UIElement;
@@ -46,10 +69,8 @@
     };
 
     // Animatable Properties
-    // left/x, top/y
+    // left, top
     // width, height
-
-    //var AnimProps = ['left', 'top'];
 
     ui.rectangle = function (OOPCanvas) {
 
@@ -69,26 +90,18 @@
             this._config = config;
             
             this._id = "Rect-" + OC.Util.rand();
-
-            // animation
-            
-            this._animator = this._oc.animator(this);
         }
 
         OC.Util.inherit(Rectangle, OC.UIElement);
 
-        Rectangle.prototype.update = function(currentTime) {
-            
-            this._animator.update(currentTime);
-        };
+        // Rectangle.prototype.update = function(currentTime) {
+        //     OC.UIElement.prototype.update.apply(this, arguments);
+        // };
         
         Rectangle.prototype.draw = function() {
             var oc = this._oc;
             oc.drawRectangle(this._left, this._top, this._width, this._height, this._config);
-        };
-
-        Rectangle.prototype.animate = function(props, duration, easingFunc) {
-            this._animator.start(props, duration, easingFunc);
+            OC.UIElement.prototype.draw.apply(this, arguments);
         };
 
         debug.info("ui module Rectangle submodule is installed.");

@@ -104,13 +104,13 @@ window.OOPCanvas.modules.visualManager = function _visualManager (OOPCanvas) {
         }
     };
     
-    // TODO: determine if it should re-render
+    // determine if it should re-render
     // based on if the child is dirty
     function _update (vm) {
-        var isDirty = true;
+        var isDirty = false;
         var curTime = new Date().getTime();
         vm._children.iterate(function(key, child) {
-            child.update(curTime);
+            isDirty |= child.update(curTime);
         });
         return isDirty;
     }
