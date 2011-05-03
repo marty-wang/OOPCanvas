@@ -9,7 +9,7 @@
     }
 
     function EasingEquationView (oc, left, top, width, height, equation, caption) {
-        EasingEquationView.__super__.constructor.apply(this, arguments);
+        this.__super('constructor', oc, left, top);
     
         this._width = width;
         this._height = height;
@@ -34,7 +34,7 @@
 
         oc.drawText(this._left + 3, this._top, this._caption);
 
-        EasingEquationView.__super__.draw.apply(this, arguments);
+        this.__super('draw');
     };
 
     function _generatePoints (eeView) {

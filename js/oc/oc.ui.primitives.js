@@ -23,7 +23,7 @@
         // == Constructor ==
 
         function Rectangle (oc, left, top, width, height, config) {
-            Rectangle.__super__.constructor.apply(this, arguments);
+            this.__super('constructor', oc, left, top);
 
             this._width = width;
             this._height = height;
@@ -39,7 +39,7 @@
             var oc = this._oc;
             oc.drawRectangle(this._left, this._top, this._width, this._height, this._config);
             
-            Rectangle.__super__.draw.apply(this, arguments);
+            this.__super('draw');
         };
 
         // == Constructor ==
@@ -58,8 +58,8 @@
         };
 
         function Background (oc, config) {
-            Background.__super__.constructor.call(this, oc, 0, 0);
-            
+            this.__super('constructor', oc, 0, 0);
+
             this._width = oc.getWidth();
             this._height = oc.getHeight();
             this._zIndex = OC.UIElement.Min_ZIndex;
@@ -71,7 +71,7 @@
         Background.prototype.draw = function() {
             var oc = this._oc;
             oc.drawRectangle(this._left, this._top, this._width, this._height, this._config);
-            Background.__super__.draw.apply(this, arguments);
+            this.__super('draw');
         };
     };
 
