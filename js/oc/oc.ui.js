@@ -84,7 +84,7 @@
         };
 
         function Rectangle (oc, left, top, width, height, config) {
-            OC.UIElement.call(this, oc, left, top);
+            Rectangle.__super__.constructor.apply(this, arguments);
 
             this._width = width;
             this._height = height;
@@ -99,7 +99,8 @@
         Rectangle.prototype.draw = function() {
             var oc = this._oc;
             oc.drawRectangle(this._left, this._top, this._width, this._height, this._config);
-            OC.UIElement.prototype.draw.apply(this, arguments);
+            
+            Rectangle.__super__.draw.apply(this, arguments);
         };
 
         debug.info("ui module Rectangle submodule is installed.");

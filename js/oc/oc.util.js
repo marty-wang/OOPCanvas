@@ -102,6 +102,7 @@ window.OOPCanvas.modules.util = function(OOPCanvas) {
             tempClass.prototype = parentClass.prototype;
             childClass.prototype = new tempClass();
             childClass.prototype.constructor = childClass;
+            childClass.__super__ = parentClass.prototype;
         };
         
 
