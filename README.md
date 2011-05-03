@@ -7,7 +7,7 @@ change.
 
 # Diagrams
 
-![Sequence](docs/sequence.jpg "Sequence")
+![Sequence](https://github.com/marty-wang/OOPCanvas/blob/master/docs/sequence.jpg "Sequence")
 
 # Some ideas
 
