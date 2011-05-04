@@ -26,6 +26,10 @@
         UIElement.Max_ZIndex = Number.MAX_VALUE;
         UIElement.Min_ZIndex = -UIElement.Max_ZIndex;
 
+        UIElement.subClass = function (subClass) {
+            OC.Util.inherit(subClass, UIElement);
+        };
+
         UIElement.prototype.getId = function() {
             return this._id;
         };
@@ -37,6 +41,10 @@
         UIElement.prototype.setZIndex = function(index) {
             this._zIndex = index;
 
+            this.invalidate();
+        };
+
+        UIElement.prototype.invalidate = function() {
             this._isDirty = true;
         };
 
@@ -47,8 +55,8 @@
         UIElement.prototype.setPosition = function(left, top) {
             this._left = left;
             this._top = top;
-
-            this._isDirty = true;
+            
+            this.invalidate();
         };
 
         UIElement.prototype.animate = function(props, duration, easingFunc) {

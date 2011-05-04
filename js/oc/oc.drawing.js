@@ -121,6 +121,22 @@ window.OOPCanvas.modules.drawing = function _drawing (OOPCanvas) {
         }, config);
     };
 
+    // stops: array, stop[0]: position, stop[1]: color
+    fn.createLinearGradient = function (x0, y0, x1, y1, stops) {
+        var ctx = this.getContext();
+        var lingrad = ctx.createLinearGradient(x0, y0, x1, y1);
+
+        var i, stop;
+        var count = stops.length;
+
+        for ( i = 0; i < count; i++ ) {
+            stop = stops[i];
+            lingrad.addColorStop(stop[0], stop[1]);
+        } 
+                
+        return lingrad;
+    };
+
     // == Private Methods ==
 
     function _setup (oc, draw, config) {

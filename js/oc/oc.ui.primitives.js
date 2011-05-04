@@ -17,8 +17,6 @@
         fn.rectangle = function(left, top, width, height, config) {
             return new Rectangle(this, left, top, width, height, config);
         };
-
-        // ++ End of exposing methods ++
         
         // == Constructor ==
 
@@ -42,8 +40,6 @@
             this.__super('draw');
         };
 
-        // == Constructor ==
-
         debug.info("ui module Rectangle submodule is installed.");
     };
     
@@ -66,7 +62,7 @@
             this._config = config;
         }
 
-        OC.Util.inherit(Background, OC.UIElement);
+        OC.UIElement.subClass(Background);
 
         Background.prototype.draw = function() {
             var oc = this._oc;
@@ -75,6 +71,92 @@
         };
     };
 
-    // == End of Background Sub-module ==
+    // == Button Sub-module ==
+    
+    ui.button = function (OC) {
+        
+        var fn = OC.prototype;
+
+        fn.button = function(left, top) {
+            return new Button(this, left, top);
+        };
+
+        function Button(oc, left, top) {
+            this.__super('constructor', oc, left, top);
+            this._id = "Button-" + OC.Util.rand();
+            
+            this._gradientNormal = null;
+            this._gradientHover = null;
+            this._gradientPress = null;
+
+            this._curState = null;
+
+            this.setSize(300, 50);
+            this.setState(Button.States.Hover);
+        }
+
+        OC.UIElement.subClass(Button);
+
+        Button.States = {
+            'Normal': 'Normal',
+            'Hover': 'Hover',
+            'Press': 'Press'
+        };
+
+        Button.prototype.setSize = function(width, height) {
+            this._width = width;
+            this._height = height;
+            
+            _createGradients(this);
+
+            this.invalidate();
+        };
+
+        Button.prototype.setState = function(state) {
+            this._curState = state;
+
+            this.invalidate();
+        };
+
+        Button.prototype.draw = function() {
+            var oc = this._oc;
+            oc.drawRectangle(this._left, this._top, this._width, this._height, {
+                'fillStyle': _getCurGredient(this),
+                'strokeStyle': 'transparent'
+            });
+
+            this.__super('draw');
+        };
+
+        function _createGradients (button) {
+            var oc = button._oc;
+            var stops = [
+                [0, '#b8e1fc'], [0.1, '#a9d2f3'] , 
+                [0.25, '#90bae4'], [0.37, '#90bcea'], 
+                [0.5, '#90bff0'], [0.51, '#6ba8e5'],
+                [0.83, '#a2daf5'], [1, '#bdf3fd']
+            ];
+            button._gradientNormal = oc.createLinearGradient(0, 0, 0, button._height, stops);
+
+            stops = [
+                [0, '#3b679e'], [0.5, '#2b88d9'],
+                [0.51, '#207cca'], [1, '#7db9e8']
+            ];
+
+            button._gradientHover = oc.createLinearGradient(0, 0, 0, button._height, stops);
+
+            stops = [
+                [0, '#1E5799'], [0.5, '#2989D8'],
+                [0.51, '#207cca'], [1, '#7db9e8']
+            ];
+
+            button._gradientPress = oc.createLinearGradient(0, 0, 0, button._height, stops);
+        }
+
+        function _getCurGredient (button) {
+            return button['_gradient' + Button.States[button._curState]];
+        }
+
+    };
 
 })(OOPCanvas);
