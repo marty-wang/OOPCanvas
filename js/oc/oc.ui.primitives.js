@@ -90,7 +90,7 @@
             this._gradientPress = null;
             
             this.setSize(300, 50);
-            this.setState(OC.UIElement.States.Hover);
+            this.setState(OC.UIElement.States.Normal);
         }
 
         OC.UIElement.subClass(Button);
