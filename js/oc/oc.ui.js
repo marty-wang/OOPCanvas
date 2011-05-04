@@ -94,6 +94,12 @@
             this._isDirty = false;
         };
 
+        // need to override by sub-class if it wants to participate the
+        // interaction
+        UIElement.prototype.hitTest = function(x, y) {
+            return null;
+        };
+
         // == End of Methods to override ==
 
         OOPCanvas.UIElement = UIElement;

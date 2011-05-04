@@ -8,6 +8,7 @@ change.
 # Diagrams
 
 ![Sequence](https://github.com/marty-wang/OOPCanvas/raw/master/docs/sequence.jpg "Sequence")
+![Interaction](https://github.com/marty-wang/OOPCanvas/raw/master/docs/interaction.jpg "Interaction")
 
 # Some ideas
 
