@@ -17,8 +17,25 @@ window.OOPCanvas.modules.interaction = function _interaction (OOPCanvas) {
     function Interaction (oc) {
         this._oc = oc;
         this._canvas = this._oc.getCanvas();
-        
+
+        this._hitTestCtx = null;
+
+        this._events = []; // queue-ish, first-in-first-out
+
+        _createHiTestContext(this);        
         _registerEventHandlers(this);
+    }
+
+    Interaction.prototype.dequeueEvent = function() {
+        return _dequeueEvent(this);
+    };
+
+    function _createHiTestContext (ia) {
+        var oc = ia._oc;
+        var buffer = document.createElement('canvas');
+        buffer.width = oc.getWidth();
+        buffer.height = oc.getHeight();
+        ia._hitTestCtx = buffer.getContext('2d');
     }
 
     function _registerEventHandlers (ia) {
@@ -28,21 +45,31 @@ window.OOPCanvas.modules.interaction = function _interaction (OOPCanvas) {
             //debug.debug("on mouse over");
         };
 
-        canvas.onmouseout = function (evt) {
-            //debug.debug("on mouse out");
-        };
+        // canvas.onmouseout = function (evt) {
+        //     //debug.debug("on mouse out");
+        // };
 
         canvas.onmousemove = function (evt) {
             //debug.debug("on mouse move");
+            evt = !evt ? window.event : evt;
+            _enqueueEvent(ia, evt);
         };
 
-        canvas.onmousedown = function (evt) {
-            //debug.debug("on mouse down");
-        };
+        // canvas.onmousedown = function (evt) {
+        //     //debug.debug("on mouse down");
+        // };
 
-        canvas.onmouseup = function (evt) {
-            //debug.debug("on mouse up");
-        };
+        // canvas.onmouseup = function (evt) {
+        //     //debug.debug("on mouse up");
+        // };
+    }
+    
+    function _enqueueEvent (ia, event) {
+        ia._events.push(event);
+    }
+
+    function _dequeueEvent (ia) {
+        return ia._events.shift();
     }
 
     debug.info("interaction module is installed.");

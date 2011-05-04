@@ -28,6 +28,28 @@ window.OOPCanvas.modules.visualManager = function _visualManager (OOPCanvas) {
 
     // ++ Add Methods to OOPCanvas ++
 
+    // TODO: not sure where to put this method
+    fn.hitTest = function (child, point) {
+        var tmp = this.getContext;
+        var ctx = this._interaction._hitTestCtx;
+
+        this.getContext = function() {
+            return ctx;
+        };
+
+        child.draw();
+
+        var isIn = ctx.isPointInPath(point[0], point[1]);
+
+        this.getContext = tmp;
+
+        if (isIn) {
+            return [child, point];
+        } else {
+            return null;
+        }
+    };
+
     fn.addChild = function (child) {
         this._visualManager.addChild(child);
     };
@@ -123,12 +145,41 @@ window.OOPCanvas.modules.visualManager = function _visualManager (OOPCanvas) {
     };
     
     VisualManager.prototype.render = function() {
+        _hitTest(this);
+
         if ( _update(this) ) {
             _clear(this);
             _draw(this);
             this._isDirty = false;
         }
     };
+
+    function _hitTest (vm) {
+        var oc = vm._oc;
+        var ia = oc._interaction;
+        var evt = ia.dequeueEvent();
+        var refPoint = [ oc.getLeft(), oc.getTop() ];
+        if (!!evt) {
+            var relPoint = _getRelativePoint(evt, refPoint);
+            vm._children.iterate(function(key, child) {
+                child.hitTest(relPoint[0], relPoint[1]);
+            });   
+        }
+    }
+
+    function _getRelativePoint(e, refPoint) {
+	    var posx = 0;
+	    var posy = 0;
+	    if (e.pageX || e.pageY) {
+		    posx = e.pageX;
+		    posy = e.pageY;
+	    } else if (e.clientX || e.clientY) {
+		    posx = e.clientX + document.body.scrollLeft;
+		    posy = e.clientY + document.body.scrollTop;
+	    }
+	    return [ posx - refPoint[0], posy - refPoint[1] ];
+    }
+    
     
     // determine if it should re-render
     // based on if the child is dirty

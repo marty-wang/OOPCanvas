@@ -25,6 +25,14 @@ window.OOPCanvas.modules.core = function _core (OOPCanvas) {
 
     // == Getters and Setters ==
 
+    fn.getLeft = function() {
+        return this._core._left;
+    };
+
+    fn.getTop = function() {
+        return this._core._top;
+    };
+
     fn.getWidth = function() {
         return this._core._width;
     };
@@ -84,6 +92,8 @@ window.OOPCanvas.modules.core = function _core (OOPCanvas) {
         this._backBuffer = null;
         this._backBufferCtx = null;
 
+        this._left = OC.Dom.getLeft(canvas);
+        this._top = OC.Dom.getTop(canvas);
         this._width = canvas.getAttribute('width');
         this._height = canvas.getAttribute('height');
 

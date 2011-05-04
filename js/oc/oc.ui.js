@@ -94,10 +94,11 @@
             this._isDirty = false;
         };
 
-        // need to override by sub-class if it wants to participate the
-        // interaction
         UIElement.prototype.hitTest = function(x, y) {
-            return null;
+            var oc = this._oc; 
+            var tr = oc.hitTest(this, [x, y]);
+            //debug.debug(tr);
+            return tr;
         };
 
         // == End of Methods to override ==

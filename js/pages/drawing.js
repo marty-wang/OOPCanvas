@@ -21,6 +21,10 @@ $(document).ready(function() {
     var width = oc.getWidth();
     var height = oc.getHeight();
 
+    $('#hitTest').click(function() {
+        button.hitTest(110, 110);
+    });
+
     // var x = 40;
     // var y = 40;
     // var w = 200;
