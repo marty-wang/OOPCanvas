@@ -18,6 +18,7 @@
             this._top = top;
             this._id = OC.Util.rand();
             this._zIndex = 0;
+            this._state = UIElement.States.Normal;
 
             this._animator = null;
             this._isDirty = true;
@@ -25,6 +26,12 @@
 
         UIElement.Max_ZIndex = Number.MAX_VALUE;
         UIElement.Min_ZIndex = -UIElement.Max_ZIndex;
+
+        UIElement.States = {
+            'Normal': 'Normal',
+            'Hover': 'Hover',
+            'Press': 'Press'
+        };
 
         UIElement.subClass = function (subClass) {
             OC.Util.inherit(subClass, UIElement);
@@ -42,6 +49,10 @@
             this._zIndex = index;
 
             this.invalidate();
+        };
+
+        UIElement.prototype.setState = function(state) {
+            this._state = state;
         };
 
         UIElement.prototype.invalidate = function() {

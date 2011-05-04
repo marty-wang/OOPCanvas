@@ -88,21 +88,13 @@
             this._gradientNormal = null;
             this._gradientHover = null;
             this._gradientPress = null;
-
-            this._curState = null;
-
+            
             this.setSize(300, 50);
-            this.setState(Button.States.Hover);
+            this.setState(OC.UIElement.States.Hover);
         }
 
         OC.UIElement.subClass(Button);
-
-        Button.States = {
-            'Normal': 'Normal',
-            'Hover': 'Hover',
-            'Press': 'Press'
-        };
-
+        
         Button.prototype.setSize = function(width, height) {
             this._width = width;
             this._height = height;
@@ -113,8 +105,7 @@
         };
 
         Button.prototype.setState = function(state) {
-            this._curState = state;
-
+            this.__super('setState', state);
             this.invalidate();
         };
 
@@ -154,7 +145,7 @@
         }
 
         function _getCurGredient (button) {
-            return button['_gradient' + Button.States[button._curState]];
+            return button['_gradient' + OC.UIElement.States[button._state]];
         }
 
     };
