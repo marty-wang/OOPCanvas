@@ -33,6 +33,10 @@ window.OOPCanvas.modules.core = function _core (OOPCanvas) {
         return this._core._height;
     };
 
+    fn.getCanvas = function () {
+        return this._core._cavnas;
+    };
+
     fn.getContext = function() {
         var core = this._core;
         return core.useBackBuffer() ? core._backBufferCtx : core._ctx;
@@ -74,6 +78,8 @@ window.OOPCanvas.modules.core = function _core (OOPCanvas) {
         if (!this._ctx) {
             throw "The passed-in canvas argument is not valid";
         }
+
+        this._cavnas = canvas;
 
         this._backBuffer = null;
         this._backBufferCtx = null;
