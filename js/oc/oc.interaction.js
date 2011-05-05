@@ -34,7 +34,7 @@ window.OOPCanvas.modules.interaction = function _interaction (OOPCanvas) {
 
         this._events = []; // queue-ish, first-in-first-out
 
-        _createHiTestContext(this);        
+        _createHitTestContext(this);        
         _registerEventHandlers(this);
     }
 
@@ -58,7 +58,7 @@ window.OOPCanvas.modules.interaction = function _interaction (OOPCanvas) {
         return _dequeueEvent(this);
     };
 
-    function _createHiTestContext (ia) {
+    function _createHitTestContext (ia) {
         var oc = ia._oc;
         var buffer = document.createElement('canvas');
         buffer.width = oc.getWidth();
