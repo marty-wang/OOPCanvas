@@ -2,9 +2,10 @@
 //= require "oc.util"
 //= require "oc.drawing"
 //= require "oc.animation"
+//= require "oc.interaction"
 
 // UIElement is the base class of all visual elements on the canvas.
-// It is responsible for animation, interaction, event, update, render
+// It is responsible for animation, hittest, event, update, render
 
 (function() {
    
@@ -79,9 +80,46 @@
             this._animator.start(props, duration, easingFunc);
         };
 
+        UIElement.prototype.update = function(currentTime) {
+            return this._update(currentTime);
+        };
+
+        UIElement.prototype.draw = function() {
+            this._draw();
+            this._isDirty = false;
+        };
+
+        UIElement.prototype.hitTest = function(x, y) {
+            if ( !this._isHitTestVisible ) {
+                return null;
+            }
+
+            var oc  = this._oc;
+            var w = oc.getWidth();
+            var h = oc.getHeight();
+            var ctx = oc.getHitTestContext();
+            ctx.clearRect(0, 0, w, h);
+
+            // swap the rendering context with the hittest context
+            var tmp = oc.getContext;
+            oc.getContext = function() {
+                return ctx;
+            };
+
+            var result = this._hitTest(x, y);
+            
+            oc.getContext = tmp;
+
+            return result;        
+        };
+
+        UIElement.prototype.testPointInPath = function(x, y) {
+            return this._oc.hitTest(this, x, y);
+        };
+
         // == Method to override ==
 
-        UIElement.prototype.update = function(currentTime) {
+        UIElement.prototype._update = function(currentTime) {
             if (!!this._animator) {
                 this._isDirty |= this._animator.update(currentTime);
             }
@@ -91,20 +129,11 @@
 
         // all the sub-classes must call this method, and
         // this method should be called at the end after sub-classes' logic
-        UIElement.prototype.draw = function() {
-            this._isDirty = false;
-        };
-
-        UIElement.prototype.hitTest = function(x, y) {
-            if ( !this._isHitTestVisible ) {
-                return null;
-            }
-
-            var oc = this._oc; 
-            var tr = oc.hitTest(this, [x, y]);
-            //debug.debug(tr);
-            return tr;
-        };
+        UIElement.prototype._draw = function() {};
+        
+        // sub-class needs to implement this method
+        // if it needs to participant to the hittest
+        UIElement.prototype._hitTest = function(x, y) {};
 
         // == End of Methods to override ==
 

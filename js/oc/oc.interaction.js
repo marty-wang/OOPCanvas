@@ -12,6 +12,18 @@ window.OOPCanvas.modules.interaction = function _interaction (OOPCanvas) {
         debug.info("interaction module is init'ed.");
     };
 
+    // ++ Add Methods ++
+
+    fn.hitTest = function(element, x, y) {
+        return this._interaction.hitTest(element, x, y);
+    };
+
+    fn.getHitTestContext = function() {
+        return this._interaction.getHitTestContext();
+    };
+    
+    // ++ End of Adding methods ++
+
     // == Interaction Class ==
 
     function Interaction (oc) {
@@ -25,6 +37,22 @@ window.OOPCanvas.modules.interaction = function _interaction (OOPCanvas) {
         _createHiTestContext(this);        
         _registerEventHandlers(this);
     }
+
+    Interaction.prototype.getHitTestContext = function() {
+        return this._hitTestCtx;
+    };
+
+    Interaction.prototype.hitTest = function(element, x, y) {
+        var ctx = this._hitTestCtx;
+        var result = null;
+        if ( ctx.isPointInPath(x, y) ) {
+            result = {
+                'element': element,
+                'point': [x, y]
+            };
+        }
+        return result;
+    };
 
     Interaction.prototype.dequeueEvent = function() {
         return _dequeueEvent(this);

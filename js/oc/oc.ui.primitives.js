@@ -28,7 +28,7 @@
 
             this._config = config;
             
-            this._id = "Rect-" + OC.Util.rand();
+            this._id = "Rect-" + this._id;
         }
 
         OC.Util.inherit(Rectangle, OC.UIElement);
@@ -64,10 +64,9 @@
 
         OC.UIElement.subClass(Background);
 
-        Background.prototype.draw = function() {
+        Background.prototype._draw = function() {
             var oc = this._oc;
             oc.drawRectangle(this._left, this._top, this._width, this._height, this._config);
-            this.__super('draw');
         };
     };
 
@@ -83,7 +82,7 @@
 
         function Button(oc, left, top) {
             this.__super('constructor', oc, left, top);
-            this._id = "Button-" + OC.Util.rand();
+            this._id = "Button-" + this._id;
             
             this._gradientNormal = null;
             this._gradientHover = null;
@@ -113,14 +112,22 @@
             this.setState(OC.UIElement.States.Press);
         };
 
-        Button.prototype.draw = function() {
+        Button.prototype._draw = function() {
             var oc = this._oc;
             oc.drawRectangle(this._left, this._top, this._width, this._height, {
                 'fillStyle': _getCurGredient(this),
                 'strokeStyle': 'transparent'
             });
+            oc.drawLine(this._left, this._top, this._left + 20, this._top + 20);
+        };
 
-            this.__super('draw');
+        Button.prototype._hitTest = function(x, y) {
+            var oc = this._oc;
+            oc.drawRectangle(this._left, this._top, this._width, this._height, {
+                'fillStyle': 'red',
+                'strokeStyle': 'transparent'
+            });
+            return this.testPointInPath(x, y);
         };
 
         function _createGradients (button) {

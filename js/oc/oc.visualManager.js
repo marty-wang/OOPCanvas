@@ -4,7 +4,7 @@
 //= require "oc.ui"
 
 // interfacts expected from ui child
-// getId(), getZIndex(), update(), draw()
+// getId(), getZIndex(), update(), draw(), hitTest()
 
 // TODO: instead of re-drawing everything every time a child becomes dirty
 // Only re-draw the children and background overlapping the child in question
@@ -24,33 +24,6 @@ window.OOPCanvas.modules.visualManager = function _visualManager (OOPCanvas) {
         });
 
         debug.info("visualManager module is init'ed.");
-    };
-
-    // ++ Add Methods to OOPCanvas ++
-
-    // TODO: not sure where to put this method
-    fn.hitTest = function (child, point) {
-        var tmp = this.getContext;
-        var ctx = this._interaction._hitTestCtx;
-
-        this.getContext = function() {
-            return ctx;
-        };
-
-        child.draw();
-
-        var isIn = ctx.isPointInPath(point[0], point[1]);
-
-        this.getContext = tmp;
-
-        if (isIn) {
-            return {
-                'element': child,
-                'point': point
-            };
-        } else {
-            return null;
-        }
     };
 
     fn.addChild = function (child) {
@@ -153,6 +126,7 @@ window.OOPCanvas.modules.visualManager = function _visualManager (OOPCanvas) {
 
         if (!!hit) {
            var elm = hit.element;
+           debug.debug(elm);
            // dummy
            if ( elm.click ) {
                elm.click();
@@ -182,13 +156,14 @@ window.OOPCanvas.modules.visualManager = function _visualManager (OOPCanvas) {
                 var hr = child.hitTest(relPoint[0], relPoint[1]);
                 if ( !!hr ) {
                     hr.event = evt;
-                    htrs.push(hr);
+                    htrs.unshift(hr);
+                    //htrs.push(hr);
                 }
             });  
             
-            htrs.sort(function(h1, h2) {
-                return h2.element.getZIndex() - h1.element.getZIndex();
-            });
+            // htrs.sort(function(h1, h2) {
+            //     return h2.element.getZIndex() - h1.element.getZIndex();
+            // });
 
             hit = htrs[0];
             htrs.length = 0;
@@ -209,16 +184,15 @@ window.OOPCanvas.modules.visualManager = function _visualManager (OOPCanvas) {
 	    return [ posx - refPoint[0], posy - refPoint[1] ];
     }
     
-    
     // determine if it should re-render
     // based on if the child is dirty
     function _update (vm) {
         var isDirty = vm._isDirty;
         var curTime = new Date().getTime();
-        vm._children.iterate(function(key, child) {
+        vm._children.iterate(function(key, child) { 
             isDirty |= child.update(curTime);
         });
-        return isDirty;
+        return !!isDirty;
     }
 
     function _clear (vm) {

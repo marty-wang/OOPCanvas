@@ -7,8 +7,15 @@ change.
 
 # Diagrams
 
-![Sequence](https://github.com/marty-wang/OOPCanvas/raw/master/docs/sequence.jpg "Sequence")
+![Architecture](https://github.com/marty-wang/OOPCanvas/raw/master/docs/architecture.jpg "Architecture")
+![Runloop](https://github.com/marty-wang/OOPCanvas/raw/master/docs/sequence.jpg "Runloop")
 ![Interaction](https://github.com/marty-wang/OOPCanvas/raw/master/docs/interaction.jpg "Interaction")
+
+# Coding Style
+
+1. public methods: ClassName.prototype.publicMethod = function(args) {};
+2. protected methods: ClassName.prototype.\_protectedMethod = function(args) {};
+3. private methods: defined as function \_privateMethod () {} in Closure.
 
 # Some ideas
 
