@@ -16,13 +16,16 @@ $(document).ready(function() {
     oc.addChild(bg);
 
     var button = oc.button(100, 100);
+    button.setZIndex(2);
     oc.addChild(button);
+
+    var button1 = oc.button(125, 125);
+    oc.addChild(button1);
 
     var width = oc.getWidth();
     var height = oc.getHeight();
 
     $('#hitTest').click(function() {
-        button.hitTest(110, 110);
     });
 
     // var x = 40;
@@ -58,7 +61,7 @@ $(document).ready(function() {
     //     oc.removeAll();
     // });
 
-    // $('#stop').click(function() {
-    //     oc.clear(40, 40, 40, 40); 
-    // });
+    $('#stop').click(function() {
+        oc.stopRunloop(); 
+    });
 });

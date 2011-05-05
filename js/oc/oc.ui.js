@@ -22,6 +22,7 @@
 
             this._animator = null;
             this._isDirty = true;
+            this._isHitTestVisible = true;
         }
 
         UIElement.Max_ZIndex = Number.MAX_VALUE;
@@ -95,6 +96,10 @@
         };
 
         UIElement.prototype.hitTest = function(x, y) {
+            if ( !this._isHitTestVisible ) {
+                return null;
+            }
+
             var oc = this._oc; 
             var tr = oc.hitTest(this, [x, y]);
             //debug.debug(tr);

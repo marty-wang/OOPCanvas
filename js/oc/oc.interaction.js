@@ -41,11 +41,12 @@ window.OOPCanvas.modules.interaction = function _interaction (OOPCanvas) {
     function _registerEventHandlers (ia) {
         var canvas = ia._canvas;
 
-        canvas.addEventListener('mousemove', function(evt) {
-            _onmousemove(ia, evt);
-        }, false);
+        // canvas.addEventListener('mousemove', function(evt) {
+        //     _onmousemove(ia, evt);
+        // }, false);
 
         canvas.addEventListener('click', function(evt) {
+            evt = evt = !evt ? window.event : evt;
             _onclick(ia, evt);
         }, false);
 
@@ -79,13 +80,11 @@ window.OOPCanvas.modules.interaction = function _interaction (OOPCanvas) {
 
     function _onmousemove (ia, evt) {
         debug.debug("on mouse move");
-        evt = !evt ? window.event : evt;
         _enqueueEvent(ia, evt);
     }
 
     function _onclick (ia, evt) {
         debug.debug("on click");
-        evt = !evt ? window.event : evt;
         _enqueueEvent(ia, evt);
     }
 

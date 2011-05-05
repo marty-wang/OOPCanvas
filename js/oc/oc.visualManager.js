@@ -44,7 +44,10 @@ window.OOPCanvas.modules.visualManager = function _visualManager (OOPCanvas) {
         this.getContext = tmp;
 
         if (isIn) {
-            return [child, point];
+            return {
+                'element': child,
+                'point': point
+            };
         } else {
             return null;
         }
@@ -89,6 +92,7 @@ window.OOPCanvas.modules.visualManager = function _visualManager (OOPCanvas) {
         });
 
         this._isDirty = true;
+        this._hitTestResults = [];
     }
 
     VisualManager.prototype.addChild = function (child) {
@@ -145,7 +149,14 @@ window.OOPCanvas.modules.visualManager = function _visualManager (OOPCanvas) {
     };
     
     VisualManager.prototype.render = function() {
-        _hitTest(this);
+        var hit = _hitTest(this);
+
+        if (!!hit) {
+           var elm = hit.element;
+           if ( elm.click ) {
+               elm.click();
+           }
+        }
 
         if ( _update(this) ) {
             _clear(this);
@@ -158,13 +169,29 @@ window.OOPCanvas.modules.visualManager = function _visualManager (OOPCanvas) {
         var oc = vm._oc;
         var ia = oc._interaction;
         var evt = ia.dequeueEvent();
-        var refPoint = [ oc.getLeft(), oc.getTop() ];
+        var hit;
+
         if (!!evt) {
+            var htrs = vm._hitTestResults;
+            var refPoint = [ oc.getLeft(), oc.getTop() ];
             var relPoint = _getRelativePoint(evt, refPoint);
+            htrs.length = 0;
             vm._children.iterate(function(key, child) {
-                child.hitTest(relPoint[0], relPoint[1]);
-            });   
+                var hr = child.hitTest(relPoint[0], relPoint[1]);
+                if ( !!hr ) {
+                    hr.event = evt;
+                    htrs.push(hr);
+                }
+            });  
+            
+            htrs.sort(function(h1, h2) {
+                return h2.element.getZIndex() - h1.element.getZIndex();
+            });
+
+            hit = htrs[0];
+            htrs.length = 0;
         }
+        return hit;
     }
 
     function _getRelativePoint(e, refPoint) {

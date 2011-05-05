@@ -109,6 +109,10 @@
             this.invalidate();
         };
 
+        Button.prototype.click = function() {
+            this.setState(OC.UIElement.States.Press);
+        };
+
         Button.prototype.draw = function() {
             var oc = this._oc;
             oc.drawRectangle(this._left, this._top, this._width, this._height, {
