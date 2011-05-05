@@ -41,19 +41,22 @@ window.OOPCanvas.modules.interaction = function _interaction (OOPCanvas) {
     function _registerEventHandlers (ia) {
         var canvas = ia._canvas;
 
-        canvas.onmouseover = function (evt) {
-            //debug.debug("on mouse over");
-        };
+        canvas.addEventListener('mousemove', function(evt) {
+            _onmousemove(ia, evt);
+        }, false);
+
+        canvas.addEventListener('click', function(evt) {
+            _onclick(ia, evt);
+        }, false);
+
+
+        // canvas.onmouseover = function (evt) {
+        //     //debug.debug("on mouse over");
+        // };
 
         // canvas.onmouseout = function (evt) {
         //     //debug.debug("on mouse out");
         // };
-
-        canvas.onmousemove = function (evt) {
-            //debug.debug("on mouse move");
-            evt = !evt ? window.event : evt;
-            _enqueueEvent(ia, evt);
-        };
 
         // canvas.onmousedown = function (evt) {
         //     //debug.debug("on mouse down");
@@ -70,6 +73,20 @@ window.OOPCanvas.modules.interaction = function _interaction (OOPCanvas) {
 
     function _dequeueEvent (ia) {
         return ia._events.shift();
+    }
+
+    // == Event handlers ==
+
+    function _onmousemove (ia, evt) {
+        debug.debug("on mouse move");
+        evt = !evt ? window.event : evt;
+        _enqueueEvent(ia, evt);
+    }
+
+    function _onclick (ia, evt) {
+        debug.debug("on click");
+        evt = !evt ? window.event : evt;
+        _enqueueEvent(ia, evt);
     }
 
     debug.info("interaction module is installed.");
