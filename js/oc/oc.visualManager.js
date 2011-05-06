@@ -2,6 +2,7 @@
 //= require "oc.runloop"
 //= require "oc.core"
 //= require "oc.ui"
+//= require "oc.interaction"
 
 // interfacts expected from ui child
 // getId(), getZIndex(), update(), draw(), hitTest()
@@ -138,17 +139,14 @@ window.OOPCanvas.modules.visualManager = function _visualManager (OOPCanvas) {
 
     function _hitTest (vm) {
         var oc = vm._oc;
-        var ia = oc._interaction;
-        var evt = ia.dequeueEvent();
+        var evt = oc.dequeueEvent();
         var hit;
 
         if (!!evt) {
             var htrs = vm._hitTestResults;
-            var refPoint = [ oc.getLeft(), oc.getTop() ];
-            var relPoint = _getRelativePoint(evt, refPoint);
             htrs.length = 0;
             vm._children.iterate(function(key, child) {
-                var hr = child.hitTest(relPoint[0], relPoint[1]);
+                var hr = child.hitTest(evt.left, evt.top);
                 if ( !!hr ) {
                     hr.event = evt;
                     htrs.unshift(hr);
@@ -165,20 +163,7 @@ window.OOPCanvas.modules.visualManager = function _visualManager (OOPCanvas) {
         }
         return hit;
     }
-
-    function _getRelativePoint(e, refPoint) {
-	    var posx = 0;
-	    var posy = 0;
-	    if (e.pageX || e.pageY) {
-		    posx = e.pageX;
-		    posy = e.pageY;
-	    } else if (e.clientX || e.clientY) {
-		    posx = e.clientX + document.body.scrollLeft;
-		    posy = e.clientY + document.body.scrollTop;
-	    }
-	    return [ posx - refPoint[0], posy - refPoint[1] ];
-    }
-    
+        
     // determine if it should re-render
     // based on if the child is dirty
     function _update (vm) {

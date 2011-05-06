@@ -18,7 +18,7 @@ $(document).ready(function() {
     var button = oc.button(100, 100);
     button.setZIndex(2);
     button.click(function(sender, args) {
-        alert("hall world");
+        debug.debug("butotn is clicked");
     });
     oc.addChild(button);
 

@@ -14,6 +14,10 @@ window.OOPCanvas.modules.interaction = function _interaction (OOPCanvas) {
 
     // ++ Add Methods ++
 
+    fn.dequeueEvent = function () {
+        return this._interaction.dequeueEvent();
+    };
+
     fn.hitTest = function(element, x, y) {
         return this._interaction.hitTest(element, x, y);
     };
@@ -29,6 +33,7 @@ window.OOPCanvas.modules.interaction = function _interaction (OOPCanvas) {
     function Interaction (oc) {
         this._oc = oc;
         this._canvas = this._oc.getCanvas();
+        this._refPoint = [ oc.getLeft(), oc.getTop() ];
 
         this._hitTestCtx = null;
 
@@ -95,9 +100,28 @@ window.OOPCanvas.modules.interaction = function _interaction (OOPCanvas) {
         //     //debug.debug("on mouse up");
         // };
     }
+
+    function _getRelativePoint(e, refPoint) {
+	    var posx = 0;
+	    var posy = 0;
+	    if (e.pageX || e.pageY) {
+		    posx = e.pageX;
+		    posy = e.pageY;
+	    } else if (e.clientX || e.clientY) {
+		    posx = e.clientX + document.body.scrollLeft;
+		    posy = e.clientY + document.body.scrollTop;
+	    }
+	    return [ posx - refPoint[0], posy - refPoint[1] ];
+    }
     
     function _enqueueEvent (ia, event) {
-        ia._events.push(event);
+        var relPoint = _getRelativePoint(event, ia._refPoint);
+        var evt = {
+            'type': event.type,
+            'left': relPoint[0],
+            'top': relPoint[1]
+        };
+        ia._events.push(evt);
     }
 
     function _dequeueEvent (ia) {
