@@ -18,11 +18,35 @@ $(document).ready(function() {
     var button = oc.button(100, 100);
     button.setZIndex(2);
     button.click(function(sender, args) {
-        debug.debug("butotn is clicked");
+        debug.debug("click " + button.getId());
     });
+    button.bind('mousemove', function(sender, args) {
+        debug.debug("mouse move " + button.getId());
+    });
+    button.bind('mouseover', function(sender, args) {
+        debug.debug('mouse over ' + button.getId());
+    });
+
+    button.bind('mouseout', function(sender, args) {
+        debug.debug('mouse out ' + button.getId());
+    });
+
     oc.addChild(button);
 
     var button1 = oc.button(125, 125);
+    button1.click(function() {
+        debug.debug("button " + button1.getId());
+    });
+    // button1.bind('mousemove', function(sender, args) {
+    //     debug.debug("mouse move " + button1.getId());
+    // });
+    // button1.bind('mouseover', function(sender, args) {
+    //     debug.debug('mouse over ' + button1.getId());
+    // });
+
+    // button1.bind('mouseout', function(sender, args) {
+    //     debug.debug('mouse out ' + button1.getId());
+    // });
     oc.addChild(button1);
 
     var width = oc.getWidth();

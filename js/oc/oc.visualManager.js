@@ -67,6 +67,7 @@ window.OOPCanvas.modules.visualManager = function _visualManager (OOPCanvas) {
 
         this._isDirty = true;
         this._hitTestResults = [];
+        this._lastHitTestElement = null;
     }
 
     VisualManager.prototype.addChild = function (child) {
@@ -123,13 +124,8 @@ window.OOPCanvas.modules.visualManager = function _visualManager (OOPCanvas) {
     };
     
     VisualManager.prototype.render = function() {
-        var hit = _hitTest(this);
-
-        if (!!hit) {
-           var elm = hit.element;
-           elm.fire(hit.event.type);
-        }
-
+        _hitTest(this);
+        
         if ( _update(this) ) {
             _clear(this);
             _draw(this);
@@ -142,26 +138,38 @@ window.OOPCanvas.modules.visualManager = function _visualManager (OOPCanvas) {
         var evt = oc.dequeueEvent();
         var hit;
 
-        if (!!evt) {
-            var htrs = vm._hitTestResults;
-            htrs.length = 0;
-            vm._children.iterate(function(key, child) {
-                var hr = child.hitTest(evt.left, evt.top);
-                if ( !!hr ) {
-                    hr.event = evt;
-                    htrs.unshift(hr);
-                    //htrs.push(hr);
-                }
-            });  
-            
-            // htrs.sort(function(h1, h2) {
-            //     return h2.element.getZIndex() - h1.element.getZIndex();
-            // });
-
-            hit = htrs[0];
-            htrs.length = 0;
+        // no point to test hit if there is no event at all
+        if (!evt) {
+            return;
         }
-        return hit;
+
+        var htrs = vm._hitTestResults;
+        htrs.length = 0;
+        vm._children.iterate(function(key, child) {
+            var hr = child.hitTest(evt.left, evt.top);
+            if ( !!hr ) {
+                hr.event = evt;
+                htrs.unshift(hr);
+            }
+        }); 
+
+        hit = htrs[0];
+        htrs.length = 0;
+
+        if ( !!vm._lastHitTestElement && ( !hit || vm._lastHitTestElement.getId() != hit.element.getId() ) ) {
+            _sendEvent(vm._lastHitTestElement, 'mouseout');
+        }
+        
+        if ( !!hit ) {
+           var elm = hit.element;
+           _sendEvent(elm, hit.event.type);
+        }
+
+        vm._lastHitTestElement = !!hit ? hit.element : null;
+    }
+
+    function _sendEvent (element, eventName) {
+        element["_" + eventName]();
     }
         
     // determine if it should re-render

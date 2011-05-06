@@ -1,6 +1,9 @@
 //= require "oc.bootstrapper"
 //= require "oc.core"
 
+// TODO: this module is also responsible for normalize the cross browser event
+// handling
+
 window.OOPCanvas.modules.interaction = function _interaction (OOPCanvas) {
 
     var OC = OOPCanvas;
@@ -74,12 +77,15 @@ window.OOPCanvas.modules.interaction = function _interaction (OOPCanvas) {
     function _registerEventHandlers (ia) {
         var canvas = ia._canvas;
 
-        // canvas.addEventListener('mousemove', function(evt) {
-        //     _onmousemove(ia, evt);
-        // }, false);
+        // Be careful with mouseover and mouseout
+        // because they may or may not intervene with
+        // the same-named event relay to UIElement.
+
+        canvas.addEventListener('mousemove', function(evt) {
+            _onmousemove(ia, evt);
+        }, false);
 
         canvas.addEventListener('click', function(evt) {
-            evt = evt = !evt ? window.event : evt;
             _onclick(ia, evt);
         }, false);
 
@@ -101,20 +107,22 @@ window.OOPCanvas.modules.interaction = function _interaction (OOPCanvas) {
         // };
     }
 
-    function _getRelativePoint(e, refPoint) {
-	    var posx = 0;
-	    var posy = 0;
-	    if (e.pageX || e.pageY) {
-		    posx = e.pageX;
-		    posy = e.pageY;
-	    } else if (e.clientX || e.clientY) {
-		    posx = e.clientX + document.body.scrollLeft;
-		    posy = e.clientY + document.body.scrollTop;
-	    }
-	    return [ posx - refPoint[0], posy - refPoint[1] ];
+    // == Event handlers ==
+
+    function _onmousemove (ia, evt) {
+        //debug.debug("on mouse move");
+        _enqueueEvent(ia, evt);
     }
-    
+
+    function _onclick (ia, evt) {
+        debug.debug("on click");
+        _enqueueEvent(ia, evt);
+    }
+
+    // == Private ==
+
     function _enqueueEvent (ia, event) {
+        event = !event ? window.event : event;
         var relPoint = _getRelativePoint(event, ia._refPoint);
         var evt = {
             'type': event.type,
@@ -128,16 +136,17 @@ window.OOPCanvas.modules.interaction = function _interaction (OOPCanvas) {
         return ia._events.shift();
     }
 
-    // == Event handlers ==
-
-    function _onmousemove (ia, evt) {
-        debug.debug("on mouse move");
-        _enqueueEvent(ia, evt);
-    }
-
-    function _onclick (ia, evt) {
-        debug.debug("on click");
-        _enqueueEvent(ia, evt);
+    function _getRelativePoint(e, refPoint) {
+	    var posx = 0;
+	    var posy = 0;
+	    if (e.pageX || e.pageY) {
+		    posx = e.pageX;
+		    posy = e.pageY;
+	    } else if (e.clientX || e.clientY) {
+		    posx = e.clientX + document.body.scrollLeft;
+		    posy = e.clientY + document.body.scrollTop;
+	    }
+	    return [ posx - refPoint[0], posy - refPoint[1] ];
     }
 
     debug.info("interaction module is installed.");
