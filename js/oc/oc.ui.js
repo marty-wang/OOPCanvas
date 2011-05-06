@@ -3,6 +3,7 @@
 //= require "oc.drawing"
 //= require "oc.animation"
 //= require "oc.interaction"
+//= require "oc.eventEmitter"
 
 // UIElement is the base class of all visual elements on the canvas.
 // It is responsible for animation, hittest, event, update, render
@@ -21,10 +22,13 @@
             this._zIndex = 0;
             this._state = UIElement.States.Normal;
 
+            this._eventEmitter = this._oc.eventEmitter();
             this._animator = null;
             this._isDirty = true;
             this._isHitTestVisible = true;
         }
+
+        // Static
 
         UIElement.Max_ZIndex = Number.MAX_VALUE;
         UIElement.Min_ZIndex = -UIElement.Max_ZIndex;
@@ -34,10 +38,12 @@
             'Hover': 'Hover',
             'Press': 'Press'
         };
-
+        
         UIElement.subClass = function (subClass) {
             OC.Util.inherit(subClass, UIElement);
         };
+
+        // Instance
 
         UIElement.prototype.getId = function() {
             return this._id;
@@ -70,6 +76,18 @@
             this._top = top;
             
             this.invalidate();
+        };
+
+        UIElement.prototype.bind = function(eventName, callback) {
+            this._eventEmitter.subscribe(eventName, callback);
+        };
+
+        UIElement.prototype.unbind = function(eventName, callback) {
+            this._eventEmitter.unsubscribe(eventName, callback);
+        };
+
+        UIElement.prototype.fire = function(eventName, eventArgs) {
+            this._eventEmitter.fire(this, eventName, eventArgs);
         };
 
         UIElement.prototype.animate = function(props, duration, easingFunc) {

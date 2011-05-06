@@ -126,12 +126,7 @@ window.OOPCanvas.modules.visualManager = function _visualManager (OOPCanvas) {
 
         if (!!hit) {
            var elm = hit.element;
-           debug.debug(elm);
-           // dummy
-           if ( elm.click ) {
-               elm.click();
-           }
-           // dummy
+           elm.fire(hit.event.type);
         }
 
         if ( _update(this) ) {

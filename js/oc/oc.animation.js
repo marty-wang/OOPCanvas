@@ -6,17 +6,42 @@ window.OOPCanvas.modules.animation = function (OOPCanvas) {
     var OC = OOPCanvas;
     var fn = OC.prototype;
 
-    // namespace
-    OC.Animation = {};
-
-    // const
-    var DEFAULT_ANIMATION_DURATION = 250; // in ms
+    // ++ Add Methods ++
 
     fn.animator = function(obj) {
         return new Animator(obj);
     };
 
+    // ++ End of Adding Methods ++
+
+    // namespace
+    OC.Animation = {};
+
+    // t: current time, b: beginning value, d: duration
+    // c: end value - beginning value
+    OC.Animation.easingFunctions = {
+        'linear': function (t, b, c, d) {
+            return c*t/d + b;
+        }
+    };
+
+    // 3rd party and plugins should use this method to add easing functions.
+    // the easing function should request the arguments of t, b, c, d
+    OC.Animation.addEasingFunction = function(name, func) {
+        var efs = OC.Animation.easingFunctions;
+
+        if ( name in efs) {
+            throw '"' + name + '" easing function already exists!';
+        }
+
+        efs[name] = func;
+    };
+
     // == Animator Constructor ==
+    
+    // const
+    var DEFAULT_ANIMATION_DURATION = 250; // in ms
+    
     // object: the object whose properties are animated by animator
     function Animator (obj) {
         this._object = obj;
@@ -175,26 +200,6 @@ window.OOPCanvas.modules.animation = function (OOPCanvas) {
         return func;
     }
     
-    // t: current time, b: beginning value, d: duration
-    // c: end value - beginning value
-    OC.Animation.easingFunctions = {
-        'linear': function (t, b, c, d) {
-            return c*t/d + b;
-        }
-    };
-
-    // 3rd party and plugins should use this method to add easing functions.
-    // the easing function should request the arguments of t, b, c, d
-    OC.Animation.addEasingFunction = function(name, func) {
-        var efs = OC.Animation.easingFunctions;
-
-        if ( name in efs) {
-            throw '"' + name + '" easing function already exists!';
-        }
-
-        efs[name] = func;
-    };
-
     debug.info("animation module is installed.");
 
 };

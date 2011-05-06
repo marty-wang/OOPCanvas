@@ -90,6 +90,10 @@
             
             this.setSize(300, 50);
             this.setState(OC.UIElement.States.Normal);
+
+            this._clickHandler = null;
+
+            _registerEventHandlers(this);
         }
 
         OC.UIElement.subClass(Button);
@@ -108,8 +112,9 @@
             this.invalidate();
         };
 
-        Button.prototype.click = function() {
-            this.setState(OC.UIElement.States.Press);
+        Button.prototype.click = function(callback) {
+            this._clickHandler = callback;
+            //this.setState(OC.UIElement.States.Press);
         };
 
         Button.prototype._draw = function() {
@@ -129,6 +134,15 @@
             });
             return this.testPointInPath(x, y);
         };
+
+        function _registerEventHandlers (button) {
+            button.bind('click', function(sender, args) {
+                button.setState(OC.UIElement.States.Press);
+                if (!!button._clickHandler) {
+                    button._clickHandler(sender, args);
+                }
+            });
+        }
 
         function _createGradients (button) {
             var oc = button._oc;
