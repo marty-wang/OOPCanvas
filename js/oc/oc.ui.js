@@ -8,6 +8,8 @@
 // UIElement is the base class of all visual elements on the canvas.
 // It is responsible for animation, hittest, event, update, render
 
+// Suppored Events: click, mouseover, mousemove, mouseout
+
 (function() {
    
     var ui = window.OOPCanvas.modules.ui = {};
@@ -22,6 +24,7 @@
             this._zIndex = 0;
             this._state = UIElement.States.Normal;
 
+            // event
             this._eventEmitter = this._oc.eventEmitter();
             this._animator = null;
             this._isDirty = true;
@@ -135,7 +138,7 @@
             return this._oc.hitTest(this, x, y);
         };
 
-        // == Method to override ==
+        // == Method to Override ==
 
         UIElement.prototype._update = function(currentTime) {
             if (!!this._animator) {
@@ -153,7 +156,25 @@
         // if it needs to participant to the hittest
         UIElement.prototype._hitTest = function(x, y) {};
 
-        // == End of Methods to override ==
+        // == Event Handlers ==
+
+        UIElement.prototype._click = function() {
+            this.fire('click');
+        };
+
+        UIElement.prototype._mousemove = function() {
+            this.fire('mousemove');
+        };
+
+        UIElement.prototype._mouseout = function() {
+            this.fire('mouseout');
+        };
+
+        UIElement.prototype._mouseover = function() {
+            this.fire('mouseover');
+        };
+
+        // == End of Methods to Override ==
 
         OOPCanvas.UIElement = UIElement;
 

@@ -120,7 +120,8 @@ window.OOPCanvas.modules.interaction = function _interaction (OOPCanvas) {
     }
 
     // == Private ==
-
+    
+    // TODO: Event should be normalized here
     function _enqueueEvent (ia, event) {
         event = !event ? window.event : event;
         var relPoint = _getRelativePoint(event, ia._refPoint);

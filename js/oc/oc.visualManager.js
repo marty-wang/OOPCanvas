@@ -156,12 +156,20 @@ window.OOPCanvas.modules.visualManager = function _visualManager (OOPCanvas) {
         hit = htrs[0];
         htrs.length = 0;
 
-        if ( !!vm._lastHitTestElement && ( !hit || vm._lastHitTestElement.getId() != hit.element.getId() ) ) {
+        var lastHTElm = vm._lastHitTestElement;
+
+        if ( !!lastHTElm && ( !hit || lastHTElm.getId() != hit.element.getId() ) ) {
             _sendEvent(vm._lastHitTestElement, 'mouseout');
         }
         
         if ( !!hit ) {
-           var elm = hit.element;
+            var elm = hit.element;
+            var eventType = hit.event.type;
+
+            if ( eventType === "mousemove" && ( !lastHTElm || lastHTElm.getId() != hit.element.getId() ) ) {
+                hit.event.type = "mouseover";
+            }
+
            _sendEvent(elm, hit.event.type);
         }
 

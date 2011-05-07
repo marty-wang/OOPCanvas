@@ -91,7 +91,7 @@
             this.setSize(300, 50);
             this.setState(OC.UIElement.States.Normal);
 
-            this._isMouseIn = false;
+            //this._isMouseIn = false;
         }
 
         OC.UIElement.subClass(Button);
@@ -132,43 +132,44 @@
             return this.testPointInPath(x, y);
         };
 
-        // == Event Handlers ==
+        // // == Event Handlers ==
 
-        Button.prototype._click = function() {
-            this.fire('click');
-        };
+        // Button.prototype._click = function() {
+        //     this.fire('click');
+        // };
 
-        Button.prototype._mousemove = function() {
-            if ( _setIsMouseIn(this, true) ) {
-                return;
-            }
-            this.fire('mousemove');
-        };
+        // Button.prototype._mousemove = function() {
+        //     if ( _setIsMouseIn(this, true) ) {
+        //         return;
+        //     }
+        //     this.fire('mousemove');
+        // };
 
-        Button.prototype._mouseout = function() {
-            _setIsMouseIn(this, false);
-        };
-            
+        // Button.prototype._mouseout = function() {
+        //     _setIsMouseIn(this, false);
+        // };
+        //     
+
+        // function _setIsMouseIn (button, isMouseIn) {
+        //     if ( button._isMouseIn === isMouseIn ) {
+        //         return false;
+        //     }
+
+        //     button._isMouseIn = isMouseIn;
+        //     _onIsMouseInChanged(button);
+        //     return true;
+        // }
+
+        // function _onIsMouseInChanged (button) {
+        //     var isIn = button._isMouseIn;
+        //     if ( isIn ) {
+        //         button.fire('mouseover');
+        //     } else {
+        //         button.fire('mouseout');
+        //     }
+        // }
+
         // == Private ==
-
-        function _setIsMouseIn (button, isMouseIn) {
-            if ( button._isMouseIn === isMouseIn ) {
-                return false;
-            }
-
-            button._isMouseIn = isMouseIn;
-            _onIsMouseInChanged(button);
-            return true;
-        }
-
-        function _onIsMouseInChanged (button) {
-            var isIn = button._isMouseIn;
-            if ( isIn ) {
-                button.fire('mouseover');
-            } else {
-                button.fire('mouseout');
-            }
-        }
 
         function _createGradients (button) {
             var oc = button._oc;

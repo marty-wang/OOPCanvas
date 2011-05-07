@@ -37,16 +37,16 @@ $(document).ready(function() {
     button1.click(function() {
         debug.debug("button " + button1.getId());
     });
-    // button1.bind('mousemove', function(sender, args) {
-    //     debug.debug("mouse move " + button1.getId());
-    // });
-    // button1.bind('mouseover', function(sender, args) {
-    //     debug.debug('mouse over ' + button1.getId());
-    // });
+    button1.bind('mousemove', function(sender, args) {
+        debug.debug("mouse move " + button1.getId());
+    });
+    button1.bind('mouseover', function(sender, args) {
+        debug.debug('mouse over ' + button1.getId());
+    });
 
-    // button1.bind('mouseout', function(sender, args) {
-    //     debug.debug('mouse out ' + button1.getId());
-    // });
+    button1.bind('mouseout', function(sender, args) {
+        debug.debug('mouse out ' + button1.getId());
+    });
     oc.addChild(button1);
 
     var width = oc.getWidth();
