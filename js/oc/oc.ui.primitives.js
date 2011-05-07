@@ -90,8 +90,6 @@
             
             this.setSize(300, 50);
             this.setState(OC.UIElement.States.Normal);
-
-            //this._isMouseIn = false;
         }
 
         OC.UIElement.subClass(Button);
@@ -134,41 +132,25 @@
 
         // // == Event Handlers ==
 
-        // Button.prototype._click = function() {
-        //     this.fire('click');
-        // };
+        Button.prototype._click = function() {
+            
+            this.__super('_click');
+        };
 
-        // Button.prototype._mousemove = function() {
-        //     if ( _setIsMouseIn(this, true) ) {
-        //         return;
-        //     }
-        //     this.fire('mousemove');
-        // };
+        Button.prototype._mouseover = function() {
+            this._oc.changeCursor('pointer');
+            this.__super('_mouseover');      
+        };
 
-        // Button.prototype._mouseout = function() {
-        //     _setIsMouseIn(this, false);
-        // };
-        //     
+        Button.prototype._mousemove = function() {
+            this.__super('_mousemove');
+        };
 
-        // function _setIsMouseIn (button, isMouseIn) {
-        //     if ( button._isMouseIn === isMouseIn ) {
-        //         return false;
-        //     }
-
-        //     button._isMouseIn = isMouseIn;
-        //     _onIsMouseInChanged(button);
-        //     return true;
-        // }
-
-        // function _onIsMouseInChanged (button) {
-        //     var isIn = button._isMouseIn;
-        //     if ( isIn ) {
-        //         button.fire('mouseover');
-        //     } else {
-        //         button.fire('mouseout');
-        //     }
-        // }
-
+        Button.prototype._mouseout = function() {
+            this._oc.changeCursor('default');
+            this.__super('_mouseout');
+        };
+            
         // == Private ==
 
         function _createGradients (button) {

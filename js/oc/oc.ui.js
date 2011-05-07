@@ -162,16 +162,16 @@
             this.fire('click');
         };
 
+        UIElement.prototype._mouseover = function() {
+            this.fire('mouseover');
+        };
+
         UIElement.prototype._mousemove = function() {
             this.fire('mousemove');
         };
 
         UIElement.prototype._mouseout = function() {
             this.fire('mouseout');
-        };
-
-        UIElement.prototype._mouseover = function() {
-            this.fire('mouseover');
         };
 
         // == End of Methods to Override ==

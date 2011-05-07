@@ -1,4 +1,4 @@
-OOP style Canvas API.
+**UI Framework built from ground up, powered by HTML5 Canvas.**
 
 License: MIT    
 Version: 0.0.0  

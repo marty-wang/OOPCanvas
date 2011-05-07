@@ -24,6 +24,10 @@ window.OOPCanvas.modules.core = function _core (OOPCanvas) {
     };
 
     // == Getters and Setters ==
+    
+    fn.changeCursor = function(cursor) {
+        this._core._canvas.style.cursor = cursor;
+    };
 
     fn.getLeft = function() {
         return this._core._left;
@@ -42,7 +46,7 @@ window.OOPCanvas.modules.core = function _core (OOPCanvas) {
     };
 
     fn.getCanvas = function () {
-        return this._core._cavnas;
+        return this._core._canvas;
     };
 
     fn.getContext = function() {
@@ -87,7 +91,7 @@ window.OOPCanvas.modules.core = function _core (OOPCanvas) {
             throw "The passed-in canvas argument is not valid";
         }
 
-        this._cavnas = canvas;
+        this._canvas = canvas;
 
         this._backBuffer = null;
         this._backBufferCtx = null;
