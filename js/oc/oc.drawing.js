@@ -66,9 +66,24 @@ window.OOPCanvas.modules.drawing = function _drawing (OOPCanvas) {
                 x = 0;
                 y = 0;
             }
-              
+
+            var cr = config.cornerRadius;
+
             ctx.beginPath();
-            ctx.rect(x, y, width, height);
+            if ( cr ) {
+                ctx.moveTo(x + cr, y);
+                ctx.lineTo(x + width - cr, y);
+                ctx.arcTo(x + width, y, x + width, y + cr, cr);
+                ctx.lineTo(x + width, y + height - cr);
+                ctx.arcTo(x + width, y + height, x + width - cr, y + height, cr);
+                ctx.lineTo(x + cr, y + height);
+                ctx.arcTo(x, y + height, x, y + height - cr, cr);
+                ctx.lineTo(x, y + cr);
+                ctx.arcTo(x, y, x + cr, y, cr);
+            } else {
+                ctx.rect(x, y, width, height);
+            }
+            ctx.closePath();
             ctx.fill();
             ctx.stroke();
             

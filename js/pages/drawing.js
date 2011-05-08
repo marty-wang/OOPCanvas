@@ -60,10 +60,17 @@ $(document).ready(function() {
     oc.addChild(button1);
 
     var rect = oc.rectangle(400, 400, 200, 200, {
-        'strokeStyle': 'transparent',
-        'fillStyle': 'blue'
+        'strokeStyle': 'red',
+        'fillStyle': 'blue',
+        'cornerRadius': 20
     }); 
     oc.addChild(rect);
+
+    var rect1 = oc.rectangle(650, 400, 200, 200, {
+        'strokeStyle': 'red',
+        'fillStyle': 'blue'
+    }); 
+    oc.addChild(rect1);
 
     var width = oc.getWidth();
     var height = oc.getHeight();
