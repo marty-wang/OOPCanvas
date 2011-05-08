@@ -117,7 +117,8 @@
             var oc = this._oc;
             oc.drawRectangle(this._left, this._top, this._width, this._height, {
                 'fillStyle': _getCurGredient(this),
-                'strokeStyle': 'transparent'
+                'strokeStyle': 'transparent',
+                'cornerRadius': 6
             });
             oc.drawLine(this._left, this._top, this._left + 20, this._top + 20);
         };
