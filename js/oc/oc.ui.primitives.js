@@ -111,6 +111,8 @@
         Button.prototype.click = function(callback) {
             this.bind('click', callback);
         };
+        
+        // Override Methods
 
         Button.prototype._draw = function() {
             var oc = this._oc;
@@ -130,15 +132,15 @@
             return this.testPointInPath(x, y);
         };
 
-        // // == Event Handlers ==
+        // == Event Handlers ==
 
         Button.prototype._click = function() {
-            
             this.__super('_click');
         };
 
         Button.prototype._mouseover = function() {
             this._oc.changeCursor('pointer');
+            this.setState('Hover');
             this.__super('_mouseover');      
         };
 
@@ -148,9 +150,10 @@
 
         Button.prototype._mouseout = function() {
             this._oc.changeCursor('default');
+            this.setState('Normal');
             this.__super('_mouseout');
         };
-            
+
         // == Private ==
 
         function _createGradients (button) {

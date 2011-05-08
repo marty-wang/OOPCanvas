@@ -18,7 +18,9 @@ $(document).ready(function() {
     var button = oc.button(100, 100);
     button.setZIndex(2);
     button.click(function(sender, args) {
-        debug.debug("click " + button.getId());
+        button.animate({
+            'left': 400
+        });
     });
     button.bind('mousemove', function(sender, args) {
         debug.debug("mouse move " + button.getId());
@@ -35,7 +37,7 @@ $(document).ready(function() {
 
     var button1 = oc.button(125, 125);
     button1.click(function() {
-        debug.debug("button " + button1.getId());
+        alert("click " + button1.getId());
     });
     button1.bind('mousemove', function(sender, args) {
         debug.debug("mouse move " + button1.getId());
