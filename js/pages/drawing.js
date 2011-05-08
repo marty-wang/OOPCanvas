@@ -23,14 +23,22 @@ $(document).ready(function() {
         });
     });
     button.bind('mousemove', function(sender, args) {
-        debug.debug("mouse move " + button.getId());
+        // debug.debug("mouse move " + button.getId());
     });
     button.bind('mouseover', function(sender, args) {
-        debug.debug('mouse over ' + button.getId());
+        // debug.debug('mouse over ' + button.getId());
     });
 
     button.bind('mouseout', function(sender, args) {
-        debug.debug('mouse out ' + button.getId());
+        // debug.debug('mouse out ' + button.getId());
+    });
+
+    button.bind("mousedown", function(sender, args) {
+        debug.debug("mouse down " + button.getId());
+    });
+
+    button.bind("mouseup", function(sender, args) {
+        debug.debug("mouse up " + button.getId());
     });
 
     oc.addChild(button);

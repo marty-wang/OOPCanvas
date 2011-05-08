@@ -162,6 +162,14 @@
             this.fire('mouseout');
         };
 
+        UIElement.prototype._mousedown = function() {
+            this.fire('mousedown');
+        };
+
+        UIElement.prototype._mouseup = function() {
+            this.fire('mouseup');
+        };
+
         // == End of Methods to Override ==
 
         OOPCanvas.UIElement = UIElement;

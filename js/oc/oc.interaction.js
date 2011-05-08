@@ -74,54 +74,43 @@ window.OOPCanvas.modules.interaction = function _interaction (OOPCanvas) {
         ia._hitTestCtx = buffer.getContext('2d');
     }
 
+    var events = ["click", "mousemove", "mousedown", "mouseup"];
+
     function _registerEventHandlers (ia) {
         var canvas = ia._canvas;
 
-        // Be careful with mouseover and mouseout
+        // Be careful with mouseover and mouseout of canvas
         // because they may or may not intervene with
         // the same-named event relay to UIElement.
-
-        canvas.addEventListener('mousemove', function(evt) {
-            _onmousemove(ia, evt);
-        }, false);
-
-        canvas.addEventListener('click', function(evt) {
-            _onclick(ia, evt);
-        }, false);
-
-
-        // canvas.onmouseover = function (evt) {
-        //     //debug.debug("on mouse over");
-        // };
-
-        // canvas.onmouseout = function (evt) {
-        //     //debug.debug("on mouse out");
-        // };
-
-        // canvas.onmousedown = function (evt) {
-        //     //debug.debug("on mouse down");
-        // };
-
-        // canvas.onmouseup = function (evt) {
-        //     //debug.debug("on mouse up");
-        // };
+        
+        for ( var i = 0, count = events.length ; i < count; i++ ) {
+            _bind(canvas, events[i], function(evt){
+                //debug.debug("interaction: " + evt.type);
+                _enqueueEvent(ia, evt);
+            });
+        }
     }
 
     // == Event handlers ==
 
     function _onmousemove (ia, evt) {
-        //debug.debug("on mouse move");
+        debug.debug("interaction: on mouse move");
         _enqueueEvent(ia, evt);
     }
 
     function _onclick (ia, evt) {
-        debug.debug("on click");
+        debug.debug("interaction: on click");
         _enqueueEvent(ia, evt);
     }
 
     // == Private ==
+
+    // TODO: normalize event handling
+    function _bind (canvas, eventName, handler) {
+        canvas.addEventListener(eventName, handler, false);
+    }
     
-    // TODO: Event should be normalized here
+    // TODO: normalize event 
     function _enqueueEvent (ia, event) {
         event = !event ? window.event : event;
         var relPoint = _getRelativePoint(event, ia._refPoint);
