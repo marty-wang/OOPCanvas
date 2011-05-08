@@ -22,7 +22,6 @@
             this._top = top;
             this._id = OC.Util.rand();
             this._zIndex = 0;
-            this._state = UIElement.States.Normal;
 
             // event
             this._eventEmitter = this._oc.eventEmitter();
@@ -35,12 +34,6 @@
 
         UIElement.Max_ZIndex = Number.MAX_VALUE;
         UIElement.Min_ZIndex = -UIElement.Max_ZIndex;
-
-        UIElement.States = {
-            'Normal': 'Normal',
-            'Hover': 'Hover',
-            'Press': 'Press'
-        };
         
         UIElement.subClass = function (subClass) {
             OC.Util.inherit(subClass, UIElement);
@@ -60,10 +53,6 @@
             this._zIndex = index;
 
             this.invalidate();
-        };
-
-        UIElement.prototype.setState = function(state) {
-            this._state = state;
         };
 
         UIElement.prototype.invalidate = function() {
@@ -148,8 +137,7 @@
             return !!this._isDirty;
         };
 
-        // all the sub-classes must call this method, and
-        // this method should be called at the end after sub-classes' logic
+        // all the sub-classes must call this method
         UIElement.prototype._draw = function() {};
         
         // sub-class needs to implement this method

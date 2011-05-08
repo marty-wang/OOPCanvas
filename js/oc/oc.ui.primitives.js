@@ -89,10 +89,16 @@
             this._gradientPress = null;
             
             this.setSize(300, 50);
-            this.setState(OC.UIElement.States.Normal);
+            this._state = Button.States.Normal;
         }
 
         OC.UIElement.subClass(Button);
+
+        Button.States = {
+            'Normal': 'Normal',
+            'Hover': 'Hover',
+            'Press': 'Press'
+        };
         
         Button.prototype.setSize = function(width, height) {
             this._width = width;
@@ -100,11 +106,6 @@
             
             _createGradients(this);
 
-            this.invalidate();
-        };
-
-        Button.prototype.setState = function(state) {
-            this.__super('setState', state);
             this.invalidate();
         };
 
@@ -126,7 +127,7 @@
         Button.prototype._hitTest = function(x, y) {
             var oc = this._oc;
             oc.drawRectangle(this._left, this._top, this._width, this._height, {
-                'fillStyle': 'red',
+                'fillStyle': 'red', // it can be any color, it is only used for hittest, and not visible anyway
                 'strokeStyle': 'transparent'
             });
             return this.testPointInPath(x, y);
@@ -140,7 +141,7 @@
 
         Button.prototype._mouseover = function() {
             this._oc.changeCursor('pointer');
-            this.setState('Hover');
+            _setState(this, Button.States.Hover);
             this.__super('_mouseover');      
         };
 
@@ -150,11 +151,20 @@
 
         Button.prototype._mouseout = function() {
             this._oc.changeCursor('default');
-            this.setState('Normal');
+            _setState(this, Button.States.Normal);
             this.__super('_mouseout');
         };
 
         // == Private ==
+        
+        function _setState (button, state) {
+            if ( button._state === state ) {
+                return;
+            }
+
+            button._state = state;
+            button.invalidate();
+        }
 
         function _createGradients (button) {
             var oc = button._oc;
@@ -182,7 +192,7 @@
         }
 
         function _getCurGredient (button) {
-            return button['_gradient' + OC.UIElement.States[button._state]];
+            return button['_gradient' + Button.States[button._state]];
         }
 
     };
