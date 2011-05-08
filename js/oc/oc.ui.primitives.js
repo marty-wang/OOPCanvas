@@ -33,11 +33,9 @@
 
         OC.Util.inherit(Rectangle, OC.UIElement);
                 
-        Rectangle.prototype.draw = function() {
+        Rectangle.prototype._draw = function() {
             var oc = this._oc;
             oc.drawRectangle(this._left, this._top, this._width, this._height, this._config);
-            
-            this.__super('draw');
         };
 
         debug.info("ui module Rectangle submodule is installed.");

@@ -144,7 +144,9 @@
         // if it needs to participant to the hittest
         UIElement.prototype._hitTest = function(x, y) {};
 
-        // == Event Handlers ==
+        // -- Event Handlers --
+        // Override the evenhanlder if subclass wants custom action
+        // before the event fires up
 
         UIElement.prototype._click = function() {
             this.fire('click');

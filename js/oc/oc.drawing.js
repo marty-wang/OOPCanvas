@@ -43,7 +43,7 @@ window.OOPCanvas.modules.drawing = function _drawing (OOPCanvas) {
             }
             ctx.stroke();
         }, config);
-    }
+    };
 
     fn.drawRectangle = function(x, y, width, height, config) {
         config = config || {};

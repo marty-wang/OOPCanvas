@@ -59,11 +59,16 @@ $(document).ready(function() {
     });
     oc.addChild(button1);
 
+    var rect = oc.rectangle(400, 400, 200, 200, {
+        'strokeStyle': 'transparent',
+        'fillStyle': 'blue'
+    }); 
+    oc.addChild(rect);
+
     var width = oc.getWidth();
     var height = oc.getHeight();
 
-    $('#hitTest').click(function() {
-    });
+    
 
     // var x = 40;
     // var y = 40;
