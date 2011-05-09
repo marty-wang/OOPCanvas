@@ -45,6 +45,31 @@ window.OOPCanvas.modules.drawing = function _drawing (OOPCanvas) {
         }, config);
     };
 
+    fn.drawPolygon = function(centerX, centerY, radius, sides, config) {
+        config = config || {};
+
+        var deg = Math.PI * 2 / sides;
+
+        _setup(this, function(ctx) {
+            ctx.beginPath();
+            ctx.moveTo(centerX, centerY - radius);
+
+            var i, d, x, y;
+
+            for ( i = 1; i < sides; i++ ) {
+                d = i * deg - Math.PI / 2;
+                x = centerX + Math.cos(d) * radius;
+                y = centerY + Math.sin(d) * radius;
+                ctx.lineTo(x, y);  
+            }
+
+            ctx.closePath();
+            ctx.fill();
+            ctx.stroke();
+
+        }, config);
+    };
+
     fn.drawRectangle = function(x, y, width, height, config) {
         config = config || {};
 

@@ -72,6 +72,17 @@ $(document).ready(function() {
     }); 
     oc.addChild(rect1);
 
+    var polygon = oc.polygon(300, 300, 100, 8);
+    polygon.bind('click', function(){
+        var sides = polygon.getSides();
+        if ( sides === 8 ) {
+            polygon.setSides(3);
+        } else {
+            polygon.setSides(8);
+        }
+    });
+    oc.addChild(polygon);
+
     var width = oc.getWidth();
     var height = oc.getHeight();
 

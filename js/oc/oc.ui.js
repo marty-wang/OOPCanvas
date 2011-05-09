@@ -16,10 +16,10 @@
     
     ui.uiElement = function (OOPCanvas) {
         
-        function UIElement(oc, left, top) {
+        function UIElement(oc/*, left, top*/) {
             this._oc = oc;
-            this._left = left;
-            this._top = top;
+            // this._left = left;
+            // this._top = top;
             this._id = OC.Util.rand();
             this._zIndex = 0;
 
@@ -63,12 +63,12 @@
             return this._isDirty;
         };
 
-        UIElement.prototype.setPosition = function(left, top) {
-            this._left = left;
-            this._top = top;
-            
-            this.invalidate();
-        };
+        // UIElement.prototype.setPosition = function(left, top) {
+        //     this._left = left;
+        //     this._top = top;
+        //     
+        //     this.invalidate();
+        // };
 
         UIElement.prototype.bind = function(eventName, callback) {
             this._eventEmitter.subscribe(eventName, callback);

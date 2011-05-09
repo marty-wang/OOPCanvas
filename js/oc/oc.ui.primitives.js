@@ -12,17 +12,21 @@
 
         var fn = OC.prototype;
         
-        // ++ Expose methods ++
+        // ++ Add methods ++
 
         fn.rectangle = function(left, top, width, height, config) {
             return new Rectangle(this, left, top, width, height, config);
         };
+
+        // ++ End of Adding Methods ++
         
         // == Constructor ==
 
         function Rectangle (oc, left, top, width, height, config) {
-            this.__super('constructor', oc, left, top);
+            this.__super('constructor', oc);
 
+            this._left = left;
+            this._top = top;
             this._width = width;
             this._height = height;
 
@@ -40,6 +44,50 @@
 
         debug.info("ui module Rectangle submodule is installed.");
     };
+
+    // == Polygon Sub-module == 
+
+    ui.polygon = function (OC) {
+        var fn = OC.prototype;
+
+        fn.polygon = function(centerX, centerY, radius, sides, config) {
+            return new Polygon(this, centerX, centerY, radius, sides, config);
+        };
+
+        function Polygon (oc, centerX, centerY, radius, sides, config) {
+            this.__super('constructor', oc);
+
+            this._centerX = centerX;
+            this._centerY = centerY;
+            this._radius = radius;
+            this._sides = sides;
+            this._config = config;
+        }
+
+        OC.UIElement.subClass(Polygon);
+
+        Polygon.prototype.setSides = function(sides) {
+            this._sides = sides;
+            this.invalidate();
+        };
+
+        Polygon.prototype.getSides = function() {
+            return this._sides;
+        };
+
+        Polygon.prototype._draw = function() {
+            var oc = this._oc;
+            oc.drawPolygon(this._centerX, this._centerY, this._radius, this._sides, this._config);
+        };
+
+        Polygon.prototype._hitTest = function(x, y) {
+            var oc = this._oc;
+            oc.drawPolygon(this._centerX, this._centerY, this._radius, this._sides);
+            return this.testPointInPath(x, y);
+        };
+
+        debug.info("ui module polygon submodule is installed.");
+    };
     
     // == Background Sub-module ==
 
@@ -52,8 +100,10 @@
         };
 
         function Background (oc, config) {
-            this.__super('constructor', oc, 0, 0);
+            this.__super('constructor', oc);
 
+            this._left = 0;
+            this._top = 0;
             this._width = oc.getWidth();
             this._height = oc.getHeight();
             this._zIndex = OC.UIElement.Min_ZIndex;
@@ -79,9 +129,12 @@
         };
 
         function Button(oc, left, top) {
-            this.__super('constructor', oc, left, top);
+            this.__super('constructor', oc);
             this._id = "Button-" + this._id;
             
+            this._left = left;
+            this._top = top;
+
             this._gradientNormal = null;
             this._gradientHover = null;
             this._gradientPress = null;
