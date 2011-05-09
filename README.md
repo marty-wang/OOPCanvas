@@ -37,3 +37,5 @@ change.
 # TODO:
 
 **Architecture**
+**Performance**
+It seems that hitTest adds quite a lot performace overhead.
