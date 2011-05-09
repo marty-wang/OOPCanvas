@@ -6,6 +6,14 @@ window.OOPCanvas.modules.drawing = function _drawing (OOPCanvas) {
     var OC = OOPCanvas;
     var fn = OOPCanvas.prototype;
 
+    // ++ Add Methods ++
+    
+    fn.updateConfig = function (config, updates) {
+        OC.Util.merge(config, updates, true, _EXCLUDES);
+    };
+    
+    // ++ End of Adding Methods ++
+
     // const
     var _EXCLUDES = ['rotate', 'translate', 'scale', 'transform'];
 
@@ -191,7 +199,8 @@ window.OOPCanvas.modules.drawing = function _drawing (OOPCanvas) {
     function _stylize (oc, config) {
         var mergedConfig = OC.Util.merge(oc.getGlobalConfig(), config);
         var ctx = oc.getContext();
-        OC.Util.merge(ctx, mergedConfig, true, _EXCLUDES);
+        oc.updateConfig(ctx, mergedConfig);
+        //OC.Util.merge(ctx, mergedConfig, true, _EXCLUDES);
     }
 
     debug.info("drawing module is installed.");

@@ -73,6 +73,11 @@ $(document).ready(function() {
     oc.addChild(rect1);
 
     var polygon = oc.polygon(300, 300, 100, 8);
+    polygon.config({
+        'fillStyle': 'red',
+        'strokeStyle': 'green',
+        'lineWidth': 8
+    });
     polygon.bind('click', function(){
         var sides = polygon.getSides();
         if ( sides === 8 ) {

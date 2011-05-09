@@ -16,18 +16,23 @@
     
     ui.uiElement = function (OOPCanvas) {
         
-        function UIElement(oc/*, left, top*/) {
+        function UIElement(oc) {
             this._oc = oc;
-            // this._left = left;
-            // this._top = top;
+
             this._id = OC.Util.rand();
             this._zIndex = 0;
 
-            // event
-            this._eventEmitter = this._oc.eventEmitter();
-            this._animator = null;
+            this._left = null;
+            this._top = null;
+            this._centerX = null;
+            this._centerY = null;
+            this._config = null;
+            
             this._isDirty = true;
             this._isHitTestVisible = true;
+        
+            this._eventEmitter = this._oc.eventEmitter();
+            this._animator = null;
         }
 
         // Static
@@ -63,12 +68,27 @@
             return this._isDirty;
         };
 
-        // UIElement.prototype.setPosition = function(left, top) {
-        //     this._left = left;
-        //     this._top = top;
-        //     
-        //     this.invalidate();
-        // };
+        UIElement.prototype.config = function(property, value) { 
+            if ( !this._config ) {
+                this._config = {};
+            }
+
+            if ( typeof property === "object" ) {
+                var oc = this._oc;
+                oc.updateConfig(this._config, property);
+            } else {
+                this._config[property] = value;
+            }
+
+            this.invalidate();
+        };
+
+        UIElement.prototype.setPosition = function(left, top) {
+            this._left = left;
+            this._top = top;
+            
+            this.invalidate();
+        };
 
         UIElement.prototype.bind = function(eventName, callback) {
             this._eventEmitter.subscribe(eventName, callback);
@@ -89,7 +109,7 @@
 
             this._animator.start(props, duration, easingFunc);
         };
-
+        
         UIElement.prototype.update = function(currentTime) {
             return this._update(currentTime);
         };
