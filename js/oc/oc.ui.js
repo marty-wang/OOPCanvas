@@ -176,7 +176,6 @@
         };
 
         UIElement.prototype._mouseover = function() {
-            debug.debug("UIElement mouseover");
             this.fire('mouseover');
         };
 

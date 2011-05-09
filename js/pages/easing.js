@@ -34,10 +34,41 @@ $(document).ready(function() {
 
     var sample;
     var rect;
+    
     for (sample in samples) {
-        rect = oc.rectangle(fromLeft, samples[sample], 20, 20);
-        oc.addChild(rect);
-        rects[sample] = rect;
+        (function(sample){
+            rect = oc.rectangle(fromLeft, samples[sample], 20, 20);
+            rect.bind("mouseover", function() {
+                oc.changeCursor('pointer');
+                $('#'+sample).addClass('current');
+            });
+            rect.bind("mouseout", function() {
+                oc.changeCursor('default');
+                $('#'+sample).removeClass('current');
+            });
+            rect.bind('click', function(sender) {
+                var rect = sender;
+                rect.animate({
+                    'left': toLeft
+                }, {
+                    'duration': duration,
+                    'easingFunction': sample,
+                    'callbacks': {
+                        'start': function(startValues) {
+                            debug.debug(sample + " animation is started");
+                        },
+                        'animating': function(currentValues) {
+                            debug.debug(sample + " animation is animating");
+                        },
+                        'complete': function(endValues) {
+                            debug.debug(sample + " animation is completed");
+                        }
+                    }
+                });
+            });
+            oc.addChild(rect);
+            rects[sample] = rect;
+        })(sample);
     }
     
     $('#reset').click(function() {
@@ -66,7 +97,7 @@ $(document).ready(function() {
             continue;
         }
 
-        html += '<button id="'+ sample +'">' + sample + '</button>';
+        html += '<a href="" class="action" id="'+ sample +'">' + sample + '</a>';
         count ++;
         if ( count % 3 === 0) {
             html += '</li><li>';
@@ -77,7 +108,9 @@ $(document).ready(function() {
 
     for (sample in samples) {
         (function(sample){
-            $('button#'+sample).click(function() {
+            $('#'+sample).click(function(evt) {
+                evt.preventDefault();
+
                 rect = rects[sample];
                 rect.animate({
                     'left': toLeft
