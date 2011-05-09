@@ -59,17 +59,22 @@ $(document).ready(function() {
     });
     oc.addChild(button1);
 
-    var rect = oc.rectangle(400, 400, 200, 200, {
+    var rect = oc.rectangle(400, 400, 200, 200);
+    rect.config({
         'strokeStyle': 'red',
         'fillStyle': 'blue',
         'cornerRadius': 20
-    }); 
+    });
+    rect.bind('click', function() {
+        alert("hallo");
+    });
     oc.addChild(rect);
 
-    var rect1 = oc.rectangle(650, 400, 200, 200, {
+    var rect1 = oc.rectangle(650, 400, 200, 200);
+    rect1.config({
         'strokeStyle': 'red',
         'fillStyle': 'blue'
-    }); 
+    });
     oc.addChild(rect1);
 
     var polygon = oc.polygon(300, 300, 100, 8);

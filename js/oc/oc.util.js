@@ -101,13 +101,13 @@ window.OOPCanvas.modules.util = function(OOPCanvas) {
             var tempClass = function() {
             };
             tempClass.prototype = parentClass.prototype;
-            childClass.prototype = new tempClass();
+            childClass.prototype = new tempClass();            
             childClass.prototype.constructor = childClass;
-            childClass.prototype.__super = function(methodName) {
+            childClass.__super = function(obj, methodName) {
                 var func = parentClass.prototype[methodName];
                 if ( !!func ) {
-                    var args = Array.prototype.slice.call(arguments, 1);
-                    return func.apply(this, args);
+                    var args = Array.prototype.slice.call(arguments, 2);
+                    return func.apply(obj, args);
                 }
             };
         };

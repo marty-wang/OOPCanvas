@@ -35,15 +35,14 @@
             this._animator = null;
         }
 
+        // Expose UIElement for inheritance
+        OOPCanvas.UIElement = UIElement;
+
         // Static
 
         UIElement.Max_ZIndex = Number.MAX_VALUE;
         UIElement.Min_ZIndex = -UIElement.Max_ZIndex;
         
-        UIElement.subClass = function (subClass) {
-            OC.Util.inherit(subClass, UIElement);
-        };
-
         // Instance
 
         UIElement.prototype.getId = function() {
@@ -66,6 +65,10 @@
 
         UIElement.prototype.isDirty = function() {
             return this._isDirty;
+        };
+
+        UIElement.prototype.setHitTestVisible = function(hitTestVisible) {
+            this._isHitTestVisible = hitTestVisible;
         };
 
         UIElement.prototype.config = function(property, value) { 
@@ -173,6 +176,7 @@
         };
 
         UIElement.prototype._mouseover = function() {
+            debug.debug("UIElement mouseover");
             this.fire('mouseover');
         };
 
@@ -193,9 +197,7 @@
         };
 
         // == End of Methods to Override ==
-
-        OOPCanvas.UIElement = UIElement;
-
+        
         debug.info("ui module UIElement submodule is installed.");
     };
 
