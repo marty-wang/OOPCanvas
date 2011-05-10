@@ -180,7 +180,7 @@ window.OOPCanvas.modules.drawing = function _drawing (OOPCanvas) {
         this.drawArc(centerX, centerY, radius, 0, Math.PI * 2, false, config);
     };
 
-    fn.drawPath = function _drawPath (pathData, config) {
+    fn.drawPath = function _drawPath (x, y, pathData, config) {
         // cache parser
         if ( !_drawPath._parser ) {
             _drawPath._parser = new PathHandler();
@@ -189,6 +189,7 @@ window.OOPCanvas.modules.drawing = function _drawing (OOPCanvas) {
         _setup(this, function(ctx) {
             var routine = _drawPath._parser.parse(pathData);
             with(ctx) {
+                translate(x, y);
                 beginPath();
                 eval(routine);
                 fill();

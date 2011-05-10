@@ -94,10 +94,19 @@ $(document).ready(function() {
     oc.addChild(polygon);
 
     var d = "M100,10 L100,10 40,180 190,60 10,60 160,180 z";
-    d = "M50,50 Q-30,100 50,150 100,230 150,150 230,100 150,50 100,-30 50,50";
-    d = "M10 80 C 40 10, 65 10, 95 80 S 150 150, 180 80";
-    d = "M10 80 Q 52.5 10, 95 80 T 180 80";
-    var path = oc.path(d);
+    //d = "M50,50 Q-30,100 50,150 100,230 150,150 230,100 150,50 100,-30 50,50";
+    //d = "M10 80 C 40 10, 65 10, 95 80 S 150 150, 180 80";
+    //d = "M10 80 Q 52.5 10, 95 80 T 180 80";
+    
+    var path = oc.path(50, 50, d);
+    path.config({
+        'lineWidth': 8,
+        'strokeStyle': 'red',
+        'fillStyle': 'green'
+    });
+    path.click(function() {
+        alert("hallo, I am a path");
+    });
     oc.addChild(path);
 
     var width = oc.getWidth();

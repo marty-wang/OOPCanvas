@@ -105,6 +105,11 @@
             this._eventEmitter.fire(this, eventName, eventArgs);
         };
 
+        // shortcuts for binding event handlers
+        UIElement.prototype.click = function(callback) {
+            this.bind('click', callback); 
+        };
+
         UIElement.prototype.animate = function(props, duration, easingFunc) {
             if ( !this._animator ) {
                 this._animator = this._oc.animator(this); 

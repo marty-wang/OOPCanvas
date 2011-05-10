@@ -100,13 +100,15 @@
     ui.path = function (OC) {
         var fn = OC.prototype;
 
-        fn.path = function(pathData) {
-            return new Path(this, pathData);
+        fn.path = function(left, top, pathData) {
+            return new Path(this, left, top, pathData);
         };
 
-        function Path (oc, pathData) {
+        function Path (oc, left, top, pathData) {
             Path.__super(this, 'constructor', oc);
             
+            this._left = left;
+            this._top = top;
             this._pathData = pathData;
         }
 
@@ -114,7 +116,12 @@
         
         Path.prototype._draw = function() {
             var oc = this._oc;
-            oc.drawPath(this._pathData);
+            oc.drawPath(this._left, this._top, this._pathData, this._config);
+        };
+
+        Path.prototype._hitTest = function(x, y) {
+            this._oc.drawPath(this._left, this._top, this._pathData);
+            return this.testPointInPath(x, y);
         };
     };
 

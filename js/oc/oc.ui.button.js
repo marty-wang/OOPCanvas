@@ -52,10 +52,6 @@
             this.invalidate();
         };
 
-        Button.prototype.click = function(callback) {
-            this.bind('click', callback);
-        };
-        
         // Override Methods
 
         Button.prototype._draw = function() {
