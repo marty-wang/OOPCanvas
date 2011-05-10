@@ -93,10 +93,12 @@ $(document).ready(function() {
     });
     oc.addChild(polygon);
 
-    var width = oc.getWidth();
-    var height = oc.getHeight();
+    var d = "M100,10 L100,10 40,180 190,60 10,60 160,180 z";
+    var path = oc.path(d);
+    oc.addChild(path);
 
-    
+    var width = oc.getWidth();
+    var height = oc.getHeight(); 
 
     // var x = 40;
     // var y = 40;

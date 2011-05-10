@@ -94,6 +94,31 @@
         debug.info("ui module polygon submodule is installed.");
     };
 
+
+    // == Path Sub-module ==
+
+    ui.path = function (OC) {
+        var fn = OC.prototype;
+
+        fn.path = function(pathData) {
+            return new Path(this, pathData);
+        };
+
+        function Path (oc, pathData) {
+            Path.__super(this, 'constructor', oc);
+            
+            this._pathData = pathData;
+        }
+
+        OC.Util.inherit(Path, OC.UIElement);
+        
+        Path.prototype._draw = function() {
+            var oc = this._oc;
+            oc.drawPath(this._pathData);
+        };
+    };
+
+
     // TODO: needs to refactor it out    
     // == Background Sub-module ==
 

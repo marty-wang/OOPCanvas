@@ -38,4 +38,5 @@ change.
 
 **Architecture**  
 **Performance**  
-It seems that hitTest adds quite a lot performace overhead.
+It seems that hitTest adds quite a lot performace overhead. Add grouping will
+probably scale down the hitTest process.
