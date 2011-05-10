@@ -15,49 +15,49 @@ $(document).ready(function() {
 
     oc.addChild(bg);
 
-    var button = oc.button(100, 100);
-    button.setZIndex(2);
-    button.click(function(sender, args) {
-        button.animate({
-            'left': 400
-        });
-    });
-    button.bind('mousemove', function(sender, args) {
-        // debug.debug("mouse move " + button.getId());
-    });
-    button.bind('mouseover', function(sender, args) {
-        // debug.debug('mouse over ' + button.getId());
-    });
+    // var button = oc.button(100, 100);
+    // button.setZIndex(2);
+    // button.click(function(sender, args) {
+    //     button.animate({
+    //         'left': 400
+    //     });
+    // });
+    // button.bind('mousemove', function(sender, args) {
+    //     // debug.debug("mouse move " + button.getId());
+    // });
+    // button.bind('mouseover', function(sender, args) {
+    //     // debug.debug('mouse over ' + button.getId());
+    // });
 
-    button.bind('mouseout', function(sender, args) {
-        // debug.debug('mouse out ' + button.getId());
-    });
+    // button.bind('mouseout', function(sender, args) {
+    //     // debug.debug('mouse out ' + button.getId());
+    // });
 
-    button.bind("mousedown", function(sender, args) {
-        debug.debug("mouse down " + button.getId());
-    });
+    // button.bind("mousedown", function(sender, args) {
+    //     debug.debug("mouse down " + button.getId());
+    // });
 
-    button.bind("mouseup", function(sender, args) {
-        debug.debug("mouse up " + button.getId());
-    });
+    // button.bind("mouseup", function(sender, args) {
+    //     debug.debug("mouse up " + button.getId());
+    // });
 
-    oc.addChild(button);
+    // oc.addChild(button);
 
-    var button1 = oc.button(125, 125);
-    button1.click(function() {
-        alert("click " + button1.getId());
-    });
-    button1.bind('mousemove', function(sender, args) {
-        debug.debug("mouse move " + button1.getId());
-    });
-    button1.bind('mouseover', function(sender, args) {
-        debug.debug('mouse over ' + button1.getId());
-    });
+    // var button1 = oc.button(125, 125);
+    // button1.click(function() {
+    //     alert("click " + button1.getId());
+    // });
+    // button1.bind('mousemove', function(sender, args) {
+    //     debug.debug("mouse move " + button1.getId());
+    // });
+    // button1.bind('mouseover', function(sender, args) {
+    //     debug.debug('mouse over ' + button1.getId());
+    // });
 
-    button1.bind('mouseout', function(sender, args) {
-        debug.debug('mouse out ' + button1.getId());
-    });
-    oc.addChild(button1);
+    // button1.bind('mouseout', function(sender, args) {
+    //     debug.debug('mouse out ' + button1.getId());
+    // });
+    // oc.addChild(button1);
 
     var rect = oc.rectangle(400, 400, 200, 200);
     rect.config({
@@ -94,6 +94,9 @@ $(document).ready(function() {
     oc.addChild(polygon);
 
     var d = "M100,10 L100,10 40,180 190,60 10,60 160,180 z";
+    d = "M50,50 Q-30,100 50,150 100,230 150,150 230,100 150,50 100,-30 50,50";
+    d = "M10 80 C 40 10, 65 10, 95 80 S 150 150, 180 80";
+    d = "M10 80 Q 52.5 10, 95 80 T 180 80";
     var path = oc.path(d);
     oc.addChild(path);
 

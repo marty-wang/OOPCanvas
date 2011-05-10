@@ -180,15 +180,20 @@ window.OOPCanvas.modules.drawing = function _drawing (OOPCanvas) {
         this.drawArc(centerX, centerY, radius, 0, Math.PI * 2, false, config);
     };
 
-    fn.drawPath = function(pathData, config) {
+    fn.drawPath = function _drawPath (pathData, config) {
+        // cache parser
+        if ( !_drawPath._parser ) {
+            _drawPath._parser = new PathHandler();
+        }
+
         _setup(this, function(ctx) {
-            // should cache parsed path
-            var parser = new PathParser();
-            parser.setHandler(new SampleHandler(ctx));
-            ctx.beginPath();
-            parser.parseData(pathData);
-            ctx.fill();
-            ctx.stroke();
+            var routine = _drawPath._parser.parse(pathData);
+            with(ctx) {
+                beginPath();
+                eval(routine);
+                fill();
+                stroke();
+            }
         }, config);
     };
 
@@ -213,25 +218,42 @@ window.OOPCanvas.modules.drawing = function _drawing (OOPCanvas) {
         var mergedConfig = OC.Util.merge(oc.getGlobalConfig(), config);
         var ctx = oc.getContext();
         oc.updateConfig(ctx, mergedConfig);
-        //OC.Util.merge(ctx, mergedConfig, true, _EXCLUDES);
     }
 
-    // TODO: yet to be compeleted
+    // =================
     // == PathHandler ==
+    // =================
+    
+    // It DOES NOT yet support relative points.
+    // Therefore all the rel methods haven't been tested, event though they
+    // have been written.
+    // TODO: evaluate if it needs to
 
-    function SampleHandler (context) {
+    function PathHandler (context) {
         this._ctx = context;
-        // should be cached
-        this._routines = [];
+        this._parser = new PathParser();
+        this._parser.setHandler(this);
+
+        this._pathData = null;
+        this._routine = null;
+        this._lastPoint = null;
+        this._lastControlPoint = null;
+        // cache the parsed result
+        this._routines = {};
     }
 
-    /**
-     * show
-     * 
-     * @param {String} name
-     * @param {String} params+
-     */
-    SampleHandler.prototype.show = function(name, params) {
+    PathHandler.prototype.parse = function(data) {
+        if ( !( data in this._routines ) ) {
+            this._pathData = data;
+            this._routine = [];
+            this._parser.parseData(data);
+            this._routines[data] = this._routine.join("");
+        }
+        
+        return this._routines[data] ;
+    };
+
+    PathHandler.prototype.addRoutine = function(name, params) {
         var result = [];
         var args = [];
 
@@ -243,221 +265,111 @@ window.OOPCanvas.modules.drawing = function _drawing (OOPCanvas) {
         result.push("(");
         result.push(args.join(","));
         result.push(")");
-
-        console.log(result.join(""));
+        
+        this._routine.push(result.join("") + ";");
     };
 
-    /**
-     * arcAbs - A
-     * 
-     * @param {Number} rx
-     * @param {Number} ry
-     * @param {Number} xAxisRotation
-     * @param {Boolean} largeArcFlag
-     * @param {Boolean} sweepFlag
-     * @param {Number} x
-     * @param {Number} y
-     */
-    SampleHandler.prototype.arcAbs = function(rx, ry, xAxisRotation, largeArcFlag, sweepFlag, x, y) {
-        this.show("arcAbs", arguments);
+    PathHandler.prototype.movetoAbs = function(x, y) {
+        this.addRoutine("moveTo", arguments);
+        this._lastPoint = [x, y];
     };
 
-    /**
-     * arcRel - a
-     * 
-     * @param {Number} rx
-     * @param {Number} ry
-     * @param {Number} xAxisRotation
-     * @param {Boolean} largeArcFlag
-     * @param {Boolean} sweepFlag
-     * @param {Number} x
-     * @param {Number} y
-     */
-    SampleHandler.prototype.arcRel = function(rx, ry, xAxisRotation, largeArcFlag, sweepFlag, x, y) {
-        this.show("arcRel", arguments);
+    PathHandler.prototype.movetoRel = function(x, y) {
+        this.movetoAbs.apply(this, arguments);
     };
 
-    /**
-     * curvetoCubicAbs - C
-     * 
-     * @param {Number} x1
-     * @param {Number} y1
-     * @param {Number} x2
-     * @param {Number} y2
-     * @param {Number} x
-     * @param {Number} y
-     */
-    SampleHandler.prototype.curvetoCubicAbs = function(x1, y1, x2, y2, x, y) {
-        this.show("curvetoCubicAbs", arguments);
+    // -- Line --
+
+    PathHandler.prototype.linetoAbs = function(x, y) {
+        this.addRoutine("lineTo", arguments);
+        this._lastPoint = [x, y];
     };
 
-    /**
-     * curvetoCubicRel - c
-     * 
-     * @param {Number} x1
-     * @param {Number} y1
-     * @param {Number} x2
-     * @param {Number} y2
-     * @param {Number} x
-     * @param {Number} y
-     */
-    SampleHandler.prototype.curvetoCubicRel = function(x1, y1, x2, y2, x, y) {
-        this.show("curvetoCubicRel", arguments);
+    PathHandler.prototype.linetoRel = function(x, y) {
+        this.linetoAbs.apply(this, arguments);
     };
 
-    /**
-     * linetoHorizontalAbs - H
-     * 
-     * @param {Number} x
-     */
-    SampleHandler.prototype.linetoHorizontalAbs = function(x) {
-        this.show("linetoHorizontalAbs", arguments);
+    PathHandler.prototype.linetoHorizontalAbs = function(x) {
+        var args = [ x, this._lastPoint[1] ];
+        this.linetoAbs.apply(this, args);
     };
 
-    /**
-     * linetoHorizontalRel - h
-     * 
-     * @param {Number} x
-     */
-    SampleHandler.prototype.linetoHorizontalRel = function(x) {
-        this.show("linetoHorizontalRel", arguments);
+    PathHandler.prototype.linetoHorizontalRel = function(x) {
+        this.linetoHorizontalAbs.apply(this, arguments);
     };
 
-    /**
-     * linetoAbs - L
-     * 
-     * @param {Number} x
-     * @param {Number} y
-     */
-    SampleHandler.prototype.linetoAbs = function(x, y) {
-        //this._ctx.lineTo(x, y);
-        this.show("lineTo", arguments);
+    PathHandler.prototype.linetoVerticalAbs = function(y) {
+        var args = [ this._lastPoint[0], y ];
+        this.linetoAbs.apply(this, args);
     };
 
-    /**
-     * linetoRel - l
-     * 
-     * @param {Number} x
-     * @param {Number} y
-     */
-    SampleHandler.prototype.linetoRel = function(x, y) {
-        this.show("linetoRel", arguments);
+    PathHandler.prototype.linetoVerticalRel = function(y) {
+        this.linetoVerticalAbs.apply(this, arguments);
     };
 
-    /**
-     * movetoAbs - M
-     * 
-     * @param {Number} x
-     * @param {Number} y
-     */
-    SampleHandler.prototype.movetoAbs = function(x, y) {
-        //this._ctx.moveTo(x, y);
-        this.show("moveTo", arguments);
+    // -- Cubic Curve --
+
+    PathHandler.prototype.curvetoCubicAbs = function(x1, y1, x2, y2, x, y) {
+        this.addRoutine("bezierCurveTo", arguments);
+        this._lastPoint = [x, y];
+        this._lastControlPoint = [x2, y2];
     };
 
-    /**
-     * movetoRel - m
-     * 
-     * @param {Number} x
-     * @param {Number} y
-     */
-    SampleHandler.prototype.movetoRel = function(x, y) {
-        this.show("movetoRel", arguments);
+    PathHandler.prototype.curvetoCubicRel = function(x1, y1, x2, y2, x, y) {
+        this.curvetoCubicAbs.apply(this, arguments);
     };
 
-    /**
-     * curvetoQuadraticAbs - Q
-     * 
-     * @param {Number} x1
-     * @param {Number} y1
-     * @param {Number} x
-     * @param {Number} y
-     */
-    SampleHandler.prototype.curvetoQuadraticAbs = function(x1, y1, x, y) {
-        this.show("curvetoQuadraticAbs", arguments);
+    PathHandler.prototype.curvetoCubicSmoothAbs = function(x2, y2, x, y) {
+        var args = Array.prototype.concat.apply(_getReflectionPoint(this._lastControlPoint, this._lastPoint), arguments);
+        this.curvetoCubicAbs.apply(this, args);
     };
 
-    /**
-     * curvetoQuadraticRel - q
-     * 
-     * @param {Number} x1
-     * @param {Number} y1
-     * @param {Number} x
-     * @param {Number} y
-     */
-    SampleHandler.prototype.curvetoQuadraticRel = function(x1, y1, x, y) {
-        this.show("curvetoQuadraticRel", arguments);
+    PathHandler.prototype.curvetoCubicSmoothRel = function(x2, y2, x, y) {
+        this.curvetoCubicSmoothAbs.apply(this, arguments);
     };
 
-    /**
-     * curvetoCubicSmoothAbs - S
-     * 
-     * @param {Number} x2
-     * @param {Number} y2
-     * @param {Number} x
-     * @param {Number} y
-     */
-    SampleHandler.prototype.curvetoCubicSmoothAbs = function(x2, y2, x, y) {
-        this.show("curvetoCubicSmoothAbs", arguments);
+    // -- Quadratic Curve --
+
+    PathHandler.prototype.curvetoQuadraticAbs = function(x1, y1, x, y) {
+        this.addRoutine("quadraticCurveTo", arguments);
+        this._lastPoint = [x, y];
+        this._lastControlPoint = [x1, y1];
     };
 
-    /**
-     * curvetoCubicSmoothRel - s
-     * 
-     * @param {Number} x2
-     * @param {Number} y2
-     * @param {Number} x
-     * @param {Number} y
-     */
-    SampleHandler.prototype.curvetoCubicSmoothRel = function(x2, y2, x, y) {
-        this.show("curvetoCubicSmoothRel", arguments);
+    PathHandler.prototype.curvetoQuadraticRel = function(x1, y1, x, y) {
+        this.curvetoQuadraticAbs.apply(this, arguments);
     };
 
-    /**
-     * curvetoQuadraticSmoothAbs - T
-     * 
-     * @param {Number} x
-     * @param {Number} y
-     */
-    SampleHandler.prototype.curvetoQuadraticSmoothAbs = function(x, y) {
-        this.show("curvetoQuadraticSmoothAbs", arguments);
+    PathHandler.prototype.curvetoQuadraticSmoothAbs = function(x, y) {
+        var args = Array.prototype.concat.apply(_getReflectionPoint(this._lastControlPoint, this._lastPoint), arguments);
+        this.curvetoQuadraticAbs.apply(this, args);
     };
 
-    /**
-     * curvetoQuadraticSmoothRel - t
-     * 
-     * @param {Number} x
-     * @param {Number} y
-     */
-    SampleHandler.prototype.curvetoQuadraticSmoothRel = function(x, y) {
-        this.show("curvetoQuadraticSmoothRel", arguments);
+    PathHandler.prototype.curvetoQuadraticSmoothRel = function(x, y) {
+        this.curvetoQuadraticSmoothAbs.apply(this, arguments);
     };
 
-    /**
-     * linetoVerticalAbs - V
-     * 
-     * @param {Number} y
-     */
-    SampleHandler.prototype.linetoVerticalAbs = function(y) {
-        this.show("linetoVerticalAbs", arguments);
+    // -- Elliptical Arc --
+
+    PathHandler.prototype.arcAbs = function(rx, ry, xAxisRotation, largeArcFlag, sweepFlag, x, y) {
+        throw "not supported yet";
     };
 
-    /**
-     * linetoVerticalRel - v
-     * 
-     * @param {Number} y
-     */
-    SampleHandler.prototype.linetoVerticalRel = function(y) {
-        this.show("linetoVerticalRel", arguments);
+    PathHandler.prototype.arcRel = function(rx, ry, xAxisRotation, largeArcFlag, sweepFlag, x, y) {
+        this.arcAbs.apply(this, arguments);
     };
 
-    /**
-     * closePath - z or Z
-     */
-    SampleHandler.prototype.closePath = function() {
-        //this._ctx.closePath();
-        this.show("closePath", arguments);
+    // -- Close Path --
+
+    PathHandler.prototype.closePath = function() {
+        this.addRoutine("closePath", arguments);
     };
-    
+
+    function _getReflectionPoint (point, origin) {
+        var refX = origin[0] - point[0] + origin[0];
+        var refY = origin[1] - point[1] + origin[1];
+        return [ refX, refY ];
+    }
+
     debug.info("drawing module is installed.");
 };
