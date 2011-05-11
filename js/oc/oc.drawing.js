@@ -198,6 +198,14 @@ window.OOPCanvas.modules.drawing = function _drawing (OOPCanvas) {
         }, config);
     };
 
+    fn.drawImage = function(x, y) {
+        var ctx = this.getContext();
+        ctx.save();
+        ctx.translate(x, y);
+        ctx.drawImage.apply(ctx, arguments);
+        ctx.restore();
+    };
+
     fn.drawText = function(x, y, text, config) {
         _setup(this, function(ctx) {
             ctx.fillText(text, x, y);
