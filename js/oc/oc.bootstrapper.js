@@ -26,10 +26,17 @@
 
 //= require "../lib/ba-debug.min"
 
-var OOPCanvas = (function(window, document, undefined) {
+/**
+ * @class
+ * @exports OC as OOPCanvas
+ */
+var OOPCanvas = (function() {
     
     debug.setLevel(0);
     
+    /**
+     * @static
+     */
     OOPCanvas.meta = {
         'version': '0.0.0',
         'author': 'Mo Wang',
@@ -37,7 +44,10 @@ var OOPCanvas = (function(window, document, undefined) {
         'license': 'MIT'
     };
 
-    // bootstrapper constructor
+    /**
+     * @private
+     * @constructor
+     */
     function OOPCanvas () {}
 
     OOPCanvas.prototype.initModules = function() {
@@ -73,6 +83,9 @@ var OOPCanvas = (function(window, document, undefined) {
         debug.info("=== Completed Modules Installation ===");
     };
   
+    /**
+     * @static
+     */
     OOPCanvas.installPlugin = function(namespace, creator) {
         var fn = OOPCanvas.prototype;
 
@@ -81,6 +94,13 @@ var OOPCanvas = (function(window, document, undefined) {
                 return creator.apply(this, arguments);
             }
         };
+    };
+
+    /**
+     * @static
+     */
+    OOPCanvas.initialize = function(init) {
+        OOPCanvas._inits.push(init);
     };
     
     // == Private ==
@@ -108,7 +128,7 @@ var OOPCanvas = (function(window, document, undefined) {
         
     return OOPCanvas;
 
-})(window, document);
+})();
 
 'OC' in window || (window.OC = OOPCanvas);
 

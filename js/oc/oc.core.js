@@ -2,7 +2,7 @@
 //= require "oc.util"
 //= require "oc.runloop"
 
-window.OOPCanvas.modules.core = function _core (OOPCanvas) {
+(function (OOPCanvas) {
     
     var OC = OOPCanvas;
     var fn = OC.prototype;
@@ -15,13 +15,13 @@ window.OOPCanvas.modules.core = function _core (OOPCanvas) {
         return oc;
     };
 
-    _core.init = function(oc) {
+    OC.initialize( function(oc) {
         oc.installPostHook(function(oc) {
             oc.render();
         });
 
         debug.info("core module is init'ed.");
-    };
+    } );
 
     // == Getters and Setters ==
     
@@ -96,8 +96,9 @@ window.OOPCanvas.modules.core = function _core (OOPCanvas) {
         this._backBuffer = null;
         this._backBufferCtx = null;
 
-        this._left = OC.Dom.getLeft(canvas);
-        this._top = OC.Dom.getTop(canvas);
+        var pos = OC.Util.domElementPosition(canvas);
+        this._left = pos.left;
+        this._top = pos.top;
         this._width = canvas.getAttribute('width');
         this._height = canvas.getAttribute('height');
 
@@ -128,4 +129,5 @@ window.OOPCanvas.modules.core = function _core (OOPCanvas) {
     }
 
     debug.info("core module is installed.");
-};
+
+})(OOPCanvas);

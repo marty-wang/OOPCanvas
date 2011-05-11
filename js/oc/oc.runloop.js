@@ -1,63 +1,95 @@
-//= require "oc.util"
+//= require "oc.util" 
 
-window.OOPCanvas.modules.runloop = function _runloop (OOPCanvas) {
-    
-    var OC = OOPCanvas;
-    var fn = OC.prototype;
+(function (OC) {
     
     var undefined;
 
-    // const
+    /**
+     * @constant
+     */
     var DEFAULT_FPS = 60;
     
     // ## init ##
-    _runloop.init = function(oc) {
+
+    OC.initialize(function(oc) {
         oc._runloop = new Runloop(oc);
 
         debug.info("runloop module is init'ed.");
-    };
+    });
 
     // ++ Add Methods to OOPCanvas ++
-
-    fn.startRunloop = function() {
-        this._runloop.startLoop();
+    
+    /**
+     * @function
+     */
+    OC.prototype.startRunloop = function() {
+        this._runloop._startLoop();
     };
 
-    fn.stopRunloop = function() {
-        this._runloop.stopLoop();
+    /**
+     * @function
+     */
+    OC.prototype.stopRunloop = function() {
+        this._runloop._stopLoop();
     };
     
-    fn.isLooping = function() {
+    /**
+     * @function
+     */
+    OC.prototype.isLooping = function() {
         return this._runloop._isLooping;
     };
 
-    fn.getCurrentFPS = function() {
+    /**
+     * @function
+     */
+    OC.prototype.getCurrentFPS = function() {
         return this._runloop._curFPS;
     };
 
-    fn.installHook = function(hook) {
+    /**
+     * @function
+     */
+    OC.prototype.installHook = function(hook) {
         this._runloop._hooks.push(hook);  
     };
 
-    fn.removeHook = function(hook) {
+    /**
+     * @function
+     */
+    OC.prototype.removeHook = function(hook) {
         // TODO: implement
     };
 
-    //stack-ish: first-in-last-out
-    fn.installPostHook = function(hook) {
+    /**
+     * @function
+     * @description stack-ish: first-in-last-out
+     */
+    OC.prototype.installPostHook = function(hook) {
         this._runloop._postHooks.unshift(hook);
     };
 
-    fn.removePostHook = function(hook) {
+    /**
+     * @function
+     */
+    OC.prototype.removePostHook = function(hook) {
         // TODO: implement
     };
+    
+    // ===================
+    // == Runloop Class ==
+    // ===================
 
-    // ++ End of Adding Methods to OOPCanvas ++
-    
-    // =============
-    // == Runloop ==
-    // =============
-    
+    /**
+     * @name Runloop 
+     * @class Runloop allows other objects to install hooks on it, and
+     * thereafter sends them ticks at the fps as configured.<br/>
+     * This class is <b>NOT</b> exposed for public use, as it functions as 
+     * a singleton per OOPCanvas instance, and is managed by its OOPCanvas 
+     * instance. However, it adds functions to OOPCanvas, which in turn interacts with
+     * other modules and public objects.
+     * @description Here is the details about the Runloop class.
+     */
     function Runloop(oc) {
         
         this._config = {
@@ -90,7 +122,9 @@ window.OOPCanvas.modules.runloop = function _runloop (OOPCanvas) {
         }
     }
 
-    Runloop.prototype.startLoop = function() {
+    // == Protected Methods ==
+
+    Runloop.prototype._startLoop = function() {
         if (this._isLooping) {
             return;
         }
@@ -102,11 +136,13 @@ window.OOPCanvas.modules.runloop = function _runloop (OOPCanvas) {
 
     };
 
-    Runloop.prototype.stopLoop = function() {
+    Runloop.prototype._stopLoop = function() {
         if (this._isLooping) {
             this._shouldRun = false;
         }
     };
+
+    // == private ==
 
     function _loop (rl) {
 
@@ -122,8 +158,6 @@ window.OOPCanvas.modules.runloop = function _runloop (OOPCanvas) {
         })();
     
     }
-
-    // == private ==
 
     function _tick (rl) {
         _calcCurFrame(rl);
@@ -201,4 +235,5 @@ window.OOPCanvas.modules.runloop = function _runloop (OOPCanvas) {
     //  ====================
 
     debug.info("runloop module is installed.");
-};
+
+})(OOPCanvas);

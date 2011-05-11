@@ -56,7 +56,7 @@ window.OOPCanvas.modules.eventEmitter = function (OOPCanvas) {
         if (subscriber === undefined) {
             subscribers.length = 0;
         } else {
-            var index = OC.Array.indexOf(subscribers, subscriber);
+            var index = OC.Util.arrayIndexOf(subscribers, subscriber);
             if (index > -1) {
                 subscribers.splice(index, 1);
             }

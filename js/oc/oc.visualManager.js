@@ -61,7 +61,7 @@ window.OOPCanvas.modules.visualManager = function _visualManager (OOPCanvas) {
     function VisualManager (oc) {
         this._oc = oc;
 
-        this._children = new OC.Dict(function(c1, c2) {
+        this._children = new OC.Collections.Dict(function(c1, c2) {
             return c1.getZIndex() - c2.getZIndex();
         });
 
