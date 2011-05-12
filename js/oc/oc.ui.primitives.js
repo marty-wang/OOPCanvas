@@ -142,8 +142,9 @@
 
             this._left = 0;
             this._top = 0;
-            this._width = oc.getWidth();
-            this._height = oc.getHeight();
+            var size = oc.getSize();
+            this._width = size.width;
+            this._height = size.height;
             this._zIndex = OC.UIElement.Min_ZIndex;
             this._config = config;
         }

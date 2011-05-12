@@ -1,13 +1,6 @@
 //= require "oc.util" 
 
-(function (OC) {
-    
-    var undefined;
-
-    /**
-     * @constant
-     */
-    var DEFAULT_FPS = 60;
+(function (OC, undefined) {
     
     // ## init ##
 
@@ -17,6 +10,11 @@
         debug.info("runloop module is init'ed.");
     });
 
+    /**
+     * @constant
+     */
+    var DEFAULT_FPS = 60;
+    
     // ++ Add Methods to OOPCanvas ++
     
     /**

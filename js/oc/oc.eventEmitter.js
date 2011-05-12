@@ -1,31 +1,34 @@
 //= require "oc.bootstrapper"
 //= require "oc.util"
 
-window.OOPCanvas.modules.eventEmitter = function (OOPCanvas) {
+(function (OC) {
 
-    var OC = OOPCanvas;
-    var fn = OC.prototype;
+    // ++ Augment OOPCanvas ++
+   
+    OC.EventEmitter = EventEmitter;
 
-    // ++ Add methods ++
-    
-    fn.eventEmitter = function () {
+    /**
+     * shorthand method to create Event Emitter instance.
+     */
+    OC.prototype.eventEmitter = function () {
         return new EventEmitter();
     };
 
-    // ++ End of Adding Methods ++
-    
-    // == EventEmitter Constructor ==
+    // == EventEmitter ==
 
     /**
-    * @class
-    */
+     * Can be created by using shorthand method {@link OOPCanvas#eventEmitter}
+     * @name EventEmitter
+     * @exports EventEmitter as OOPCanvas.EventEmitter
+     * @class The class deals with eventing.
+     */
     function EventEmitter () {
         this._eventsMapper = {};
-    } 
+    }
 
     /**
     * @param { String } eventName
-    * @param { Object or Function } subscriber Subscriber can be either object or
+    * @param { Object|Function } subscriber Subscriber can be either object or
     * function. If it is an object, it must have an event handler function named
     * after "oneventName". For example, if the event is "created", the
     * corresponding event handler function should be named as "oncreated". If the
@@ -44,8 +47,10 @@ window.OOPCanvas.modules.eventEmitter = function (OOPCanvas) {
         mapper[eventName].push(subscriber);
     };
 
-    // if subscriber is left out, it will remove all the subscribers for 
-    // that event
+    /**
+     * @param {String} eventName
+     * @param {Object|Function} [subscriber] if subscriber is left out, it will remove all the subscribers for that event.
+     */
     EventEmitter.prototype.unsubscribe = function(eventName, subscriber) {
         var subscribers = this._eventsMapper[eventName];
 
@@ -67,6 +72,9 @@ window.OOPCanvas.modules.eventEmitter = function (OOPCanvas) {
         }
     };
 
+    /**
+     * trigger event
+     */
     EventEmitter.prototype.fire = function(sender, eventName, eventArgs) {
         var subscribers = this._eventsMapper[eventName];
 
@@ -91,4 +99,5 @@ window.OOPCanvas.modules.eventEmitter = function (OOPCanvas) {
     };
 
     debug.info("eventEmitter module is installed.");
-};
+
+})(OOPCanvas);

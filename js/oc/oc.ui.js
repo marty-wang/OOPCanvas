@@ -133,8 +133,9 @@
             }
 
             var oc  = this._oc;
-            var w = oc.getWidth();
-            var h = oc.getHeight();
+            var size = oc.getSize();
+            var w = size.width;
+            var h = size.height;
             var ctx = oc.getHitTestContext();
             ctx.clearRect(0, 0, w, h);
 

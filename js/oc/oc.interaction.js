@@ -35,8 +35,8 @@ window.OOPCanvas.modules.interaction = function _interaction (OOPCanvas) {
 
     function Interaction (oc) {
         this._oc = oc;
-        this._canvas = this._oc.getCanvas();
-        this._refPoint = [ oc.getLeft(), oc.getTop() ];
+        this._canvas = oc.getCanvas();
+        this._refPoint = oc.getPosition();
 
         this._hitTestCtx = null;
 
@@ -69,8 +69,9 @@ window.OOPCanvas.modules.interaction = function _interaction (OOPCanvas) {
     function _createHitTestContext (ia) {
         var oc = ia._oc;
         var buffer = document.createElement('canvas');
-        buffer.width = oc.getWidth();
-        buffer.height = oc.getHeight();
+        var size = oc.getSize();
+        buffer.width = size.width;
+        buffer.height = size.height;
         ia._hitTestCtx = buffer.getContext('2d');
     }
 
@@ -136,7 +137,7 @@ window.OOPCanvas.modules.interaction = function _interaction (OOPCanvas) {
 		    posx = e.clientX + document.body.scrollLeft;
 		    posy = e.clientY + document.body.scrollTop;
 	    }
-	    return [ posx - refPoint[0], posy - refPoint[1] ];
+	    return [ posx - refPoint.left, posy - refPoint.top ];
     }
 
     debug.info("interaction module is installed.");

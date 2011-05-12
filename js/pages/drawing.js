@@ -108,9 +108,10 @@ $(document).ready(function() {
         alert("hallo, I am a path");
     });
     oc.addChild(path);
-
-    var width = oc.getWidth();
-    var height = oc.getHeight(); 
+    
+    var size = oc.getSize();
+    var width = size.width;
+    var height = size.height; 
 
     // var x = 40;
     // var y = 40;

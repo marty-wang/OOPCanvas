@@ -2,11 +2,24 @@
 //= require "oc.util"
 //= require "oc.runloop"
 
-(function (OOPCanvas) {
-    
-    var OC = OOPCanvas;
-    var fn = OC.prototype;
+(function (OC) {
 
+    // ## init ##
+
+    OC.initialize( function(oc) {
+        oc.installPostHook(function(oc) {
+            _render(oc);
+        });
+
+        debug.info("core module is init'ed.");
+    } );
+
+    // ++ Add Methods to OOPCanvas ++
+    
+    /**
+     * Should always use this method to create OOPCanvas instance.
+     * @returns the OOPCanvas instance
+     */
     OC.create = function(canvas, globalConfig) {
         var oc = new OC(); 
         oc._core = new Core(canvas, globalConfig);
@@ -14,54 +27,53 @@
         
         return oc;
     };
-
-    OC.initialize( function(oc) {
-        oc.installPostHook(function(oc) {
-            oc.render();
-        });
-
-        debug.info("core module is init'ed.");
-    } );
-
-    // == Getters and Setters ==
     
-    fn.changeCursor = function(cursor) {
+    /**
+     * @function
+     */
+    OC.prototype.changeCursor = function(cursor) {
         this._core._canvas.style.cursor = cursor;
     };
-
-    fn.getLeft = function() {
-        return this._core._left;
+    
+    /**
+     * get the absoulte position of the canvas in the HTML document
+     * @returns object that has properties of left and top
+     */
+    OC.prototype.getPosition = function() {
+        return this._core._position;
     };
 
-    fn.getTop = function() {
-        return this._core._top;
+    /**
+     * get the canvas size
+     * @returns object that has propertis of width and height
+     */
+    OC.prototype.getSize = function() {
+        return {
+            'width': this._core._width,
+            'height': this._core._height
+        };
     };
-
-    fn.getWidth = function() {
-        return this._core._width;
-    };
-
-    fn.getHeight = function() {
-        return this._core._height;
-    };
-
-    fn.getCanvas = function () {
+    
+    /**
+     * @returns the HTML canvas element
+     */
+    OC.prototype.getCanvas = function () {
         return this._core._canvas;
     };
 
-    fn.getContext = function() {
+    /**
+     * returns the rendering context. Depending on the configuration it can
+     * return the regular context or the backbuffer context.
+     */
+    OC.prototype.getContext = function() {
         var core = this._core;
         return core.useBackBuffer() ? core._backBufferCtx : core._ctx;
     };
 
-    fn.render = function() {
-        var core = this._core;
-        if (core.useBackBuffer()) {
-            core._ctx.drawImage(core._backBuffer, 0, 0);
-        }
-    };
-
-    fn.clear = function(x, y, width, height) {
+    /**
+     * clear the specific area
+     */
+    OC.prototype.clear = function(x, y, width, height) {
         var core = this._core;
         core._ctx.clearRect(x, y, width, height);
         if (!!core._backBufferCtx) {
@@ -69,17 +81,39 @@
         }
     };
 
-    fn.clearAll = function() {
-        this.clear(0, 0, this.getWidth(), this.getHeight());
+    /**
+     * clear the entrie canvas
+     */
+    OC.prototype.clearAll = function() {
+        var size = this.getSize();
+        this.clear(0, 0, size.width, size.height);
     };
 
-    fn.getGlobalConfig = function() {
+    /**
+     * return the global configuration
+     */
+    OC.prototype.getGlobalConfig = function() {
         return this._core._globalConfig;
     };
 
-    // ==========
-    // == Core ==
-    // ==========
+    // == Private Methods ==
+
+    function _render (oc) {
+        var core = oc._core;
+        if (core.useBackBuffer()) {
+            core._ctx.drawImage(core._backBuffer, 0, 0);
+        }
+    }
+
+    /**
+     * @name Core
+     * @class Core is the rendering engine.<br/>
+     * Configuration: <b>useBackBuffer</b>(default: false) <br/><br/>
+     * <i>This class is <b>NOT</b> exposed for public use, as it functions as 
+     * a singleton per OOPCanvas instance, and is managed by its OOPCanvas 
+     * instance. However, it adds functions to OOPCanvas, which in turn interacts with
+     * other modules and public objects.</i>
+     */
 
     function Core (canvas, globalConfig) {
         if (!canvas) {
@@ -96,9 +130,7 @@
         this._backBuffer = null;
         this._backBufferCtx = null;
 
-        var pos = OC.Util.domElementPosition(canvas);
-        this._left = pos.left;
-        this._top = pos.top;
+        this._position = OC.Util.domElementPosition(canvas);
         this._width = canvas.getAttribute('width');
         this._height = canvas.getAttribute('height');
 
