@@ -15,33 +15,33 @@ $(document).ready(function() {
 
     oc.addChild(bg);
 
-    // var button = oc.button(100, 100);
-    // button.setZIndex(2);
-    // button.click(function(sender, args) {
-    //     button.animate({
-    //         'left': 400
-    //     });
-    // });
-    // button.bind('mousemove', function(sender, args) {
-    //     // debug.debug("mouse move " + button.getId());
-    // });
-    // button.bind('mouseover', function(sender, args) {
-    //     // debug.debug('mouse over ' + button.getId());
-    // });
+    var button = oc.button(100, 100);
+    button.setZIndex(2);
+    button.click(function(sender, args) {
+        button.animate({
+            'left': 400
+        });
+    });
+    button.bind('mousemove', function(sender, args) {
+        // debug.debug("mouse move " + button.getId());
+    });
+    button.bind('mouseover', function(sender, args) {
+        // debug.debug('mouse over ' + button.getId());
+    });
 
-    // button.bind('mouseout', function(sender, args) {
-    //     // debug.debug('mouse out ' + button.getId());
-    // });
+    button.bind('mouseout', function(sender, args) {
+        // debug.debug('mouse out ' + button.getId());
+    });
 
-    // button.bind("mousedown", function(sender, args) {
-    //     debug.debug("mouse down " + button.getId());
-    // });
+    button.bind("mousedown", function(sender, args) {
+        debug.debug("mouse down " + button.getId());
+    });
 
-    // button.bind("mouseup", function(sender, args) {
-    //     debug.debug("mouse up " + button.getId());
-    // });
+    button.bind("mouseup", function(sender, args) {
+        debug.debug("mouse up " + button.getId());
+    });
 
-    // oc.addChild(button);
+    oc.addChild(button);
 
     // var button1 = oc.button(125, 125);
     // button1.click(function() {

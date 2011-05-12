@@ -11,13 +11,11 @@
 // Only re-draw the children and background overlapping the child in question
 // in z-index
 
-window.OOPCanvas.modules.visualManager = function _visualManager (OOPCanvas) {
-
-    var OC = OOPCanvas;
-    var fn = OC.prototype;
+(function (OC) {
 
     // ## init ##
-    _visualManager.init = function(oc) {
+    
+    OC.initialize(function(oc) {
         oc._visualManager = new VisualManager(oc);
 
         oc.installHook(function(oc) {
@@ -25,39 +23,46 @@ window.OOPCanvas.modules.visualManager = function _visualManager (OOPCanvas) {
         });
 
         debug.info("visualManager module is init'ed.");
-    };
+    });
 
-    fn.addChild = function (child) {
+    // == Augment OOPCanvas ==
+
+    OC.prototype.addChild = function (child) {
         this._visualManager.addChild(child);
     };
 
-    fn.addChildren = function (children) {
+    OC.prototype.addChildren = function (children) {
         this._visualManager.addChildren(children);
     };
 
-    fn.removeChildById = function (id) {
+    OC.prototype.removeChildById = function (id) {
         this._visualManager.removeChildById(id);
     };
 
-    fn.removeChild = function (child) {
+    OC.prototype.removeChild = function (child) {
         this._visualManager.removeChild(child);
     };
 
     // children: array
-    fn.removeChildren = function (children) {
+    OC.prototype.removeChildren = function (children) {
         this._visualManager.removeChildren(children);
     };
 
-    fn.removeAll = function () {
+    OC.prototype.removeAll = function () {
         this._visualManager.removeChildren();
     };
 
-    // ++ End of Adding Methods to OOPCanvas ++
-    
-    // ====================
     // == Visual Manager ==
-    // ====================
 
+    /**
+     * @name VisualManager
+     * @class Visual Manager acts as a gateway, between the system and
+     * UIElements. <br/><br/>
+     * This class is <b>NOT</b> exposed for public use, as it functions as 
+     * a singleton per OOPCanvas instance, and is managed by its OOPCanvas 
+     * instance. However, it adds functions to OOPCanvas, which in turn interacts with
+     * other modules.
+     */
     function VisualManager (oc) {
         this._oc = oc;
 
@@ -202,10 +207,7 @@ window.OOPCanvas.modules.visualManager = function _visualManager (OOPCanvas) {
         });
     }
 
-    // ===========================
-    // == End of Visual Manager ==
-    // ===========================
-
     debug.info("visualManager module is installed.");
-};
+
+})(OOPCanvas);
 

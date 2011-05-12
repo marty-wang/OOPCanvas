@@ -2,16 +2,13 @@
 //= require "oc.drawing"
 //= require "oc.runloop"
 
-window.OOPCanvas.modules.debug = function _debug (OOPCanvas) {
-
-    var OC = OOPCanvas;
-    var fn = OC.prototype;
+(function (OC) {
 
     var _config = {
         'showDebugInfo': false
     };
 
-    _debug.init = function(oc) {
+    OC.initialize(function(oc) {
         var gConfig = oc.getGlobalConfig();
         OC.Util.sync(_config, gConfig);
         if(_config.showDebugInfo) {
@@ -19,7 +16,7 @@ window.OOPCanvas.modules.debug = function _debug (OOPCanvas) {
         }
 
         debug.info("debug module is init'ed.");
-    };
+    });
     
     function _printDebugInfo (oc) {
         _printFPS(oc);
@@ -39,4 +36,4 @@ window.OOPCanvas.modules.debug = function _debug (OOPCanvas) {
 
     debug.info("debug module is installed.");
 
-};
+})(OOPCanvas);
