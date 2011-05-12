@@ -1,11 +1,12 @@
 //= require "oc.core"
 //= require "oc.animation"
 
-window.OOPCanvas.modules.easing = function (OOPCavnas) {
-    var OC = OOPCanvas;
-    var ef = OC.Animation.easingFunctions;
-
-    var undefined;
+(function (OC, undefined) {
+    
+    /**
+     * @exports ef as OOPCanvas.Animator.easingFunctions
+     */
+    var ef = OC.Animator.easingFunctions;
 
     // Rober Penner's Easing Equations
     // http://snippets.dzone.com/posts/show/4005
@@ -14,6 +15,9 @@ window.OOPCanvas.modules.easing = function (OOPCavnas) {
 
     // == QUADRATIC ==
 
+    /**
+     * @function
+     */
     ef.easeInQuad =  function (t, b, c, d) {
         t = t / d;
         return c*t*t + b;
@@ -307,4 +311,5 @@ window.OOPCanvas.modules.easing = function (OOPCavnas) {
     }
     
     debug.info("easing module is installed.");
-};
+
+})(OOPCanvas);

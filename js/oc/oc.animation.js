@@ -1,48 +1,30 @@
 //= require "oc.bootstrapper"
 //= require "oc.util"
 
-window.OOPCanvas.modules.animation = function (OOPCanvas) {
+(function (OC) {
     
-    var OC = OOPCanvas;
-    var fn = OC.prototype;
+    // ++ Augument OOPCanvas ++
+    
+    OC.Animator = Animator;
 
-    // ++ Add Methods ++
-
-    fn.animator = function(obj) {
+    /**
+     * shorthand method to create animator
+     */
+    OC.prototype.animator = function(obj) {
         return new Animator(obj);
     };
-
-    // ++ End of Adding Methods ++
-
-    // namespace
-    OC.Animation = {};
-
-    // t: current time, b: beginning value, d: duration
-    // c: end value - beginning value
-    OC.Animation.easingFunctions = {
-        'linear': function (t, b, c, d) {
-            return c*t/d + b;
-        }
-    };
-
-    // 3rd party and plugins should use this method to add easing functions.
-    // the easing function should request the arguments of t, b, c, d
-    OC.Animation.addEasingFunction = function(name, func) {
-        var efs = OC.Animation.easingFunctions;
-
-        if ( name in efs) {
-            throw '"' + name + '" easing function already exists!';
-        }
-
-        efs[name] = func;
-    };
-
-    // == Animator Constructor ==
+    
+    // == Animator ==
     
     // const
     var DEFAULT_ANIMATION_DURATION = 250; // in ms
-    
-    // object: the object whose properties are animated by animator
+
+    /**
+     * @name Animator
+     * @exports Animator as OOPCanvas.Animator
+     * @class
+     * @param {Object} object the object whose properties are animated by animator
+     */
     function Animator (obj) {
         this._object = obj;
 
@@ -66,9 +48,39 @@ window.OOPCanvas.modules.animation = function (OOPCanvas) {
         this._curVals = null;
     }
 
+    /**
+     * @namespace
+     */
+    Animator.easingFunctions = {};
+
+    /**
+     * @function
+     */
+    Animator.easingFunctions.linear = function (t, b, c, d) {
+        return c*t/d + b;
+    };
+
+    /**
+     * 3rd party and plugins should use this method to add easing functions.
+     * the easing function should request the arguments of t, b, c, d
+     */
+    Animator.addEasingFunction = function(name, func) {
+        var efs = Animator.easingFunctions;
+
+        if ( name in efs) {
+            throw '"' + name + '" easing function already exists!';
+        }
+
+        efs[name] = func;
+    };
+
     // TODO: maybe there is a better way to deal with arguments
     // optional kwargs: duration, easingFunction, callbacks
     // callbacks: start, animating, complete
+    
+    /**
+     * start animation
+     */
     Animator.prototype.start = function(props, kwargs) {
 
         kwargs = kwargs || {};
@@ -117,6 +129,9 @@ window.OOPCanvas.modules.animation = function (OOPCanvas) {
         }
     };
 
+    /**
+     * stop animation
+     */
     Animator.prototype.stop = function() {
         
         if (!this._isAnimating) {
@@ -130,6 +145,9 @@ window.OOPCanvas.modules.animation = function (OOPCanvas) {
         }
     };
 
+    /**
+     * update animation
+     */
     Animator.prototype.update = function(currentTime) {
 
         if (!this._isAnimating) {
@@ -188,13 +206,13 @@ window.OOPCanvas.modules.animation = function (OOPCanvas) {
 
         var func;
         if (typeof easingFunc === "string") {
-            func = OC.Animation.easingFunctions[easingFunc];
+            func = Animator.easingFunctions[easingFunc];
         } else {
             func = easingFunc;
         }
         
         if (!func) {
-            func = OC.Animation.easingFunctions.linear;
+            func = Animator.easingFunctions.linear;
         }
 
         return func;
@@ -202,4 +220,4 @@ window.OOPCanvas.modules.animation = function (OOPCanvas) {
     
     debug.info("animation module is installed.");
 
-};
+})(OOPCanvas);

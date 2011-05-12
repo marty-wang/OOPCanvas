@@ -11,8 +11,9 @@ $(document).ready(function() {
     });
     oc.startRunloop();
 
-    var width = oc.getWidth();
-    var height = oc.getHeight();
+    var size = oc.getSize();
+    var width = size.width;
+    var height = size.height;
 
     var fromLeft = 20;
     var toLeft = 700;
@@ -22,7 +23,7 @@ $(document).ready(function() {
     var top = 20;
 
     var samples = {};
-    var easings = OC.Animation.easingFunctions;
+    var easings = OC.Animator.easingFunctions;
     var easing;
 
     for ( easing in easings ) {
