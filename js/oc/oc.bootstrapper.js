@@ -50,38 +50,11 @@ var OOPCanvas = (function() {
      */
     function OOPCanvas () {}
 
-    OOPCanvas.prototype.initModules = function() {
-        debug.info("+++ Start to Init Modules +++");
-        var oc = this;
-        var i, init;
-        var inits = OOPCanvas._inits;
-        var count = inits.length;
-
-        for (i = 0; i < count; i++) {
-            init = inits[i];
-            init(oc);
-        }
-        debug.info("+++ Completed Modules Init +++");
-    };
     
-    OOPCanvas.modules = {};
+    /**
+     * @private
+     */
     OOPCanvas._inits = [];
-    OOPCanvas.isModulesInstalled = false;
-
-    OOPCanvas.installModules = function (moduleSettings) {
-        if (OOPCanvas.isModulesInstalled) {
-            return;
-        }
-        debug.info("=== Start to Install Modules ===");
-
-        moduleSettings = moduleSettings || {};
-        _iterateModules(OOPCanvas.modules, function(m, mk) {
-            _installModule(m, moduleSettings[mk]);
-        });
-        OOPCanvas.isModulesInstalled = true;
-        
-        debug.info("=== Completed Modules Installation ===");
-    };
   
     /**
      * @static
@@ -102,29 +75,21 @@ var OOPCanvas = (function() {
     OOPCanvas.initialize = function(init) {
         OOPCanvas._inits.push(init);
     };
+
     
-    // == Private ==
+    OOPCanvas.prototype._initModules = function() {
+        debug.info("+++ Start to Init Modules +++");
+        var oc = this;
+        var i, init;
+        var inits = OOPCanvas._inits;
+        var count = inits.length;
 
-    function _iterateModules (modules, callback) {
-        var mk, module;
-        for (mk in modules) {
-            if (Object.prototype.hasOwnProperty.call(modules, mk)) {
-                module = modules[mk];
-                if (typeof module === "function") {
-                    callback(module, mk);
-                } else if (typeof module === "object") {
-                    _iterateModules(module, callback);
-                }
-            }
+        for (i = 0; i < count; i++) {
+            init = inits[i];
+            init(oc);
         }
-    }
-
-    function _installModule (module, setting) {
-        module(OOPCanvas, setting);
-        if (!!module.init) {
-            OOPCanvas._inits.push(module.init);
-        }
-    } 
+        debug.info("+++ Completed Modules Init +++");
+    };
         
     return OOPCanvas;
 

@@ -2,8 +2,6 @@ $(document).ready(function() {
 
     debug.setLevel(4);
 
-    OC.installModules();
-
     var canvas = document.getElementById('oopcanvas');
     var oc = OC.create(canvas, {
         'strokeStyle': 'green',

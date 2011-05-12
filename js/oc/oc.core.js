@@ -14,7 +14,7 @@
         debug.info("core module is init'ed.");
     } );
 
-    // ++ Add Methods to OOPCanvas ++
+    // ++ Augment OOPCanvas ++
     
     /**
      * Should always use this method to create OOPCanvas instance.
@@ -23,7 +23,7 @@
     OC.create = function(canvas, globalConfig) {
         var oc = new OC(); 
         oc._core = new Core(canvas, globalConfig);
-        oc.initModules();
+        oc._initModules();
         
         return oc;
     };
