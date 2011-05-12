@@ -49,7 +49,7 @@
     }
 
     /**
-     * @namespace
+     * @namespace The collection of easing equations.
      */
     Animator.easingFunctions = {};
 

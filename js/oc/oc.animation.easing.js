@@ -3,31 +3,36 @@
 
 (function (OC, undefined) {
     
-    /**
+    /** 
      * @exports ef as OOPCanvas.Animator.easingFunctions
      */
     var ef = OC.Animator.easingFunctions;
 
-    // Rober Penner's Easing Equations
-    // http://snippets.dzone.com/posts/show/4005
-    // t: current time, b: beginning value, d: duration
-    // c: end value - beginning value
+    /**
+     * Robert Penner's Easing Equations
+     * t: current time, b: beginning value, d: duration
+     * c: end value - beginning value
+     * @see http://snippets.dzone.com/posts/show/4005
+     */
 
-    // == QUADRATIC ==
+    // QUADRATIC
 
     /**
-     * @function
      */
     ef.easeInQuad =  function (t, b, c, d) {
         t = t / d;
         return c*t*t + b;
     };
 
+    /**
+     */
     ef.easeOutQuad = function (t, b, c, d) {
         t = t / d;
         return -c*t*(t-2) + b;
     };
 
+    /**
+     */
     ef.easeInOutQuad = function (t, b, c, d) {
         t = t / (d/2);
         if ( t < 1) {
@@ -38,15 +43,21 @@
 
     // CUBIC
 
+    /**
+     */
     ef.easeInCubic = function (t, b, c, d) {
         return c*(t/=d)*t*t + b;
     };
 
+    /**
+     */
     ef.easeOutCubic = function (t, b, c, d) {
         t = t / d - 1;
         return c*(t*t*t + 1) + b;
     };
 
+    /**
+     */
     ef.easeInOutCubic = function (t, b, c, d) {
         t = t / ( d / 2);
         if (t < 1) {
@@ -58,16 +69,22 @@
 
     // QUARTIC
 
+    /**
+     */
     ef.easeInQuart = function (t, b, c, d) {
         t = t / d;
         return c*t*t*t*t + b;
     };
 
+    /**
+     */
     ef.easeOutQuart = function (t, b, c, d) {
         t = t / d - 1;
         return -c * (t*t*t*t - 1) + b;
     };
 
+    /**
+     */
     ef.easeInOutQuart = function (t, b, c, d) {
         t = t / ( d / 2 );
         if (t < 1) {
@@ -79,14 +96,20 @@
 
     // QUINTIC
 
+    /**
+     */
     ef.easeInQuint = function (t, b, c, d) {
         return c*(t/=d)*t*t*t*t + b;
     };
 
+    /**
+     */
     ef.easeOutQuint = function (t, b, c, d) {
         return c*((t=t/d-1)*t*t*t*t + 1) + b;
     };
 
+    /**
+     */
     ef.easeInOutQuint = function (t, b, c, d) {
         t = t / ( d / 2 );
         if (t < 1) {
@@ -99,28 +122,40 @@
     
     // SINUSOIDAL
     
+    /**
+     */
     ef.easeInSine = function (t, b, c, d) {
         return -c * Math.cos(t/d * (Math.PI/2)) + c + b;
     };
 
+    /**
+     */
     ef.easeOutSine = function (t, b, c, d) {
         return c * Math.sin(t/d * (Math.PI/2)) + b;
     };
 
+    /**
+     */
     ef.easeInOutSine = function (t, b, c, d) {
         return -c/2 * (Math.cos(Math.PI*t/d) - 1) + b;
     };   
 
     // EXPONENTIAL
 
+    /**
+     */
     ef.easeInExpo = function (t, b, c, d) {
         return (t===0) ? b : c * Math.pow(2, 10 * (t/d - 1)) + b;
     };
 
+    /**
+     */
     ef.easeOutExpo = function (t, b, c, d) {
         return (t===d) ? b+c : c * (-Math.pow(2, -10 * t/d) + 1) + b;
     };
 
+    /**
+     */
     ef.easeInOutExpo = function (t, b, c, d) {
         if (t===0) {
             return b;
@@ -134,20 +169,25 @@
         }
         return c/2 * (-Math.pow(2, -10 * --t) + 2) + b;
     };
-    
 
     // CIRCULAR
     
+    /**
+     */
     ef.easeInCirc = function (t, b, c, d) {
         t = t / d;
         return -c * (Math.sqrt(1 - t*t) - 1) + b;
     };
 
+    /**
+     */
     ef.easeOutCirc = function (t, b, c, d) {
         t = t / d - 1;
         return c * Math.sqrt(1 - t*t) + b;
     };
 
+    /**
+     */
     ef.easeInOutCirc = function (t, b, c, d) {
         t = t / ( d / 2);
         if ( t < 1 ) {
@@ -157,9 +197,10 @@
         return c/2 * (Math.sqrt(1 - t*t) + 1) + b;
     };
     
-
     // ELASTIC
 
+    /**
+     */
     ef.easeInElastic = function (t, b, c, d, a, p) {
         if ( t === 0 ) {
             return b;
@@ -186,6 +227,8 @@
         return -( a * Math.pow( 2, 10 * t ) * Math.sin( ( t * d - s ) * ( 2 * Math.PI ) / p ) ) + b;
     };
 
+    /**
+     */
     ef.easeOutElastic = function (t, b, c, d, a, p) {
         if ( t === 0 ) {
             return b;
@@ -211,6 +254,8 @@
         return a * Math.pow(2, -10 * t) * Math.sin( ( t * d - s ) * ( 2 * Math.PI ) / p ) + c + b;
     };
 
+    /**
+     */
     ef.easeInOutElastic = function (t, b, c, d, a, p) {
         if ( t === 0 ) {
             return b;
@@ -243,7 +288,9 @@
     };
 
     // == BACK ==
-
+    
+    /**
+     */
     ef.easeInBack = function (t, b, c, d, s) {
         if ( s === undefined ) {
             s = 1.70158;
@@ -252,6 +299,8 @@
         return c * t * t * ( ( s + 1 ) * t - s ) + b;
     };
 
+    /**
+     */
     ef.easeOutBack = function (t, b, c, d, s) {
         if ( s === undefined ) {
             s = 1.70158;
@@ -261,6 +310,8 @@
         return c * ( t * t * ( ( s + 1 ) * t + s ) + 1 ) + b;
     };
 
+    /**
+     */
     ef.easeInOutBack = function (t, b, c, d, s) {
         if ( s === undefined ) {
             s = 1.70158;
@@ -277,10 +328,18 @@
         
     // == BOUNCE ==
     
+    /**
+     * @function
+     */
     ef.easeInBounce = _easeInBounce;
-        
+       
+    /**
+     * @function
+     */
     ef.easeOutBounce = _easeOutBounce;
 
+    /**
+     */
     ef.easeInOutBounce = function (t, b, c, d) {
         if (t < d/2) {
             return _easeInBounce (t*2, 0, c, d) * 0.5 + b;
