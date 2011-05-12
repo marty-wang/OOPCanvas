@@ -135,7 +135,7 @@ window.OOPCanvas.modules.visualManager = function _visualManager (OOPCanvas) {
 
     function _hitTest (vm) {
         var oc = vm._oc;
-        var evt = oc.dequeueEvent();
+        var evt = oc._dequeueEvent();
         var hit;
 
         // no point to test hit if there is no event at all

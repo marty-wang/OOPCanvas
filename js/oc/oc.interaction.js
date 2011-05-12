@@ -4,34 +4,45 @@
 // TODO: this module is also responsible for normalize the cross browser event
 // handling
 
-window.OOPCanvas.modules.interaction = function _interaction (OOPCanvas) {
+(function (OC) {
 
-    var OC = OOPCanvas;
-    var fn = OC.prototype;
+    // ## init ##
 
-    _interaction.init = function (oc) {
+    OC.initialize( function (oc) {
         oc._interaction = new Interaction(oc);
 
         debug.info("interaction module is init'ed.");
-    };
+    });
 
-    // ++ Add Methods ++
+    // ++ Augment OOPCanvas ++
+    // These are protected methods and meant to be used internally across
+    // 1st-party modules.
 
-    fn.dequeueEvent = function () {
+    var fn = OC.prototype;
+
+    fn._dequeueEvent = function () {
         return this._interaction.dequeueEvent();
     };
 
-    fn.hitTest = function(element, x, y) {
+    fn._hitTest = function(element, x, y) {
         return this._interaction.hitTest(element, x, y);
     };
 
-    fn.getHitTestContext = function() {
+    fn._getHitTestContext = function() {
         return this._interaction.getHitTestContext();
     };
     
-    // ++ End of Adding methods ++
+    // == Interaction ==
+    
 
-    // == Interaction Class ==
+    /**
+     * @name Interaction
+     * @class This class handles the interaction with users. <br/><br/>
+     * <i>This class is <b>NOT</b> exposed for public use, as it functions as 
+     * a singleton per OOPCanvas instance, and is managed by its OOPCanvas 
+     * instance. However, it adds functions to OOPCanvas, which in turn interacts with
+     * other 1st-party modules.</i>
+     */
 
     function Interaction (oc) {
         this._oc = oc;
@@ -141,4 +152,5 @@ window.OOPCanvas.modules.interaction = function _interaction (OOPCanvas) {
     }
 
     debug.info("interaction module is installed.");
-};
+
+})(OOPCanvas);

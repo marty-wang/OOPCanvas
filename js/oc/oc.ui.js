@@ -136,7 +136,7 @@
             var size = oc.getSize();
             var w = size.width;
             var h = size.height;
-            var ctx = oc.getHitTestContext();
+            var ctx = oc._getHitTestContext();
             ctx.clearRect(0, 0, w, h);
 
             // swap the rendering context with the hittest context
@@ -153,7 +153,7 @@
         };
 
         UIElement.prototype.testPointInPath = function(x, y) {
-            return this._oc.hitTest(this, x, y);
+            return this._oc._hitTest(this, x, y);
         };
 
         // == Method to Override ==
