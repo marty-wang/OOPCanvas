@@ -2,19 +2,35 @@
 //= require "oc.util"
 //= require "../lib/path_parser.js"
 
-window.OOPCanvas.modules.drawing = function _drawing (OOPCanvas) {
+(function (OC) {
 
-    var OC = OOPCanvas;
-    var fn = OOPCanvas.prototype;
+    var _EXCLUDES = ['rotate', 'translate', 'scale', 'transform'];
 
-    // ++ Add Methods ++
+    var _config = {
+        'textBaseline':  'top',
+        'font':          '14px sans-serif'
+    };
+
+    // ## init ##
+
+    OC.initialize(function(oc) {
+        var gConfig = oc.getGlobalConfig();
+        OC.Util.sync(_config, gConfig);
+
+        debug.info("drawing module is init'ed.");  
+    });
+
+    // ++ Augment OOPCanvas ++
     
-    fn.updateConfig = function (config, updates) {
+    /**
+     * update configuration
+     */
+    OC.prototype.updateConfig = function (config, updates) {
         OC.Util.merge(config, updates, true, _EXCLUDES);
     };
 
     // stops: array, stop[0]: position, stop[1]: color
-    fn.createLinearGradient = function (x0, y0, x1, y1, stops) {
+    OC.prototype.createLinearGradient = function (x0, y0, x1, y1, stops) {
         var ctx = this.getContext();
         var lingrad = ctx.createLinearGradient(x0, y0, x1, y1);
 
@@ -27,26 +43,9 @@ window.OOPCanvas.modules.drawing = function _drawing (OOPCanvas) {
         } 
                 
         return lingrad;
-    };
-    
-    // ++ End of Adding Methods ++
+    }; 
 
-    // const
-    var _EXCLUDES = ['rotate', 'translate', 'scale', 'transform'];
-
-    var _config = {
-        'textBaseline':  'top',
-        'font':          '14px sans-serif'
-    };
-
-    _drawing.init = function(oc) {
-        var gConfig = oc.getGlobalConfig();
-        OC.Util.sync(_config, gConfig);
-
-        debug.info("drawing module is init'ed.");  
-    };
-
-    fn.drawLine = function(x0, y0, x1, y1, config) {
+    OC.prototype.drawLine = function(x0, y0, x1, y1, config) {
         _setup(this, function(ctx) {
             ctx.beginPath();
             ctx.moveTo(x0, y0);
@@ -55,7 +54,7 @@ window.OOPCanvas.modules.drawing = function _drawing (OOPCanvas) {
         }, config);
     };
     
-    fn.drawLines = function(points, config) {
+    OC.prototype.drawLines = function(points, config) {
         var p0 = points[0];
         var i, p;
         var count = points.length;
@@ -70,7 +69,7 @@ window.OOPCanvas.modules.drawing = function _drawing (OOPCanvas) {
         }, config);
     };
 
-    fn.drawPolygon = function(centerX, centerY, radius, sides, config) {
+    OC.prototype.drawPolygon = function(centerX, centerY, radius, sides, config) {
         config = config || {};
 
         var deg = Math.PI * 2 / sides;
@@ -95,7 +94,7 @@ window.OOPCanvas.modules.drawing = function _drawing (OOPCanvas) {
         }, config);
     };
 
-    fn.drawRectangle = function(x, y, width, height, config) {
+    OC.prototype.drawRectangle = function(x, y, width, height, config) {
         config = config || {};
 
         _setup(this, function(ctx) {
@@ -140,7 +139,7 @@ window.OOPCanvas.modules.drawing = function _drawing (OOPCanvas) {
         }, config);
     };
 
-    fn.drawEllipse = function(x, y, width, height, config) {
+    OC.prototype.drawEllipse = function(x, y, width, height, config) {
         _setup(this, function(ctx) {
             var w = width;
             var h = height;
@@ -164,7 +163,7 @@ window.OOPCanvas.modules.drawing = function _drawing (OOPCanvas) {
         }, config);
     };
 
-    fn.drawArc = function(centerX, centerY, radius, startingAngle, endingAngle, counterClockwise, config) {
+    OC.prototype.drawArc = function(centerX, centerY, radius, startingAngle, endingAngle, counterClockwise, config) {
         _setup(this, function(ctx) {
             var x = centerX + radius * Math.cos(startingAngle);
             var y = centerY + radius * Math.sin(startingAngle);
@@ -176,11 +175,11 @@ window.OOPCanvas.modules.drawing = function _drawing (OOPCanvas) {
         }, config); 
     };
 
-    fn.drawCircle = function(centerX, centerY, radius, config) {
+    OC.prototype.drawCircle = function(centerX, centerY, radius, config) {
         this.drawArc(centerX, centerY, radius, 0, Math.PI * 2, false, config);
     };
 
-    fn.drawPath = function _drawPath (x, y, pathData, config) {
+    OC.prototype.drawPath = function _drawPath (x, y, pathData, config) {
         // cache parser
         if ( !_drawPath._parser ) {
             _drawPath._parser = new PathHandler();
@@ -198,7 +197,7 @@ window.OOPCanvas.modules.drawing = function _drawing (OOPCanvas) {
         }, config);
     };
 
-    fn.drawImage = function(x, y) {
+    OC.prototype.drawImage = function(x, y) {
         var ctx = this.getContext();
         ctx.save();
         ctx.translate(x, y);
@@ -206,7 +205,7 @@ window.OOPCanvas.modules.drawing = function _drawing (OOPCanvas) {
         ctx.restore();
     };
 
-    fn.drawText = function(x, y, text, config) {
+    OC.prototype.drawText = function(x, y, text, config) {
         _setup(this, function(ctx) {
             ctx.fillText(text, x, y);
         }, config);
@@ -238,6 +237,10 @@ window.OOPCanvas.modules.drawing = function _drawing (OOPCanvas) {
     // have been written.
     // TODO: evaluate if it needs to
 
+    /**
+     * @name PathHandler
+     * @class
+     */
     function PathHandler (context) {
         this._ctx = context;
         this._parser = new PathParser();
@@ -381,4 +384,5 @@ window.OOPCanvas.modules.drawing = function _drawing (OOPCanvas) {
     }
 
     debug.info("drawing module is installed.");
-};
+
+})(OOPCanvas);
