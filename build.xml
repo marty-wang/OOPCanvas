@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="OOPCanvas" default="gen_js_doc" basedir=".">
+    
+    <property name="jsdoc_toolkit" value="${basedir}/tools/jsdoc-toolkit"/>
+    <property name="yuicompressor" value="${basedir}/tools/yuicompressor-2.4.2.jar"/>
+    <property name="dist_dir" value="${basedir}/js/dist"/>
+    <property name="source_dir" value="${basedir}/js/oc"/>
+    <property name="lib_dir" value="${basedir}/js/lib"/>
+
+    <target name="gen_js_doc">
+        <java jar="${jsdoc_toolkit}/jsrun.jar" fork="true">
+            <arg line="${jsdoc_toolkit}/app/run.js"/>
+            <arg line="-t=${jsdoc_toolkit}/templates/codeview1.2"/>
+            <arg line="-D='title:OOPCanvas Javascript Library'"/>
+            <arg line="-d=${basedir}/docs/js_doc"/>
+            <arg line="${source_dir}/oc.bootstrapper.js"/>
+            <arg line="${source_dir}/oc.util.js"/>
+            <arg line="${source_dir}/oc.collections.js"/>
+            <arg line="${source_dir}/oc.eventEmitter.js"/>
+            <arg line="${source_dir}/oc.runloop.js"/>
+            <arg line="${source_dir}/oc.core.js"/>
+            <arg line="${source_dir}/oc.interaction.js"/>
+            <arg line="${source_dir}/oc.drawing.js"/>
+            <arg line="${source_dir}/oc.animation.js"/>
+            <arg line="${source_dir}/oc.animation.easing.js"/>
+            <arg line="${source_dir}/oc.ui.js"/>
+            <arg line="${source_dir}/oc.ui.primitives.js"/>
+            <arg line="${source_dir}/oc.ui.button.js"/>
+            <arg line="${source_dir}/oc.visualManager.js"/>
+        </java>
+    </target>
+
+    <target name="compress">  
+        <java jar="${yuicompressor}" fork="true">  
+            <arg value="${source}" />  
+            <arg value="-o" />  
+            <arg value="${output}" />  
+        </java>  
+    <echo>${output}</echo>  
+    </target>
+
+    <target name="compress_js">  
+        <antcall target="compress">  
+            <param name="source" value="${dist_dir}/oc.js" />  
+            <param name="output" value="${dist_dir}/oc.min.js" />  
+        </antcall>  
+    </target>
+
+</project>
