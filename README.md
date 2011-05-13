@@ -1,5 +1,7 @@
 **UI Framework built from ground up, powered by HTML5 Canvas.**
 
+[Demo](http://marty-wang.github.com/OOPCanvas/ "Demo")
+
 License: MIT    
 Version: 0.0.0  
 Status: Very early phase. Many of the following info can be obsolete and is subject to
