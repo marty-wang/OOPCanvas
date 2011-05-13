@@ -1,5 +1,4 @@
 //= require "oc.core"
-//= require "../lib/Math.uuid"
 
 (function(OC) {
 

@@ -1,13 +1,12 @@
-/*****!
-*
-*   The contents of this file were written by Kevin Lindsey
-*   copyright 2002-2003 Kevin Lindsey
-*
-*   This file was compacted by jscompact
-*   A Perl utility written by Kevin Lindsey (kevin@kevlindev.com)
-*
-*****/
-
+/*!
+ *
+ *   The contents of this file were written by Kevin Lindsey
+ *   copyright 2002-2003 Kevin Lindsey
+ *
+ *   This file was compacted by jscompact
+ *   A Perl utility written by Kevin Lindsey (kevin@kevlindev.com)
+ *
+ */
 Svg.VERSION=1.0;
 Svg.NAMESPACE="http://www.w3.org/2000/svg";
 function Svg(){}

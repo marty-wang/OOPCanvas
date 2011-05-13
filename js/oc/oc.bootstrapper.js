@@ -24,9 +24,8 @@
  * THE SOFTWARE.
  */
 
-//= require "../lib/ba-debug.min"
-
 /**
+ * Dependencies: <a href="http://benalman.com/projects/javascript-debug-console-log/">JavaScript Debug</a>, <a href="http://www.broofa.com/2008/09/javascript-uuid-function/">Math.uuid.js</a>, <a href="http://www.kevlindev.com/dom/path_parser/index.htm">Path Parser</a>
  * @class
  * @exports OC as OOPCanvas
  */

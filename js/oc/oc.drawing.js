@@ -1,6 +1,5 @@
 //= require "oc.core"
 //= require "oc.util"
-//= require "../lib/path_parser.js"
 
 (function (OC) {
 
@@ -240,6 +239,7 @@
     /**
      * @name PathHandler
      * @class
+     * @requires Path Parser
      */
     function PathHandler (context) {
         this._ctx = context;

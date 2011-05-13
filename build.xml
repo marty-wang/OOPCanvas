@@ -2,7 +2,7 @@
 <project name="OOPCanvas" default="gen_js_doc" basedir=".">
     
     <property name="jsdoc_toolkit" value="${basedir}/tools/jsdoc-toolkit"/>
-    <property name="yuicompressor" value="${basedir}/tools/yuicompressor-2.4.2.jar"/>
+    <property name="yuicompressor" value="${basedir}/tools/yuicompressor-2.4.6.jar"/>
     <property name="dist_dir" value="${basedir}/js/dist"/>
     <property name="source_dir" value="${basedir}/js/oc"/>
     <property name="lib_dir" value="${basedir}/js/lib"/>
@@ -30,16 +30,41 @@
         </java>
     </target>
 
+    <target name="concat_lib">  
+        <concat destfile="${dist_dir}/lib.js">  
+            <filelist id="files" dir="${lib_dir}">  
+                <file name="ba-debug.min.js" />  
+                <file name="Math.uuid.js" />
+                <file name="path_parser.js" />  
+            </filelist>  
+        </concat>
+        <echo>${dist_dir}/lib.js</echo>
+    </target>
+
+    <target name="concat_src">
+        <exec executable="ruby">
+            <arg value="tools/concat_src.rb"/>
+        </exec>
+        <echo>${dist_dir}/oc.js</echo>
+    </target>
+
     <target name="compress">  
         <java jar="${yuicompressor}" fork="true">  
             <arg value="${source}" />  
             <arg value="-o" />  
             <arg value="${output}" />  
         </java>  
-    <echo>${output}</echo>  
+        <echo>${output}</echo>
     </target>
 
-    <target name="compress_js">  
+    <target name="compress_lib" depends="concat_lib">  
+        <antcall target="compress">  
+            <param name="source" value="${dist_dir}/lib.js" />  
+            <param name="output" value="${dist_dir}/lib.min.js" />  
+        </antcall>  
+    </target>
+    
+    <target name="compress_src" depends="concat_src">  
         <antcall target="compress">  
             <param name="source" value="${dist_dir}/oc.js" />  
             <param name="output" value="${dist_dir}/oc.min.js" />  
