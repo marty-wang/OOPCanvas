@@ -5,4 +5,4 @@ secretary = Sprockets::Secretary.new(
 )
 
 concatenation = secretary.concatenation
-concatenation.save_to("js/dist/oc.js")
+concatenation.save_to("dist/oc.js")

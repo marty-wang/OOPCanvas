@@ -3,7 +3,8 @@
     
     <property name="jsdoc_toolkit" value="${basedir}/tools/jsdoc-toolkit"/>
     <property name="yuicompressor" value="${basedir}/tools/yuicompressor-2.4.6.jar"/>
-    <property name="dist_dir" value="${basedir}/js/dist"/>
+    <!-- update tools/concat_src.rb everytime dist_dir has to be changed -->
+    <property name="dist_dir" value="${basedir}/dist"/>
     <property name="source_dir" value="${basedir}/js/oc"/>
     <property name="lib_dir" value="${basedir}/js/lib"/>
 
