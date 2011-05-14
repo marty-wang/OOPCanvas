@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="OOPCanvas" default="update" basedir=".">
+
+    <target name="update">
+
+        <delete dir="demo"/>
+        <delete dir="docs"/>
+
+        <exec executable="git">
+            <arg line="checkout master docs/js_doc demo"/>
+        </exec>
+        <echo>checkout docs/js_doc and demo from master branch</echo>
+    
+    </target>
+
+</project>
