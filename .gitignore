@@ -2,3 +2,5 @@
 *.swo
 
 .project
+
+_site
