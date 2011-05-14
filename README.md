@@ -1,6 +1,6 @@
 **UI Framework built from ground up, powered by HTML5 Canvas.**
 
-[Demo](http://marty-wang.github.com/OOPCanvas/demo "Demo")  
+[Demo](http://marty-wang.github.com/OOPCanvas/ "Demo")  
 [Documentation](http://marty-wang.github.com/OOPCanvas/docs/js_doc/
 "Documentation")
 
