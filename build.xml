@@ -3,14 +3,24 @@
 
     <target name="update">
 
-        <delete dir="demo"/>
-        <delete dir="docs"/>
+        <delete includeEmptyDirs="true">
+            <fileSet dir="." excludes="build.xml, README.md"/>
+        </delete>
+        <echo>Clean slate for re-deployment</echo>
 
         <exec executable="git">
             <arg line="checkout master docs/js_doc demo"/>
         </exec>
-        <echo>checkout docs/js_doc and demo from master branch</echo>
-    
+        <echo>Checkout docs/js_doc and demo from master branch</echo>
+
+        <move todir=".">
+            <fileset dir="demo">
+                <include name="**/*"/>
+            </fileset>
+        </move>
+
+        <delete dir="demo"/>
+
     </target>
 
 </project>
