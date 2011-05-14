@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="OOPCanvas" default="gen_js_doc" basedir=".">
+<project name="OOPCanvas" default="concat" basedir=".">
     
     <property name="jsdoc_toolkit" value="${basedir}/tools/jsdoc-toolkit"/>
     <property name="yuicompressor" value="${basedir}/tools/yuicompressor-2.4.6.jar"/>
@@ -31,7 +31,7 @@
         </java>
     </target>
 
-    <target name="concat_lib">  
+    <target name="concat">
         <concat destfile="${dist_dir}/lib.js">  
             <filelist id="files" dir="${lib_dir}">  
                 <file name="ba-debug.min.js" />  
@@ -40,16 +40,19 @@
             </filelist>  
         </concat>
         <echo>${dist_dir}/lib.js</echo>
-    </target>
 
-    <target name="concat_src">
         <exec executable="ruby">
             <arg value="tools/concat_src.rb"/>
         </exec>
         <echo>${dist_dir}/oc.js</echo>
-    </target>
 
-    <target name="compress">  
+        <delete dir="demo/dist"/>
+        <copy todir="demo/dist">
+            <fileSet dir="dist"/>
+        </copy>
+    </target>
+    
+    <target name="compress_func">  
         <java jar="${yuicompressor}" fork="true">  
             <arg value="${source}" />  
             <arg value="-o" />  
@@ -58,18 +61,20 @@
         <echo>${output}</echo>
     </target>
 
-    <target name="compress_lib" depends="concat_lib">  
-        <antcall target="compress">  
+    <target name="compress" depends="concat">  
+        <antcall target="compress_func">  
             <param name="source" value="${dist_dir}/lib.js" />  
             <param name="output" value="${dist_dir}/lib.min.js" />  
-        </antcall>  
-    </target>
-    
-    <target name="compress_src" depends="concat_src">  
-        <antcall target="compress">  
+        </antcall> 
+        <antcall target="compress_func">  
             <param name="source" value="${dist_dir}/oc.js" />  
             <param name="output" value="${dist_dir}/oc.min.js" />  
-        </antcall>  
+        </antcall>
+
+        <delete dir="demo/dist"/>
+        <copy todir="demo/dist">
+            <fileSet dir="dist"/>
+        </copy>
     </target>
 
 </project>
