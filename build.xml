@@ -4,7 +4,7 @@
     <target name="update">
 
         <delete includeEmptyDirs="true">
-            <fileSet dir="." excludes="build.xml, README.md"/>
+            <fileSet dir="." excludes="build.xml, README.md, post_build.rb"/>
         </delete>
         <echo>Clean slate for re-deployment</echo>
 
@@ -20,6 +20,10 @@
         </move>
 
         <delete dir="demo"/>
+
+        <exec executable="ruby">
+            <arg value="post_build.rb"/>
+        </exec>
 
     </target>
 
