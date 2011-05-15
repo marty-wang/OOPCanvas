@@ -27,4 +27,16 @@
 
     </target>
 
+    <target name="deploy">
+
+        <exec executable="git">
+            <arg line="commit -a -m 'update'"/>
+        </exec>
+
+        <exec executable="git">
+            <arg line="push -u origin gh-pages"/>
+        </exec>
+
+    </target>
+
 </project>
