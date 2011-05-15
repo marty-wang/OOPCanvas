@@ -1,0 +1,15 @@
+#easing canvas, #easing ul.actions {
+  float: left;
+}
+#easing canvas {
+  background: gray;
+}
+#easing li {
+  margin: 5px 0;
+}
+#easing li a {
+  margin: 0 5px;
+}
+#easing li a.current {
+  background: yellow;
+}
