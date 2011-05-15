@@ -7,10 +7,16 @@ base: /OOPCanvas
     <head>
         <title>{{ page.title }}</title>
         <meta charset="utf-8"/>
+
+        <link rel="stylesheet" href="{{ page.base }}/css/style.css" />
+        
         <script src="{{ page.base }}/dist/lib.min.js" type="text/javascript" charset="utf-8"></script>
-        <script src="{{ page.base }}/dist/oc.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="{{ page.base }}/dist/oc.js" type="text/javascript" charset="utf-8"></script>
+
+        <script src="{{ page.base }}/js/jquery-1.5.2.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="{{ page.base }}/js/{{ page.script }}" type="text/javascript" charset="utf-8"></script>
     </head>
-    <body>
+    <body id="{{ page.id }}">
         {{ content }}
     </body>
 </html>
