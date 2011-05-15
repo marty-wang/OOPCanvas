@@ -19,8 +19,8 @@ class File
   end
 end
 
-url_base = {
-    "url-base" => "/OOPCanvas"
+media = {
+    "media" => "/OOPCanvas"
 }
 
-File.prepend("_layouts/base.html", url_base.to_yaml+"---\n")
+File.prepend("_layouts/base.html", media.to_yaml+"---\n")

@@ -1,5 +1,5 @@
 --- 
-url-base: /OOPCanvas
+media: /OOPCanvas
 ---
 <!DOCTYPE html>
 <html lang="en">
@@ -7,14 +7,20 @@ url-base: /OOPCanvas
         <title>{{ page.title }}</title>
         <meta charset="utf-8"/>
 
-        <link rel="stylesheet" href="{{ page.base }}/css/style.css" />
+        <link rel="stylesheet" href="{{ page.media }}/css/style.css" />
         
-        <script src="{{ page.url-base }}/dist/lib.min.js" type="text/javascript" charset="utf-8"></script>
-        <script src="{{ page.url-base }}/dist/oc.js" type="text/javascript" charset="utf-8"></script>
+        <script src="{{ page.media }}/dist/lib.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="{{ page.media }}/dist/oc.js" type="text/javascript" charset="utf-8"></script>
 
-        <script src="{{ page.url-base }}/js/jquery-1.5.2.min.js" type="text/javascript" charset="utf-8"></script>
+        <script type="text/javascript" language="javascript" charset="utf-8">
+            document.DEMO = {
+                'media': "{{ page.media }}"
+            };
+        </script>
+
+        <script src="{{ page.media }}/js/jquery-1.5.2.min.js" type="text/javascript" charset="utf-8"></script>
         {% for script in page.scripts %}
-        <script src="{{ page.url-base }}/js/{{ script }}" type="text/javascript" charset="utf-8"></script>
+        <script src="{{ page.media }}/js/{{ script }}" type="text/javascript" charset="utf-8"></script>
         {% endfor %}
     </head>
     <body id="{{ page.id }}">
