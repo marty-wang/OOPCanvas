@@ -1,8 +1,8 @@
+canvas {
+  background: #D1D1D1;
+}
 #easing canvas, #easing ul.actions {
   float: left;
-}
-#easing canvas {
-  background: gray;
 }
 #easing li {
   margin: 5px 0;

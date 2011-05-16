@@ -30,6 +30,10 @@
     <target name="deploy">
 
         <exec executable="git">
+            <arg line="add ."/>
+        </exec>
+            
+        <exec executable="git">
             <arg line="commit -a -m 'update'"/>
         </exec>
 
