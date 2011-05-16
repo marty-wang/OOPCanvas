@@ -56,14 +56,16 @@ var OOPCanvas = (function() {
     OOPCanvas._inits = [];
 
     /**
-     * @static
+     * Plugins should be installed via this method
+     * @param {String} namespace
+     * @param {Function} plugin
      */
-    OOPCanvas.installPlugin = function(namespace, creator) {
+    OOPCanvas.installPlugin = function(namespace, plugin) {
         var fn = OOPCanvas.prototype;
 
         fn[namespace] = function() {
-            if (!!creator) {
-                return creator.apply(this, arguments);
+            if (!!plugin) {
+                return plugin.apply(this, arguments);
             }
         };
     };
@@ -2222,6 +2224,11 @@ debug.info("util module is installed.");
     };
 
 
+    /**
+     * Override the method if the subclass needs to update over time.
+     * Must call the super class after the subclass' logic.
+     * @public
+     */
     UIElement.prototype._update = function(currentTime) {
         if (!!this._animator) {
             this._isDirty |= this._animator.update(currentTime);
@@ -2230,31 +2237,76 @@ debug.info("util module is installed.");
         return !!this._isDirty;
     };
 
+    /**
+     * all the sub-classes must call this method
+     * @public
+     */
     UIElement.prototype._draw = function() {};
 
+    /**
+     * Subclass needs to implement this method
+     * if it needs to participant to the hittest
+     * @public
+     */
     UIElement.prototype._hitTest = function(x, y) {};
 
 
+    /**
+     * Override the evenhanlder if subclass wants custom action
+     * before click event fires up.
+     * Must call super class after the subclass' logic
+     * @public
+     */
     UIElement.prototype._click = function() {
         this.fire('click');
     };
 
+    /**
+     * Override the evenhanlder if subclass wants custom action
+     * before mouseover event fires up.
+     * Must call super class after the subclass' logic
+     * @public
+     */
     UIElement.prototype._mouseover = function() {
         this.fire('mouseover');
     };
 
+    /**
+     * Override the evenhanlder if subclass wants custom action
+     * before mousemove event fires up.
+     * Must call super class after the subclass' logic
+     * @public
+     */
     UIElement.prototype._mousemove = function() {
         this.fire('mousemove');
     };
 
+    /**
+     * Override the evenhanlder if subclass wants custom action
+     * before mouseout event fires up.
+     * Must call super class after the subclass' logic
+     * @public
+     */
     UIElement.prototype._mouseout = function() {
         this.fire('mouseout');
     };
 
+    /**
+     * Override the evenhanlder if subclass wants custom action
+     * before mousedown event fires up.
+     * Must call super class after the subclass' logic
+     * @public
+     */
     UIElement.prototype._mousedown = function() {
         this.fire('mousedown');
     };
 
+    /**
+     * Override the evenhanlder if subclass wants custom action
+     * before mouseup event fires up.
+     * Must call super class after the subclass' logic
+     * @public
+     */
     UIElement.prototype._mouseup = function() {
         this.fire('mouseup');
     };

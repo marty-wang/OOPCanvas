@@ -8,7 +8,7 @@
     <property name="source_dir" value="${basedir}/js/oc"/>
     <property name="lib_dir" value="${basedir}/js/lib"/>
 
-    <target name="gen_js_doc">
+    <target name="jsdoc">
         <java jar="${jsdoc_toolkit}/jsrun.jar" fork="true">
             <arg line="${jsdoc_toolkit}/app/run.js"/>
             <arg line="-t=${jsdoc_toolkit}/templates/codeview1.2"/>
@@ -61,7 +61,7 @@
         <echo>${output}</echo>
     </target>
 
-    <target name="compress" depends="concat">  
+    <target name="dist" depends="concat, jsdoc">  
         <antcall target="compress_func">  
             <param name="source" value="${dist_dir}/lib.js" />  
             <param name="output" value="${dist_dir}/lib.min.js" />  

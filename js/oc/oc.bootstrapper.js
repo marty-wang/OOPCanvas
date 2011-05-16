@@ -56,14 +56,16 @@ var OOPCanvas = (function() {
     OOPCanvas._inits = [];
   
     /**
-     * @static
+     * Plugins should be installed via this method
+     * @param {String} namespace
+     * @param {Function} plugin
      */
-    OOPCanvas.installPlugin = function(namespace, creator) {
+    OOPCanvas.installPlugin = function(namespace, plugin) {
         var fn = OOPCanvas.prototype;
 
         fn[namespace] = function() {
-            if (!!creator) {
-                return creator.apply(this, arguments);
+            if (!!plugin) {
+                return plugin.apply(this, arguments);
             }
         };
     };

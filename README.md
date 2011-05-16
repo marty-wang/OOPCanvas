@@ -43,4 +43,6 @@ change.
 **Architecture**  
 **Performance**  
 It seems that hitTest adds quite a lot performace overhead. Add grouping will
-probably scale down the hitTest process.
+probably scale down the hitTest process.    
+Need to re-evaluate if isHitTestVisible should be true by default and its
+performance implication even when subclass does not override hittest method.

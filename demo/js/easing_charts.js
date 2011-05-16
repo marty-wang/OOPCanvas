@@ -1,27 +1,68 @@
+$(document).ready(function() {
+    var canvas = document.getElementById('oopcanvas');
+    var oc = OC.create(canvas, {
+        'showDebugInfo': true
+    });
+    oc.startRunloop();
+
+    var size = oc.getSize();
+    var w = size.width;
+    var h = size.height;
+
+    var gutter = 20;
+
+    var left0 = 20;
+    var top0 = 20;
+    var cw = 260;
+    var ch = 150;
+
+    var fk;
+    var funcs = OC.Animator.easingFunctions;
+    var l = left0;
+    var t = top0;
+
+    for (fk in funcs) {
+
+        if ( l + cw > w ) {
+            l = left0;
+            t = t + ch + gutter;
+        }
+        
+        var func = funcs[fk];
+        var chart = oc.easingEquationView(l, t, cw, ch, func, fk);
+        oc.addChild(chart);
+        
+        l = l + cw + gutter;
+    }
+
+});
+
 (function(OC) {
 
-    OC.installPlugin('easingEquationView', creator);
+    OC.installPlugin('easingEquationView', plugin);
 
-    // ====================================================
-    
-    function creator (left, top, width, height, equation, caption) {
+    function plugin (left, top, width, height, equation, caption) {
         return new EasingEquationView(this, left, top, width, height, equation, caption);
     }
 
     function EasingEquationView (oc, left, top, width, height, equation, caption) {
-        this.__super('constructor', oc, left, top);
+        EasingEquationView.__super(this, 'constructor', oc);
     
+        this._left = left;
+        this._top = top;
         this._width = width;
         this._height = height;
         this._equation = equation;
         this._caption = caption;
+
+        this._isHitTestVisible = false;
 
         this._points = _generatePoints(this);
     }
 
     OC.Util.inherit(EasingEquationView, OC.UIElement);
     
-    EasingEquationView.prototype.draw = function() {
+    EasingEquationView.prototype._draw = function() {
         var oc = this._oc;
         oc.drawRectangle(this._left, this._top, this._width, this._height, {
             'fillStyle': 'transparent',
@@ -33,8 +74,6 @@
         });
 
         oc.drawText(this._left + 3, this._top, this._caption);
-
-        this.__super('draw');
     };
 
     function _generatePoints (eeView) {
@@ -58,7 +97,5 @@
 
         return points;
     }
-    
-    debug.info("easingEquationView plugin is installed.");
     
 })(OOPCanvas);
